@@ -293,7 +293,7 @@ public class PlayerDataManager : MonoBehaviour
                     _displayText.text                               = "Run Acceleration";
                     break;
                 case Variables.RunDecceleration:
-                    _inputField.GetComponent<TMP_InputField>().text = _playerData.runDeccelAmount.ToString();
+                    _inputField.GetComponent<TMP_InputField>().text = _playerData.runDecceleration.ToString();
                     _displayText.text                               = "Run Decceleration";
                     break;
                 case Variables.AccelerationInAir:

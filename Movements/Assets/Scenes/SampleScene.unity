@@ -341,7 +341,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -389, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &28614844
@@ -364,10 +364,10 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 300, y: 50}
-  m_Spacing: {x: 300, y: 150}
-  m_Constraint: 1
-  m_ConstraintCount: 2
+  m_CellSize: {x: 800, y: 70}
+  m_Spacing: {x: 0, y: 10}
+  m_Constraint: 2
+  m_ConstraintCount: 6
 --- !u!1 &39682727
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,11 +479,11 @@ RectTransform:
   - {fileID: 1959967008}
   m_Father: {fileID: 578898014}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 560, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &47038733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -504,10 +504,10 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 300, y: 50}
-  m_Spacing: {x: 300, y: 150}
-  m_Constraint: 1
-  m_ConstraintCount: 3
+  m_CellSize: {x: 800, y: 70}
+  m_Spacing: {x: 0, y: 10}
+  m_Constraint: 2
+  m_ConstraintCount: 5
 --- !u!1001 &71152447
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -516,6 +516,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 28614843}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Maximum Run Speed
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: The top speed the player can move at.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 4
@@ -546,11 +554,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -582,7 +590,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -250
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -926,7 +934,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.030564278}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -937,7 +945,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.9}
+  m_Size: {x: 0.9, y: 0.8388714}
   m_EdgeRadius: 0
 --- !u!4 &99206293
 Transform:
@@ -948,8 +956,8 @@ Transform:
   m_GameObject: {fileID: 99206289}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 10.01, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
+  m_LocalScale: {x: 1, y: 1.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 130369547}
@@ -975,7 +983,7 @@ MonoBehaviour:
   _groundCheckSize: {x: 0.8, y: 0.06}
   _frontWallCheckPoint: {fileID: 1177572447}
   _backWallCheckPoint: {fileID: 1195256754}
-  _wallCheckSize: {x: 0.5, y: 0.8}
+  _wallCheckSize: {x: 0.5, y: 1.3}
   _groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -1361,6 +1369,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2102864812}
     m_Modifications:
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: header
+      value: Gravity Multiplier (Jump Hang)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: content
+      value: Gravity multiplier applied when the player is at the top of their jump
+        arc. Usually games will decrease the effect of gravity at the top of a player's
+        jump so they can control where they will land better.
+      objectReference: {fileID: 0}
     - target: {fileID: 1295502505873773923, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -1399,11 +1417,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1435,11 +1453,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -550
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1611,6 +1629,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1202582063}
     m_Modifications:
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: header
+      value: Dash Movement Lerp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: content
+      value: Percentage which the player movement is decreased by during a dash.
+      objectReference: {fileID: 0}
     - target: {fileID: 1295502505873773923, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -1649,11 +1675,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1685,11 +1711,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 770
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: -175
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1849,6 +1875,70 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 239864803}
   m_CullTransparentMesh: 1
+--- !u!1 &301805865
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 301805866}
+  - component: {fileID: 301805867}
+  m_Layer: 5
+  m_Name: settingsButtons
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &301805866
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 301805865}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4664514309934728820}
+  - {fileID: 9104019165394665929}
+  - {fileID: 1678928274}
+  - {fileID: 2087098956}
+  m_Father: {fileID: 8806275650875390301}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &301805867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 301805865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 250, y: 100}
+  m_Spacing: {x: 100, y: 100}
+  m_Constraint: 1
+  m_ConstraintCount: 2
 --- !u!1 &305799188
 GameObject:
   m_ObjectHideFlags: 0
@@ -1991,6 +2081,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2102864812}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Gravity Multiplier (Jump is Cut)
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Increase in gravity if the player lets go of the spacebar, different
+        from freefall gravity multiplier as it only applies to jumps.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 12
@@ -2021,11 +2120,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2057,11 +2156,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 650
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 150
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2165,6 +2264,68 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 324793895}
   m_CullTransparentMesh: 1
+--- !u!1 &333319227
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 333319228}
+  - component: {fileID: 333319229}
+  m_Layer: 5
+  m_Name: mainMenuButtons
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &333319228
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333319227}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 943082711}
+  - {fileID: 494872675}
+  m_Father: {fileID: 2457597471509801846}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &333319229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333319227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 250, y: 100}
+  m_Spacing: {x: 0, y: 100}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1 &336779713
 GameObject:
   m_ObjectHideFlags: 0
@@ -4261,7 +4422,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 344453743}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
@@ -4537,6 +4698,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 28614843}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Run Decceleration
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: The decceleration applied to the player in order to decrease their speed.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 6
@@ -4567,11 +4736,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4603,11 +4772,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -250
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4742,6 +4911,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1202582063}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Dash End Time
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Duration in which the player transitions from dash to the next state.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 28
@@ -4772,11 +4949,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4808,11 +4985,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -670
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4866,7 +5043,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1245605643}
+  - {fileID: 2028380429}
   m_Father: {fileID: 3448883223773861410}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4945,6 +5122,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1202582063}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Dash Attack Time
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Duration of dash.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 27
@@ -4975,11 +5160,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5011,11 +5196,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 770
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 150
+      value: 105
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5182,6 +5367,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1202582063}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: DashEnd Speed (X-Axis)
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Speed reached at the end of the dash (sideways).
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 29
@@ -5212,11 +5405,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5248,11 +5441,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -190
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: -35
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5883,12 +6076,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1923549847}
-  m_Father: {fileID: 2457597471509801846}
+  m_Father: {fileID: 333319228}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -109.999985}
-  m_SizeDelta: {x: 250, y: 80}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -200}
+  m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &497075013
 PrefabInstance:
@@ -5898,6 +6091,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 866095340}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Slide Acceleration
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Acceleration which gets player to the speed to slide down the wall.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 23
@@ -5928,11 +6129,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5964,11 +6165,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 50
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6172,6 +6373,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1111492383}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Maximum Falling Speed
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Maximum speed that a player can fall at, basically the player's terminal
+        velocity.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 1
@@ -6190,7 +6400,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchorMin.x
@@ -6198,15 +6408,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6242,7 +6452,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6888,6 +7098,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 47038732}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Wall Jump Force (Y-Axis)
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Force applied on y-axis (upwards) when the player wall jumps.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 18
@@ -6918,11 +7136,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6954,11 +7172,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 50
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7126,7 +7344,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 578898013}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
@@ -7349,6 +7567,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1202582063}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Dash Time Stop Duration
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Duration for which time stops when the player starts dashing (like in
+        Celeste).
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 26
@@ -7379,11 +7606,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7415,11 +7642,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 150
+      value: 175
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7442,6 +7669,140 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+--- !u!1 &596433399
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 596433400}
+  - component: {fileID: 596433402}
+  - component: {fileID: 596433401}
+  m_Layer: 0
+  m_Name: PlayerStyleTitleTEXT
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &596433400
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596433399}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2028380429}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &596433401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596433399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 'Player Style:'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 36
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 1
+  m_HorizontalAlignment: 4
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &596433402
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596433399}
+  m_CullTransparentMesh: 1
 --- !u!224 &613693633 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
@@ -8059,7 +8420,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -150}
+  m_AnchoredPosition: {x: 0, y: -119}
   m_SizeDelta: {x: 500, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &725935276
@@ -8644,6 +9005,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2102864812}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Jump Hang Time Threshold
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Amount of time for which the jump hang is applied.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 14
@@ -8674,11 +9043,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8710,11 +9079,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8750,6 +9119,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2102864812}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Jump Hang Maximum Speed Multiplier
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Increase in maximum speed for the player after jump hang, so they fall
+        slightly faster for a short period after reaching their maximum height.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 16
@@ -8780,11 +9158,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8816,11 +9194,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -550
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -250
+      value: -160
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8886,11 +9264,11 @@ RectTransform:
   - {fileID: 1017840474}
   m_Father: {fileID: 1337140012}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 560, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &866095341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8911,10 +9289,10 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 300, y: 50}
-  m_Spacing: {x: 300, y: 150}
-  m_Constraint: 1
-  m_ConstraintCount: 3
+  m_CellSize: {x: 800, y: 70}
+  m_Spacing: {x: 0, y: 10}
+  m_Constraint: 2
+  m_ConstraintCount: 2
 --- !u!1001 &885437632
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9512,6 +9890,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1111492383}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Fast Fall Gravity Multiplier
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Multiplier for when the player is falling and holds the down key to
+        fall faster, usually a greater value than Fall Gravity Multiplier, used to
+        increase the fall speed even more.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 2
@@ -9530,7 +9918,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchorMin.x
@@ -9538,15 +9926,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9582,7 +9970,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9637,12 +10025,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2070139268}
-  m_Father: {fileID: 2457597471509801846}
+  m_Father: {fileID: 333319228}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 250, y: 80}
+  m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &943082712
 MonoBehaviour:
@@ -93553,7 +93941,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -150}
+  m_AnchoredPosition: {x: 0, y: -108}
   m_SizeDelta: {x: 500, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1017761450
@@ -94458,6 +94846,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 28614843}
     m_Modifications:
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: header
+      value: Decceleration in Air
+      objectReference: {fileID: 0}
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: content
+      value: How much the player can decrease their (sideways) velocity while they
+        are falling.
+      objectReference: {fileID: 0}
     - target: {fileID: 1295502505873773923, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -94496,11 +94893,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalPosition.x
@@ -94532,11 +94929,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -250
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -250
+      value: -170
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -94572,6 +94969,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2102864812}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Time To Jump Apex
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Time taken for the player to reach the jump height after leaving the
+        ground.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 11
@@ -94602,11 +95008,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -94638,11 +95044,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 150
+      value: 240
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -95089,11 +95495,11 @@ RectTransform:
   - {fileID: 1928382879}
   m_Father: {fileID: 1640167363}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 560, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1111492384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95114,8 +95520,8 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 1000, y: 100}
-  m_Spacing: {x: 0, y: 0}
+  m_CellSize: {x: 800, y: 70}
+  m_Spacing: {x: 0, y: 10}
   m_Constraint: 2
   m_ConstraintCount: 4
 --- !u!1001 &1115626154
@@ -95126,6 +95532,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 28614843}
     m_Modifications:
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: header
+      value: Acceleration in Air
+      objectReference: {fileID: 0}
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: content
+      value: How much the player can increase their (sideways) velocity while they
+        are falling.
+      objectReference: {fileID: 0}
     - target: {fileID: 1295502505873773923, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -95160,11 +95575,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalPosition.x
@@ -95196,11 +95611,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 350
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -95614,6 +96029,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1202582063}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Dash End Speed (Y-Axis)
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Speed reached at the end of the dash (upwards).
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 30
@@ -95644,11 +96067,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -95680,11 +96103,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: -105
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -95732,7 +96155,7 @@ Transform:
   m_GameObject: {fileID: 1177572446}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.7, y: 0, z: 0}
+  m_LocalPosition: {x: 0.7, y: -0.029000044, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -95746,6 +96169,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2102864812}
     m_Modifications:
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: header
+      value: Jump Input Buffer Time
+      objectReference: {fileID: 0}
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: content
+      value: Time period in which the player can press the spacebar before touching
+        the ground that will still register as a jump.
+      objectReference: {fileID: 0}
     - target: {fileID: 1295502505873773923, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -95784,11 +96216,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalPosition.x
@@ -95820,11 +96252,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 650
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -250
+      value: -320
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -95872,7 +96304,7 @@ Transform:
   m_GameObject: {fileID: 1195256753}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.7, y: 0, z: 0}
+  m_LocalPosition: {x: -0.7, y: -0.029, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -96019,6 +96451,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 28614843}
     m_Modifications:
+    - target: {fileID: 4559828858497205477, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
+      propertyPath: header
+      value: Conserve Momentum
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559828858497205477, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
+      propertyPath: content
+      value: If the player should conserve their linear momentum after a jump (makes
+        the player feel like they have more weight).
+      objectReference: {fileID: 0}
     - target: {fileID: 7664889642199145022, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
       propertyPath: m_Name
       value: ToggleVariableInput
@@ -96049,11 +96490,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7973792853649217443, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 7973792853649217443, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 7973792853649217443, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -96085,7 +96526,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7973792853649217443, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 350
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7973792853649217443, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -96154,11 +96595,11 @@ RectTransform:
   - {fileID: 1860885504}
   m_Father: {fileID: 1825407343}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 560, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1202582064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96179,10 +96620,10 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 300, y: 50}
-  m_Spacing: {x: 180, y: 150}
-  m_Constraint: 1
-  m_ConstraintCount: 4
+  m_CellSize: {x: 800, y: 60}
+  m_Spacing: {x: 0, y: 10}
+  m_Constraint: 2
+  m_ConstraintCount: 10
 --- !u!1 &1206187404
 GameObject:
   m_ObjectHideFlags: 0
@@ -96721,17 +97162,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1245605642}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 387979998}
+  m_Father: {fileID: 2028380429}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 1019}
-  m_SizeDelta: {x: 400, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1245605644
 MonoBehaviour:
@@ -96787,7 +97228,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -97476,6 +97917,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 47038732}
     m_Modifications:
+    - target: {fileID: 4559828858497205477, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
+      propertyPath: header
+      value: Turn On Wall Jump.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559828858497205477, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
+      propertyPath: content
+      value: If the player should turn around after jumping off a wall.
+      objectReference: {fileID: 0}
     - target: {fileID: 6970548611672112380, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
       propertyPath: _variables
       value: 21
@@ -97510,11 +97959,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7973792853649217443, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 7973792853649217443, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 7973792853649217443, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -97546,11 +97995,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7973792853649217443, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7973792853649217443, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -150
+      value: -160
       objectReference: {fileID: 0}
     - target: {fileID: 7973792853649217443, guid: 0b76e4ae3a440fd4f96b13a780c2a8d5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -97843,6 +98292,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 47038732}
     m_Modifications:
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: header
+      value: Wall Jump Movement Time
+      objectReference: {fileID: 0}
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: content
+      value: Amount of time the decrease in player movement is applied after a wall
+        jump.
+      objectReference: {fileID: 0}
     - target: {fileID: 1295502505873773923, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -97881,11 +98339,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalPosition.x
@@ -97917,11 +98375,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -550
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -150
+      value: -80
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -98334,6 +98792,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1202582063}
     m_Modifications:
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: header
+      value: Dash Input Buffer Time
+      objectReference: {fileID: 0}
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: content
+      value: Time period in which the player can press dash button before touching
+        the ground that will still register as a dash.
+      objectReference: {fileID: 0}
     - target: {fileID: 1295502505873773923, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -98372,11 +98839,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalPosition.x
@@ -98408,11 +98875,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -190
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -250
+      value: -315
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -98461,7 +98928,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1337140011}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
@@ -98755,6 +99222,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1202582063}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Dash Amount
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Number of dashes the player can do between cooldowns.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 24
@@ -98785,11 +99260,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -98821,11 +99296,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -670
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 150
+      value: 315
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -99113,7 +99588,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1485449083}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
@@ -100331,7 +100806,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1640167363
 RectTransform:
   m_ObjectHideFlags: 0
@@ -100426,6 +100901,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 47038732}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Wall Jump Force (X-Axis)
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Force applied on x-axis (sideways) when the player wall jumps.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 17
@@ -100456,11 +100939,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -100492,11 +100975,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -550
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 50
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -100527,6 +101010,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1111492383}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Maximum Fast Fall Speed
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Maximum speed that a player can fall at when holding down, basically
+        the player's terminal velocity when falling faster.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 3
@@ -100545,7 +101037,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchorMin.x
@@ -100553,15 +101045,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -100597,7 +101089,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -120
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -100628,6 +101120,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2102864812}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Jump Hang Acceleration Multiplier
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Acceleration change (usually increase) for the player after the jump
+        hang (when they start falling).
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 15
@@ -100658,11 +101159,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -100694,11 +101195,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 650
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: -80
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -100752,18 +101253,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1678928273}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 696871985}
-  m_Father: {fileID: 8806275650875390301}
+  m_Father: {fileID: 301805866}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 220}
-  m_SizeDelta: {x: 250, y: 80}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -175, y: -100}
+  m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1678928275
 MonoBehaviour:
@@ -102179,7 +102680,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1825407342}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
@@ -102676,6 +103177,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 47038732}
     m_Modifications:
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: header
+      value: Wall Jump Movement Lerp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: content
+      value: Percentage the movement will be reduced for mid-air after a wall jump.
+      objectReference: {fileID: 0}
     - target: {fileID: 1295502505873773923, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -102714,11 +103223,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalPosition.x
@@ -102750,11 +103259,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 650
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -102785,6 +103294,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1202582063}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Dash Speed
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Speed at which the player dashes.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 25
@@ -102815,11 +103332,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -102851,11 +103368,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -190
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 150
+      value: 245
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -102886,6 +103403,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 866095340}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Slide Speed
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Speed at which the player slides down a wall.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 22
@@ -102916,11 +103441,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -102952,11 +103477,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -550
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 50
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -103718,6 +104243,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 28614843}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Run Acceleration
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: The acceleration applied to the player in order to increase their speed.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 5
@@ -103748,11 +104281,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -103784,11 +104317,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 350
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 150
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -103942,6 +104475,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2102864812}
     m_Modifications:
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: header
+      value: Coyote Time
+      objectReference: {fileID: 0}
+    - target: {fileID: 9882760899090062, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
+      propertyPath: content
+      value: Time period in which the player can still jump after falling off a platform.
+      objectReference: {fileID: 0}
     - target: {fileID: 1295502505873773923, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -103980,11 +104521,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalPosition.x
@@ -104016,11 +104557,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -250
+      value: -240
       objectReference: {fileID: 0}
     - target: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -104462,6 +105003,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2102864812}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Jump Height
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Height of the player's jump.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 10
@@ -104492,11 +105041,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -104528,11 +105077,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -550
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 150
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -104696,6 +105245,68 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1999763605}
   m_CullTransparentMesh: 1
+--- !u!1 &2028380428
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2028380429}
+  - component: {fileID: 2028380430}
+  m_Layer: 0
+  m_Name: PlaystyleUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2028380429
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2028380428}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 596433400}
+  - {fileID: 1245605643}
+  m_Father: {fileID: 387979998}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &2028380430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2028380428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 1
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 250, y: 100}
+  m_Spacing: {x: 10, y: 0}
+  m_Constraint: 1
+  m_ConstraintCount: 2
 --- !u!224 &2029323856 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5602463111776598375, guid: 16e159da517351d4d8da111feb0dfaff, type: 3}
@@ -105151,12 +105762,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1792912292}
-  m_Father: {fileID: 8806275650875390301}
+  m_Father: {fileID: 301805866}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 106}
-  m_SizeDelta: {x: 250, y: 80}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 175, y: -100}
+  m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2087098957
 MonoBehaviour:
@@ -105367,11 +105978,11 @@ RectTransform:
   - {fileID: 746824671}
   m_Father: {fileID: 1485449084}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 560, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &2102864813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105392,10 +106003,10 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 300, y: 50}
-  m_Spacing: {x: 300, y: 150}
-  m_Constraint: 1
-  m_ConstraintCount: 3
+  m_CellSize: {x: 800, y: 70}
+  m_Spacing: {x: 0, y: 10}
+  m_Constraint: 2
+  m_ConstraintCount: 9
 --- !u!1 &2105809544
 GameObject:
   m_ObjectHideFlags: 0
@@ -105525,6 +106136,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1202582063}
     m_Modifications:
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: header
+      value: Dash Refill Time
+      objectReference: {fileID: 0}
+    - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
+      propertyPath: content
+      value: Time it takes to refill a dash.
+      objectReference: {fileID: 0}
     - target: {fileID: 1743982112361775431, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: _variables
       value: 32
@@ -105555,11 +106174,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -105591,11 +106210,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -670
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -250
+      value: -245
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -106201,11 +106820,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: header
-      value: Hi
+      value: Fall Gravity Multiplier
       objectReference: {fileID: 0}
     - target: {fileID: 891601824561582387, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: content
-      value: Hello
+      value: Value multiplier to the player's gravity force when they are falling,
+        usually a number bigger than 1 to increase the falling speed.
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_Pivot.x
@@ -106221,7 +106841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchorMin.x
@@ -106229,15 +106849,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalPosition.x
@@ -106273,7 +106893,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 3218180364843751385, guid: cc8eb7ce404dd0e4bad30b7b0fd63930, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -106896,8 +107516,7 @@ RectTransform:
   m_Children:
   - {fileID: 5108536764442685529}
   - {fileID: 1136016490801346764}
-  - {fileID: 943082711}
-  - {fileID: 494872675}
+  - {fileID: 333319228}
   m_Father: {fileID: 3448883223773861410}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -107755,7 +108374,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8037291597429263844}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -107765,7 +108384,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -224}
+  m_AnchoredPosition: {x: 0, y: -420}
   m_SizeDelta: {x: 250, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4661121363640541053
@@ -107783,18 +108402,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 20563212269467569}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2969606989271068605}
-  m_Father: {fileID: 8806275650875390301}
+  m_Father: {fileID: 301805866}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -3.9999924}
-  m_SizeDelta: {x: 250, y: 80}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -175, y: 100}
+  m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4809654966669064069
 CanvasRenderer:
@@ -109389,11 +110008,8 @@ RectTransform:
   m_Children:
   - {fileID: 3362099037336473846}
   - {fileID: 2893728285623753362}
-  - {fileID: 2087098956}
-  - {fileID: 4664514309934728820}
-  - {fileID: 9104019165394665929}
-  - {fileID: 1678928274}
   - {fileID: 4641877043999112423}
+  - {fileID: 301805866}
   m_Father: {fileID: 3448883223773861410}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -109459,18 +110075,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5673429331714302899}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1794671874597201845}
-  m_Father: {fileID: 8806275650875390301}
+  m_Father: {fileID: 301805866}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -113.99999}
-  m_SizeDelta: {x: 250, y: 80}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 175, y: 100}
+  m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
