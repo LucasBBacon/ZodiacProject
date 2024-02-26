@@ -17,8 +17,12 @@ public class UserInput : MonoBehaviour
     public bool     MenuOpenInput   { get; private set; }
     public bool     SwitchInput     { get; private set; }
     public bool     LevelInput      { get; private set; }
+    public bool     InteractInput   { get; private set; }
     //public bool     AttackInput         { get; private set; }
     
+    public Vector2  InteractMoveInput   { get; private set; }
+    public bool     StopInteractInput   { get; private set; }
+
     public Vector2  MousePosition       { get; private set; }
     public bool     UIMenuCloseInput    { get; private set; }
     public bool     ReturnPageInput     { get; private set; }
@@ -33,7 +37,11 @@ public class UserInput : MonoBehaviour
     private InputAction _menuOpenAction;
     private InputAction _switchAction;
     private InputAction _levelAction;
+    private InputAction _interactAction;
     //private InputAction _attackAction;
+
+    private InputAction _moveInteractAction;
+    private InputAction _stopInteractAction;
 
     private InputAction _UIMouseMovement;
     private InputAction _UIMenuCloseAction;
@@ -63,7 +71,11 @@ public class UserInput : MonoBehaviour
         _menuOpenAction =   PlayerInput.actions["MenuOpen"];
         _switchAction   =   PlayerInput.actions["Switch"];
         _levelAction    =   PlayerInput.actions["SwitchLevel"];
+        _interactAction =   PlayerInput.actions["Interact"];
         //_attackAction           =   PlayerInput.actions["Attack"];
+
+        _moveInteractAction = PlayerInput.actions["InteractMove"];
+        _stopInteractAction = PlayerInput.actions["InteractStop"];
 
         _UIMouseMovement    = PlayerInput.actions["Point"];
         _UIMenuCloseAction  = PlayerInput.actions["MenuClose"];
@@ -84,7 +96,12 @@ public class UserInput : MonoBehaviour
 
         SwitchInput     =   _switchAction.WasPressedThisFrame();
         LevelInput      =   _levelAction.WasPressedThisFrame();
+
+        InteractInput   =   _interactAction.WasPressedThisFrame();
         //AttackInput         =   _attackAction.WasPressedThisFrame();
+
+        InteractMoveInput   = _moveInteractAction.ReadValue<Vector2>();
+        StopInteractInput   = _stopInteractAction.WasPressedThisFrame();
 
         MousePosition       = _UIMouseMovement.ReadValue<Vector2>();
         UIMenuCloseInput    = _UIMenuCloseAction.WasPressedThisFrame();

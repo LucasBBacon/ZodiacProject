@@ -22,16 +22,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _nameText;
 
     [SerializeField] private Material _frontMaterial;
+    [SerializeField] private GameObject _gridObj;
 
     [HideInInspector] public bool IsChangeable { get; private set; } = true;
 
     [HideInInspector] public int _currentPlayerTypeIndex;
+    
     private int _currentTileMapIndex;
     private Color _currentForegroundColor;
 
     public SceneData[] SceneData;
     private SceneData currentSceneData;
     private int _currentSceneDataIndex;
+    private bool _gridEnabled = false;
 
     private void Awake() 
     {
@@ -69,6 +72,11 @@ public class GameManager : MonoBehaviour
             _camColl  = _boundary[_lvlIndex].GetComponent<CompositeCollider2D>();
             _cinemachine.m_BoundingShape2D = _camColl;
         }
+
+        if(Input.GetKeyDown(KeyCode.G)) { _gridEnabled = !_gridEnabled; }
+
+        if(_gridEnabled) { _gridObj.SetActive(true); }
+        else if(!_gridEnabled) _gridObj.SetActive(false);
     }
 
     public void SetSceneData(SceneData sceneData)
@@ -87,12 +95,18 @@ public class GameManager : MonoBehaviour
     public void SwitchLevel(int index)
     {
         // switch tilemap active and apply color
+        for (int i = 0; i < _levels[_currentTileMapIndex].transform.childCount; i++)
+        {
+            _levels[_currentTileMapIndex].transform.GetChild(i).gameObject.SetActive(true);
+        }
         _levels[_currentTileMapIndex].gameObject.SetActive(false);
-        _levels[_currentTileMapIndex].transform.GetChild(0).gameObject.SetActive(false);
         _levels[index].gameObject.SetActive(true);
-        _levels[index].transform.GetChild(0).gameObject.SetActive(true);
+        for (int i = 0; i < _levels[index].transform.childCount; i++)
+        {
+            _levels[index].transform.GetChild(i).gameObject.SetActive(true);
+        }
         _levels[index].color = _currentForegroundColor;
-        _levels[_currentTileMapIndex] = _levels[index];
+        //_levels[_currentTileMapIndex] = _levels[index];
 
         _player.transform.position = _spawnPoint.position;
 

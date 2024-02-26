@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     public bool     IsWallJumping       { get; private set; }
     public bool     IsDashing           { get; private set; }
     public bool     IsSliding           { get; private set; }
+    //public bool     IsInteracting       { get; private set; }
 
     // timers for variable use
     public float    LastOnGroundTime    { get; private set; }

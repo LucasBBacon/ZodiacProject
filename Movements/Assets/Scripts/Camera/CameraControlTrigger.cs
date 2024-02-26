@@ -19,9 +19,9 @@ public class CameraControlTrigger : MonoBehaviour
         _coll = GetComponent<Collider2D>();
     }
 
-    private void FixedUpdate() {
-        PanningCamera();
-    }
+    // private void FixedUpdate() {
+    //     PanningCamera();
+    // }
 
     private void OnTriggerEnter2D(Collider2D collision) 
     {
@@ -57,10 +57,10 @@ public class CameraControlTrigger : MonoBehaviour
         }
     }
 
-    private void PanningCamera()
-    {
-        CameraManager.instance.PanCameraOnContact(_panDistance, _panTime, UserInput.instance.LookInput.normalized, false);
-    }
+    // private void PanningCamera()
+    // {
+    //     CameraManager.instance.PanCameraOnContact(_panDistance, _panTime, UserInput.instance.LookInput.normalized, false);
+    // }
 }
 
 // These will be the serialised objects for the code, keeping the file clean
