@@ -8,50 +8,56 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    private Camera _cam;
+    [Header("Camera")]
     [SerializeField] private CinemachineVirtualCamera _cinemachineCam;
-    private CinemachineConfiner2D _cinemachine;
-    [SerializeField] private GameObject[] _boundary;
-    private CompositeCollider2D _camColl;
-    private Player _player;
+    [SerializeField] private GameObject[] _camBoundaries;
 
+    [Space(20)]
+
+    [Header("Player Types")]
+    [SerializeField] private TextMeshProUGUI _nameText;
     [SerializeField] private PlayerData[] _playerTypes;
+
+    [Space(20)]
+
+    [Header("Level")]
+    [SerializeField] private GameObject _gridObj;
     [SerializeField] private Tilemap[] _levels;
     [SerializeField] private Transform _spawnPoint;
-
-    [SerializeField] private TextMeshProUGUI _nameText;
-
+    [Space(5)]
+    public SceneData[] SceneData;
     [SerializeField] private Material _frontMaterial;
-    [SerializeField] private GameObject _gridObj;
 
     [HideInInspector] public bool IsChangeable { get; private set; } = true;
-
     [HideInInspector] public int _currentPlayerTypeIndex;
+
+
+    private Player _player;
     
     private int _currentTileMapIndex;
     private Color _currentForegroundColor;
-
-    public SceneData[] SceneData;
     private SceneData currentSceneData;
-    private int _currentSceneDataIndex;
+    
     private bool _gridEnabled = false;
+
+    private Camera _cam;
+    private CompositeCollider2D _camColl;
+    private CinemachineConfiner2D _cameraConfiner;
 
     private void Awake() 
     {
         if(instance == null)
-        {
             instance = this;
-        }
+        
+        _cam            = FindObjectOfType<Camera>();
+        _player         = GameObject.FindWithTag("Player").GetComponent<Player>();
 
-        _cam = FindObjectOfType<Camera>();
-        _player = GameObject.FindWithTag("Player").GetComponent<Player>();
-        _cinemachine = _cinemachineCam.GetComponent<CinemachineConfiner2D>();
-        _camColl  = _boundary[0].GetComponent<CompositeCollider2D>();
+        _cameraConfiner = _cinemachineCam.GetComponent<CinemachineConfiner2D>();
+        _camColl        = _camBoundaries[0].GetComponent<CompositeCollider2D>();
     }
 
     private void Start() 
     {
-        
         SetSceneData(SceneData[0]);
         SwitchLevel(0);
         SwitchPlayerType(0);
@@ -61,7 +67,7 @@ public class GameManager : MonoBehaviour
     {
         if(UserInput.instance.SwitchInput)
         {
-            // swithc to next level. uses "?" to indicate that if the expression in the brackets before is true then 0 will be passed else it will increase by 1
+            // switch to next level. uses "?" to indicate that if the expression in the brackets before is true then 0 will be passed else it will increase by 1
             SwitchPlayerType((_currentPlayerTypeIndex == _playerTypes.Length - 1) ? 0 : _currentPlayerTypeIndex + 1);
         }
         if(UserInput.instance.LevelInput)
@@ -69,15 +75,17 @@ public class GameManager : MonoBehaviour
             int _lvlIndex = (_currentTileMapIndex == _levels.Length - 1) ? 0 : _currentTileMapIndex + 1;
             SetSceneData(SceneData[_lvlIndex]);
             SwitchLevel(_lvlIndex);
-            _camColl  = _boundary[_lvlIndex].GetComponent<CompositeCollider2D>();
-            _cinemachine.m_BoundingShape2D = _camColl;
+            _camColl                            = _camBoundaries[_lvlIndex].GetComponent<CompositeCollider2D>();
+            _cameraConfiner.m_BoundingShape2D   = _camColl;
         }
 
-        if(Input.GetKeyDown(KeyCode.G)) { _gridEnabled = !_gridEnabled; }
+        if(Input.GetKeyDown(KeyCode.G)) _gridEnabled = !_gridEnabled;
 
-        if(_gridEnabled) { _gridObj.SetActive(true); }
-        else if(!_gridEnabled) _gridObj.SetActive(false);
+        if(_gridEnabled)                _gridObj.SetActive(true);
+        else if(!_gridEnabled)          _gridObj.SetActive(false);
     }
+
+
 
     public void SetSceneData(SceneData sceneData)
     {
@@ -99,53 +107,54 @@ public class GameManager : MonoBehaviour
         {
             _levels[_currentTileMapIndex].transform.GetChild(i).gameObject.SetActive(true);
         }
+
         _levels[_currentTileMapIndex].gameObject.SetActive(false);
         _levels[index].gameObject.SetActive(true);
+
         for (int i = 0; i < _levels[index].transform.childCount; i++)
         {
             _levels[index].transform.GetChild(i).gameObject.SetActive(true);
         }
-        _levels[index].color = _currentForegroundColor;
+
+        _levels[index].color        = _currentForegroundColor;
         //_levels[_currentTileMapIndex] = _levels[index];
 
-        _player.transform.position = _spawnPoint.position;
+        _player.transform.position  = _spawnPoint.position;
 
-        _currentTileMapIndex = index;
+        _currentTileMapIndex        = index;
     }
 
     
 
     public void SwitchPlayerType(int index)
     {
-        _player.playerData = _playerTypes[index];
+        _player.playerData      = _playerTypes[index];
         _currentPlayerTypeIndex = index;
 
         GameEvents.instance.PlayerSwitch();
 
-        // PlayerDataManager.instance.ChangePlayerData(_playerTypes[index]);
-
-        IsChangeable = true;
+        IsChangeable            = true;
 
         switch (index)
         {
             case 0:
-                _nameText.text = "Celeste";
-                IsChangeable = false;
+                _nameText.text  = "Celeste";
+                IsChangeable    = false;
                 break;
             case 1:
-                _nameText.text = "Hollow Knight";
-                IsChangeable = false;
+                _nameText.text  = "Hollow Knight";
+                IsChangeable    = false;
                 break;
             case 2:
-                _nameText.text = "Custom Profile 1";
-                IsChangeable = true;
+                _nameText.text  = "Custom Profile 1";
+                IsChangeable    = true;
                 break;
             case 3:
-                _nameText.text = "Custom Profile 2";
-                IsChangeable = true;
+                _nameText.text  = "Custom Profile 2";
+                IsChangeable    = true;
                 break;
             default:
-                IsChangeable = true;
+                IsChangeable    = true;
                 break;
         }
     }

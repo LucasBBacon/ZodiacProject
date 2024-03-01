@@ -77,6 +77,9 @@ public class PlayerDataManager : MonoBehaviour
 
     #region Value Input Methods
 
+    /// <summary>
+    /// Called when a value is passed in through a <c>TMP Input Field</c>.
+    /// </summary>
     public void OnEndEditString()
     {
         if(gameObject.CompareTag("SliderField"))
@@ -89,6 +92,9 @@ public class PlayerDataManager : MonoBehaviour
         DisplayVariable();
     }
 
+    /// <summary>
+    /// Called when a value is passed in through a <c>TMP Button</c>.
+    /// </summary>
     public void OnButtonToggle()
     {
         _booleanCheck = _toggleButton.isOn;
@@ -97,6 +103,9 @@ public class PlayerDataManager : MonoBehaviour
         DisplayVariable();
     }
 
+    /// <summary>
+    /// Called when a value is passed in through a <c>Slider</c>.
+    /// </summary>
     public void OnSliderChange()
     {
         _sliderValue = _sliderField.value;
@@ -110,6 +119,9 @@ public class PlayerDataManager : MonoBehaviour
 
     #region Variable Set and Display Methods
 
+    /// <summary>
+    /// Sets the corresponding <c>Enum</c> variables to the correct passed in value of the instance. Calculates the rest of the variables.
+    /// </summary>
     public void EditVariable()
     {
         switch(_variables)
@@ -264,6 +276,9 @@ public class PlayerDataManager : MonoBehaviour
         _player.playerData = _playerData; 
     }
 
+    /// <summary>
+    /// Displays the variables on the UI.
+    /// </summary>
     private void DisplayVariable()
     {
         switch(_variables)
@@ -429,6 +444,9 @@ public class PlayerDataManager : MonoBehaviour
 
     #region Input Disable
 
+    /// <summary>
+    /// Enables and disables UI elements dependant on the current <c>PlayerData</c> scriptable object.
+    /// </summary>
     private void DisableVariableSelection()
     {
         if(gameObject.CompareTag("FloatField"))
@@ -476,6 +494,11 @@ public class PlayerDataManager : MonoBehaviour
 
     #region Value Check Methods
 
+    /// <summary>
+    /// Checks if the passed in <c>string</c> can be converted into a <c>float</c> variable.
+    /// </summary>
+    /// <param name="value">The string value to be converted into a float.</param>
+    /// <returns>Returns the float present in the string. Otherwise returns 0 if there is no float present.</returns>
     private float CheckString(string value)
     {
         if(float.TryParse(value, out float result)) 
@@ -490,22 +513,42 @@ public class PlayerDataManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks if the passed in <c>string</c> can be converted into an <c>integer</c> variable.
+    /// </summary>
+    /// <param name="value">The string value to be converted into an int.</param>
+    /// <returns>Returns the integer present in the string. Otherwise returns 0 if there is no int present.</returns>
     private int CheckInt(string value)
     {
         if(int.TryParse(value, out int result)) return result;
         else
         {
-            Debug.Log("Not a float");
+            Debug.Log("Not an int");
             return 0;
         }
     }
 
+    /// <summary>
+    /// Sets the passed in float within the passed in boundary values.
+    /// </summary>
+    /// <param name="value">Value to be checked.</param>
+    /// <param name="lowB">Lower boundary value.</param>
+    /// <param name="highB">Higher boundary value.</param>
+    /// <returns>Returns the passed in value if it is within the boundary range. Otherwise, returns the higher or lower boundary.</returns>
     private float SetFloatWithRange(float value, float lowB, float highB)
     {
         if(value < lowB || value > highB) 
         {
             Debug.Log("Outside Range");
-            return 0f;
+            
+            if(value < lowB)
+                return lowB;
+            
+            else if(value > highB)
+                return highB;
+
+            else
+                return value;
         }
         else return value;
     }
@@ -513,6 +556,9 @@ public class PlayerDataManager : MonoBehaviour
     #endregion
 }
 
+/// <summary>
+/// Enumerator to select what <c>PlayerData</c> variable is being changed.
+/// </summary>
 public enum Variables
 {
     FallGravityMultiplier,
