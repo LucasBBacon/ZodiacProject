@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GroundedState : State
 {
+    [Header("States")]
     public  IdleState   idleState;
     public  RunState    runState;
     public  LandState   landState;

@@ -6,8 +6,9 @@ public class PlayerMovement : MonoBehaviour
 {
     private Player      _player;
     private Vector2     MoveInput   => _player.MoveInput;
-    private PlayerData  Data        => _player.playerData;
+    private PlayerData  Data        => _player.Data;
     private Rigidbody2D Body        => _player.body;
+    [SerializeField] private GameObject colliderTransform;
 
     private float       _targetSpeed;
     
@@ -85,6 +86,10 @@ public class PlayerMovement : MonoBehaviour
         scale.x                 *= -1;
         transform.localScale    = scale;
 
+        Vector3 colScale = colliderTransform.transform.localScale;
+        colScale.x *= -1;
+        colliderTransform.transform.localScale = colScale;
+
         _player.IsFacingRight   = !_player.IsFacingRight;
     }
 
@@ -109,6 +114,96 @@ public class PlayerMovement : MonoBehaviour
 
         // applies an upward impulse force 
         Body.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+    }
+
+    public void WallJump(int dir)
+    {
+        _player.TimeLastPressedJump = 0;
+        _player.TimeLastOnGround    = 0;
+        _player.TimeLastOnRightWall = 0;
+        _player.TimeLastOnLeftWall  = 0;
+
+        Vector2 force = new Vector2
+            (
+                Data.wallJumpForce.x,
+                Data.wallJumpForce.y
+            );
+        force.x *= dir;
+        
+        if(Mathf.Sign(Body.velocity.x) != Mathf.Sign(force.x))
+            force.x -= Body.velocity.x;
+        
+        if(Body.velocity.y < 0)
+            force.y -= Body.velocity.y;
+
+        Body.AddForce(force, ForceMode2D.Impulse);
+    }
+
+    #endregion
+
+
+    #region Slide Method
+
+    public void Slide()
+    {
+        float speedDiff = Data.slideSpeed - Body.velocity.y;
+        float movement = speedDiff * Data.slideAcceleration;
+
+        movement = Mathf.Clamp
+            (
+                movement,
+                -Mathf.Abs(speedDiff) * (1 / Time.fixedDeltaTime),
+                Mathf.Abs(speedDiff) * (1 / Time.fixedDeltaTime)
+            );
+        
+        Body.AddForce(movement * Vector2.up);
+    }
+
+    #endregion
+
+
+    #region Dash Method
+
+    public IEnumerator StartDash(Vector2 dir)
+    {
+        _player.TimeLastOnGround    = 0;
+        _player.TimeLastPressedDash = 0;
+
+        float startTime             = Time.time;
+
+        _player.DashesLeft--;
+        _player.IsDashAttacking     = true;
+
+        _player.SetGravityScale(0);
+
+
+        while(Time.time - startTime <= Data.dashAttackTime)
+        {
+            Body.velocity = dir.normalized * Data.dashSpeed;
+
+            yield return null;
+        }
+
+        startTime               = Time.time;
+        _player.IsDashAttacking = false;
+
+        _player.SetGravityScale(Data.gravityScale);
+        Body.velocity = Data.dashEndSpeed * dir.normalized;
+
+        while(Time.time - startTime <= Data.dashEndTime)
+            yield return null;
+        
+        _player.IsDashing = false;
+    }
+
+    public IEnumerator DashRefill(int amount)
+    {
+        _player.DashRefilling = true;
+
+        yield return new WaitForSeconds(Data.dashRefillTime);
+
+        _player.DashRefilling = false;
+        _player.DashesLeft = Mathf.Min(Data.dashAmount, _player.DashesLeft + amount);
     }
 
     #endregion

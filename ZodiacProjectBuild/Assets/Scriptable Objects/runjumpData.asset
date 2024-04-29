@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fa97bdc79814e54bbf285be028c3ae2, type: 3}
   m_Name: runjumpData
   m_EditorClassIdentifier: 
+  moveSpeed: 0
   runMaxSpeed: 9.5
   doConserveMomentum: 1
   runAcceleration: 9.5
@@ -24,11 +25,26 @@ MonoBehaviour:
   jumpHeight: 6.5
   jumpTimeToApex: 0.5
   jumpForce: 26
+  wallJumpForce: {x: 8.5, y: 20}
+  wallJumpRunLerp: 0.075
+  wallJumpTime: 0.3
+  wallJumpDoTurn: 0
+  slideSpeed: -12
+  slideAcceleration: 12
   jumpHangGravityMultiplier: 1
   jumpHangTimeThreshold: 0
   jumpHangAccelerationMultiplier: 1
   jumpHangMaxSpeedMultiplier: 1
   jumpCutGravityMultiplier: 3.5
+  dashAmount: 1
+  dashSpeed: 20
+  dashSleepTime: 0.05
+  dashAttackTime: 0.15
+  dashEndTime: 0.15
+  dashEndSpeed: {x: 15, y: 15}
+  dashEndRunLerp: 0.5
+  dashRefillTime: 0.1
+  dashInputBufferTime: 0.1
   jumpInputBufferTime: 0.2
   coyoteTime: 0.2
   fallGravityMultiplier: 2

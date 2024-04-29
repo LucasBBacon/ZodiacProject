@@ -68,6 +68,37 @@ public class PlayerData : EntityData
     [Space(20)]
 
 
+    #region Walljump Parameters
+
+    [Header("Walljump")]
+    public  Vector2 wallJumpForce                   = new Vector2(8.5f, 20f);
+    [Space(5)]
+    
+    [Range(0f, 1f)]
+    public  float   wallJumpRunLerp                 = 0.075f;
+    [Range(0f, 1.5f)]
+    public  float   wallJumpTime                    = 0.3f;
+    [Space(5)]
+    public  bool    wallJumpDoTurn                  = false;
+
+    #endregion
+
+
+    [Space(20)]
+
+
+    #region Slide Parameters
+
+    [Header("Slide")]
+    public float slideSpeed                         = -12f;
+    public float slideAcceleration                  = 12f;
+
+    #endregion
+
+
+    [Space(20)]
+
+
     #region Jump Dynamic Parameters
 
     [Header("Jump Dynamics")]
@@ -93,6 +124,27 @@ public class PlayerData : EntityData
     /// Multiplier increase in RigidBody2D gravity when jump button is released.
     /// </summary>
     public  float   jumpCutGravityMultiplier        = 3.5f;
+
+    #endregion
+
+
+    [Space(20)]
+
+
+    #region Dash Parameters
+
+    [Header("Dash")]
+    public  int     dashAmount                      = 1;
+    public  float   dashSpeed                       = 20f;
+    public  float   dashSleepTime                   = 0.05f;
+    public  float   dashAttackTime                  = 0.15f;
+    public  float   dashEndTime                     = 0.15f;
+    public  Vector2 dashEndSpeed                    = new Vector2(15f, 15f);
+    [Range(0f, 1f)]
+    public  float   dashEndRunLerp                  = 0.5f;
+    public  float   dashRefillTime                  = 0.1f;
+    [Range(0.01f, 0.5f)]
+    public  float   dashInputBufferTime             = 0.1f;
 
     #endregion
 

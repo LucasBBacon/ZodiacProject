@@ -1,29 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : State
+public class WallControlState : State
 {
     [Header("Animation Clip")]
     public  AnimationClip   animClip;
 
+    [Header("States")]
+    [SerializeField] private WallControlState wallControlState;
+
+    private float jumpSpeed;
+
     public override void Enter()
     {
-        base.Enter();
-
         Animator.Play(animClip.name);
+        jumpSpeed = Body.velocity.y;
     }
 
     public override void Do()
     {
-        base.Do();
-
-        if(!core.collisionSensors.IsGrounded)
-            IsComplete = true;
+        
     }
 
     public override void Exit()
     {
-        base.Exit();
+        Animator.speed = 1;
     }
 }

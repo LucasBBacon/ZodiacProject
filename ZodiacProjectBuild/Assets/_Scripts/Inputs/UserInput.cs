@@ -11,16 +11,21 @@ public class UserInput : MonoBehaviour
     #region Outputs Values
 
     public Vector2  MoveInput       { get; private set; }
+
     public bool     JumpJustPressed { get; private set; }
     public bool     JumpBeingHeld   { get; private set; }
     public bool     JumpReleased    { get; private set; }
+
+    public bool     DashInput       { get; private set; }
 
     #endregion
 
     #region Input Actions
 
     private InputAction _moveAction;
+
     private InputAction _jumpAction;
+    private InputAction _dashAction;
 
     #endregion
 
@@ -45,6 +50,7 @@ public class UserInput : MonoBehaviour
     {
         _moveAction = playerInput.actions["Move"];
         _jumpAction = playerInput.actions["Jump"];
+        _dashAction = playerInput.actions["Dash"];
     }
 
     private void UpdateInputs()
@@ -54,5 +60,7 @@ public class UserInput : MonoBehaviour
         JumpJustPressed = _jumpAction.WasPressedThisFrame();
         JumpBeingHeld   = _jumpAction.IsPressed();
         JumpReleased    = _jumpAction.WasReleasedThisFrame();
+
+        DashInput       = _dashAction.WasPressedThisFrame();
     }
 }

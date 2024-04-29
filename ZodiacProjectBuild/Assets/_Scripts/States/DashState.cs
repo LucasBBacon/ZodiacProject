@@ -1,22 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class JumpState : State
+public class DashState : State
 {
     [Header("Animation Clip")]
     public  AnimationClip   animClip;
 
     [Header("Effects")]
     [SerializeField]
-    private GameObject      _jumpEffect;
+    private GameObject      _dashEffect;
 
     public override void Enter()
     {
         base.Enter();
 
         Animator.Play(animClip.name);
-        JumpParticles();
+        if(core.collisionSensors.IsGrounded)
+            DashParticles();
     }
 
     public override void Do()
@@ -26,16 +25,14 @@ public class JumpState : State
         IsComplete = true;
     }
 
-    // public void ResetAmountOfJumpsLeft()    => amountOfJumpsLeft = playerData.jumpAmount;
-    // public void DecreaseAmountOfJumpsLeft() => amountOfJumpsLeft--;
-
-    private void JumpParticles()
+    private void DashParticles()
     {
         GameObject obj = Instantiate(
-            _jumpEffect,
+            _dashEffect,
             transform.position - (Vector3.up * 0.8f),
-            Quaternion.Euler(-90, 0, 0)
+            Quaternion.Euler(-90, 0, 0),
+            gameObject.transform
             );
-        Destroy(obj, 1);  
+        Destroy(obj, 0.4f);
     }
 }

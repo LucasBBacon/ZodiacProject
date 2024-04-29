@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RunState : State
 {
+    [Header("Animation Clip")]
     public AnimationClip animClip;
 
     public override void Enter()

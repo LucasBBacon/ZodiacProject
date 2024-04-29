@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class LandState : State
 {
-    [SerializeField] private GameObject _landEffects;
-    public AnimationClip animClip;
+    [Header("Animation Clip")]
+    public  AnimationClip   animClip;
+
+    [Header("Effects")]
+    [SerializeField]
+    private GameObject      _landEffects;
 
     public override void Enter()
     {
@@ -25,7 +29,7 @@ public class LandState : State
     {
         GameObject obj = Instantiate(
             _landEffects,
-            transform.position - (Vector3.up * transform.localScale.y / 1.5f),
+            transform.position - (Vector3.up * 0.8f),
             Quaternion.Euler(-90, 0, 0)
             );
         Destroy(obj, 1);  
