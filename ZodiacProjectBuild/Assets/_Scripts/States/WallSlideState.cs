@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class WallSlideState : State
 {
+    public Player player;
+
     [Header("Animation Clip")]
     public  AnimationClip   animClip;
 
@@ -10,10 +12,18 @@ public class WallSlideState : State
     private GameObject      _slideEffect;
 
     private GameObject      obj;
+    private float timer;
 
     public override void Enter()
     {
         base.Enter();
+
+        if(Body.velocity.y > 0)
+        {
+            Body.velocity = new Vector2(Body.velocity.x, 0);
+        }
+
+        timer = 0f;
 
         Animator.Play(animClip.name);
         
@@ -23,13 +33,17 @@ public class WallSlideState : State
     {
         base.Do();
 
-        Body.velocity = new Vector2(Body.velocity.x, 0);
+        timer += Time.deltaTime;
 
-        if(Body.velocity.y < 0)
+        if(Body.velocity.y < 0 && timer >= 0.15f)
+        {
             SlideParticles();
+            timer = 0f;
+        }
 
         if(core.collisionSensors.IsGrounded || (!core.collisionSensors.IsWallLeft && !core.collisionSensors.IsWallRight))
         {
+            Destroy(obj, 0f);
             IsComplete = true;
         }
     }
@@ -37,7 +51,7 @@ public class WallSlideState : State
     public override void Exit()
     {
         base.Exit();
-
+        timer = 0f;
         Destroy(obj, 0f);
     }
 
@@ -45,8 +59,8 @@ public class WallSlideState : State
     {
         obj = Instantiate(
             _slideEffect,
-            transform.position + (Vector3.right * 0.5f),
-            Quaternion.Euler(0, 0, 0),
+            transform.position + (Vector3.right * 0.5f * player.FacingDirection) + (Vector3.up * 0.8f),
+            Quaternion.Euler(-90, 0, 0),
             gameObject.transform
             );
 

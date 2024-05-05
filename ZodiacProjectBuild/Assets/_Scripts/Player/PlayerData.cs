@@ -143,8 +143,6 @@ public class PlayerData : EntityData
     [Range(0f, 1f)]
     public  float   dashEndRunLerp                  = 0.5f;
     public  float   dashRefillTime                  = 0.1f;
-    [Range(0.01f, 0.5f)]
-    public  float   dashInputBufferTime             = 0.1f;
 
     #endregion
 
@@ -159,6 +157,9 @@ public class PlayerData : EntityData
     /// Time window in which jump input will be recognised before touching the ground.
     /// </summary>
     public float    jumpInputBufferTime             = 0.2f;
+    [Range(0.01f, 0.5f)]
+    public  float   dashInputBufferTime             = 0.1f;
+    public  float   grabInputBufferTime             = 0.1f;
     /// <summary>
     /// Time window in which jump input will be recognised after leaving ground.
     /// </summary>

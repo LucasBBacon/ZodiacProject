@@ -159,6 +159,15 @@ public class PlayerMovement : MonoBehaviour
         Body.AddForce(movement * Vector2.up);
     }
 
+    public void HoldPosition(Vector2 position)
+    {
+        if(position != new Vector2(-0.5f, 0f) && position != new Vector2(0.5f, 0f))
+        {
+            Body.gameObject.transform.position = position;   
+            Body.velocity = new Vector2(0f, 0f);
+        }
+    }
+
     #endregion
 
 

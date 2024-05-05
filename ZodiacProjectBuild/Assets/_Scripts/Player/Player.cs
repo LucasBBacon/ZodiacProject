@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Player : Core 
 {
+    
+
     [HideInInspector]
     public  PlayerMovement  playerMovement;
 
@@ -23,6 +25,7 @@ public class Player : Core
     public  JumpState       jumpState;
     public  DashState       dashState;
     public  WallSlideState  slideState;
+    public  WallGrabState   wallGrabState;
     
     #endregion
 
@@ -45,6 +48,9 @@ public class Player : Core
     public  float           TimeWallJumpStart   { get; private set; }
     public  int             LastWallJumpDir     { get; private set; }
 
+    // Wall grab
+    public  bool            IsWallGrabbing      { get; private set; }
+
     // Dash
     public  bool            IsDashing;
     public  int             DashesLeft;
@@ -63,6 +69,7 @@ public class Player : Core
     public  Vector2         MoveInput;
     public  float           TimeLastPressedJump;
     public  float           TimeLastPressedDash;
+    public  float           TimeLastPressedGrab;
 
     #endregion
 
@@ -76,6 +83,9 @@ public class Player : Core
 
     #endregion
 
+    public int FacingDirection;
+    public Vector2 holdPosition;
+
 
     #region Unity Callback Methods
 
@@ -85,11 +95,13 @@ public class Player : Core
         SetGravityScale(Data.gravityScale);
         SetupInstances();
         Set(airState);
+        TimeLastPressedDash = -1f;
         playerMovement = GetComponent<PlayerMovement>();
     }
 
     private void Update()
     {
+        FacingDirection = IsFacingRight ? 1 : -1;
         UpdateTimers();
         CheckInput();
         if(!IsDashAttacking)
@@ -101,7 +113,7 @@ public class Player : Core
 
     private void FixedUpdate()
     {
-        if(!IsDashing)
+        if(!IsDashing && !IsWallGrabbing)
         {
             if(IsWallJumping)
                 playerMovement.Run(Data.wallJumpRunLerp);
@@ -111,7 +123,9 @@ public class Player : Core
         else if(IsDashAttacking)
             playerMovement.Run(Data.dashEndRunLerp);
 
-        if(IsSliding)
+        else if(IsWallGrabbing)
+            playerMovement.HoldPosition(holdPosition);
+        else if(IsSliding)
             playerMovement.Slide();
     }
 
@@ -230,8 +244,28 @@ public class Player : Core
         }
 
         // if can slide, AND the player is pointing towards the wall they are touching
+        
         if
         (
+            CanGrab() &&
+            TimeLastPressedGrab > 0 &&
+            (
+                (TimeLastOnLeftWall > 0 && !IsFacingRight) ||
+                (TimeLastOnRightWall > 0 && IsFacingRight)
+            )    
+        )
+        {
+            IsWallGrabbing  = true;
+            IsSliding       = false;
+            IsJumpFalling   = false;
+            IsJumpCut       = false;
+
+            Set(wallGrabState);
+        }
+
+        else if
+        (
+            !IsWallGrabbing &&
             CanSlide() &&
             (
                 (TimeLastOnLeftWall     > 0 &&  MoveInput.x < 0) ||
@@ -239,14 +273,23 @@ public class Player : Core
             )
         )
         {
+            
             IsSliding       = true;
             IsJumpFalling   = false;
+            IsWallGrabbing  = false;
+            IsJumpCut       = false;
 
             Set(slideState);
             // is sliding, and not jump falling
         }
+
         // otherwise is not sliding
-        else IsSliding = false;
+        else
+        {
+            IsSliding       = false;
+            IsWallGrabbing  = false;   
+        }
+
 
         // if is not jumping
         if(!IsJumping)
@@ -258,7 +301,7 @@ public class Player : Core
                 // is grounded
             }
             // AND is not grounded and not sliding 
-            else if(!collisionSensors.IsGrounded && !IsSliding)
+            else if(!collisionSensors.IsGrounded && !IsSliding && !IsWallGrabbing)
             {
                 Set(airState);
                 // is in air
@@ -289,6 +332,7 @@ public class Player : Core
 
         TimeLastPressedJump -= Time.deltaTime;
         TimeLastPressedDash -= Time.deltaTime;
+        TimeLastPressedGrab -= Time.deltaTime;
     }
 
     #endregion
@@ -308,6 +352,9 @@ public class Player : Core
         if(UserInput.instance.JumpReleased)     OnJumpUpInput();
 
         if(UserInput.instance.DashInput)        OnDashInput();
+
+        if(UserInput.instance.GrabInput)        OnGrabInput();
+        if(UserInput.instance.GrabBeingHeld)    OnGrabHeldInput();
     }
 
     #endregion
@@ -320,7 +367,7 @@ public class Player : Core
     /// </summary>
     private void CalculateGravity()
     {
-        if(IsSliding)
+        if(IsSliding || IsWallGrabbing)
             SetGravityScale(0);
 
         // if currently falling downwards, AND the down button is pressed, change gravity to fast fall gravity
@@ -427,6 +474,16 @@ public class Player : Core
         TimeLastPressedDash = Data.dashInputBufferTime;
     }
 
+    public void OnGrabInput()
+    {
+        CalculateHoldPos();
+    }
+
+    public void OnGrabHeldInput()
+    {
+        TimeLastPressedGrab = Data.grabInputBufferTime;
+    }
+
     #endregion
 
 
@@ -500,6 +557,20 @@ public class Player : Core
             return false;
     }
 
+    private bool CanGrab()
+    {
+        if
+        (
+            TimeLastOnWall > 0 &&
+            !IsJumping &&
+            !IsWallJumping &&
+            TimeLastOnGround <= 0
+        )
+            return true;
+        else
+            return false;
+    }
+
     /// <summary>
     /// Checks if the player is able to dash.
     /// </summary>
@@ -534,6 +605,12 @@ public class Player : Core
         Time.timeScale = 0;
         yield return new WaitForSecondsRealtime(duration);
         Time.timeScale = 1;
+    }
+
+    private void CalculateHoldPos()
+    {
+        
+        holdPosition = collisionSensors.FindWallPos(FacingDirection) - (Vector2.right * 0.5f * FacingDirection);
     }
 
     #endregion

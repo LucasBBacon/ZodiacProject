@@ -8,6 +8,8 @@ public class GroundedState : State
     public  IdleState   idleState;
     public  RunState    runState;
     public  LandState   landState;
+    public  CrouchIdleState crouchIdleState;
+    public  CrouchMoveState  crouchMoveState;
 
     public override void Enter()
     {
@@ -22,12 +24,24 @@ public class GroundedState : State
 
         if(core.collisionSensors.IsGrounded)
         {
-            if(Body.velocity.x != 0)
+            if(UserInput.instance.MoveInput.y < 0)
             {
-                Set(runState);
+                if(UserInput.instance.MoveInput.x != 0)
+                    Set(crouchMoveState);
+                else
+                    Set(crouchIdleState);
             }
-            else
-                Set(idleState);
+
+            else if(UserInput.instance.MoveInput.y == 0 && !core.collisionSensors.IsCeiling)
+            {
+                if(UserInput.instance.MoveInput.y == 0 && Body.velocity.x != 0)
+                {
+                    Set(runState);
+                }
+                
+                else
+                    Set(idleState);
+            }
         }
         
         else
