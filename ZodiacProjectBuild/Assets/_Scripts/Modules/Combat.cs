@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class Combat : Core, IDamageable
+public class Combat : MonoBehaviour, IDamageable
 {
     private Stats stats;
+    private EntityData _entityData;
 
     private void Start()
     {
@@ -12,11 +13,12 @@ public class Combat : Core, IDamageable
     {
         stats.currentHealth -= damageAmount;
 
-        
+        if(stats.currentHealth < 0)
+            Die();
     }
 
     public void Die()
     {
-
+        Destroy(gameObject);
     }
 }

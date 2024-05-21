@@ -9,7 +9,8 @@ public abstract class Core : MonoBehaviour
     public  Rigidbody2D         body;
     public  Animator            animator;
     public  CollisionSensors    collisionSensors;
-    public  EntityData          entityData;
+    public  Movement            movement;
+    public  EntityData          data;
 
     #endregion
 
@@ -44,7 +45,7 @@ public abstract class Core : MonoBehaviour
     private void OnDrawGizmos()
     {
         #if UNITY_EDITOR
-        if(Application.isPlaying && state != null)
+        if(Application.isPlaying)
         {
             List<State> states = stateMachine.GetActiveStateBranch();
             UnityEditor.Handles.Label(transform.position, gameObject.name + " Active States: " + string.Join(" > ", states));

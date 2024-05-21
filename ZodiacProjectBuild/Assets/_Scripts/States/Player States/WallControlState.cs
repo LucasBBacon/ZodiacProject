@@ -8,21 +8,22 @@ public class WallControlState : State
     [Header("States")]
     [SerializeField] private WallControlState wallControlState;
 
-    private float jumpSpeed;
-
     public override void Enter()
     {
+        base.Enter();
         Animator.Play(animClip.name);
-        jumpSpeed = Body.velocity.y;
+        
     }
 
     public override void Do()
     {
+        base.Do();
+        
         
     }
 
     public override void Exit()
     {
-        Animator.speed = 1;
+        
     }
 }

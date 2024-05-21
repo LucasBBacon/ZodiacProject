@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class Stats : Core
+public class Stats : MonoBehaviour
 {
-    private EntityStats _entityStats;
+    [SerializeField] private EntityData _entityData;
 
     public int currentHealth;
 
     private void Awake() 
     {
-        currentHealth = _entityStats.maxHealth;
+        currentHealth = _entityData.maxHealth;
     }
 }

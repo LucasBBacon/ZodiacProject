@@ -12,11 +12,13 @@ public class CollisionSensors : MonoBehaviour
     public  BoxCollider2D   ceilingCheck;
     public  BoxCollider2D   wallCheckLeft;
     public  BoxCollider2D   wallCheckRight;
+    public Vector2 topCheckOffset, topCheckSize;
+    public Vector2 middleCheckOffset, middleCheckSize;
 
     [Header("Layer Mask")]
     public  LayerMask       groundMask;
 
-    public float wallCheckDistance = 0.6f;
+    
 
     public  bool            IsGrounded {
         get => Physics2D.OverlapAreaAll
@@ -54,6 +56,36 @@ public class CollisionSensors : MonoBehaviour
         ).Length > 0;
     }
 
+    public bool             IsTouchingTop {
+        get => Physics2D.OverlapBox
+            (
+                new Vector2
+                    (
+                        transform.position.x + (topCheckOffset.x * transform.localScale.x),
+                        transform.position.y + topCheckOffset.y
+                    ),
+                topCheckSize,
+                0f,
+                groundMask
+            );
+    }
+
+    public bool             IsTouchingMiddle {
+        get => Physics2D.OverlapBox
+            (
+                new Vector2
+                    (
+                        transform.position.x + (middleCheckOffset.x * transform.localScale.x),
+                        transform.position.y + middleCheckOffset.y
+                    ),
+                middleCheckSize,
+                0f,
+                groundMask
+            );
+    } 
+
+    
+
     #region Collider Height Methods
 
     public void SetAllColliderHeight(float height)
@@ -61,7 +93,7 @@ public class CollisionSensors : MonoBehaviour
         SetColliderHeight(mainCollider, height);
         SetColliderHeight(wallCheckRight, height - 0.05f);
         SetColliderHeight(wallCheckLeft, height - 0.05f);
-        ceilingCheck.gameObject.transform.localPosition = new Vector3(0, height - 0.8f);
+        //ceilingCheck.gameObject.transform.localPosition = new Vector3(0, height - 0.8f);
     }
 
     public void SetColliderHeight(BoxCollider2D collider, float height)
@@ -98,6 +130,19 @@ public class CollisionSensors : MonoBehaviour
         }
         else return new Vector2(0f, 0f);
     }
+
+    #endregion
+
+
+    #region Debug
+
+    // private void OnDrawGizmos() {
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawWireCube(new Vector2(transform.position.x + (topCheckOffset.x * transform.localScale.x), transform.position.y + topCheckOffset.y), topCheckSize);
+    //     Gizmos.color = Color.green;
+    //     Gizmos.DrawWireCube(new Vector2(transform.position.x + (middleCheckOffset.x * transform.localScale.x), transform.position.y + middleCheckOffset.y), middleCheckSize);
+        
+    // }
 
     #endregion
 }

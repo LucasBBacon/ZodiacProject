@@ -9,8 +9,15 @@ public class AirState : State
 
     [Header("States")]
     [SerializeField] private WallSlideState slideState;
+    [SerializeField] private GroundedState groundedState;
+
+    [HideInInspector] public bool IsJumping { get; private set; }
+    [HideInInspector] public bool IsJumpFalling { get; private set; }
+    [HideInInspector] public bool IsJumpCut { get; private set; }
 
     private float jumpSpeed;
+
+    #region Callback Functions
 
     public override void Enter()
     {
@@ -20,24 +27,26 @@ public class AirState : State
 
     public override void Do()
     {
-        float time = Utility.Map(Body.velocity.y, jumpSpeed, -jumpSpeed, 0, 1, true);
+        float time = Utilities.MappingUtil.Map(Body.velocity.y, jumpSpeed, -jumpSpeed, 0, 1, true);
         Animator.Play(animClip.name, 0, time);
         Animator.speed = 0;
 
         if (core.collisionSensors.IsGrounded)
         {
             Animator.speed = 1;
+            Set(groundedState);
             IsComplete = true;
         }
-        // else if(core.collisionSensors.IsWallBack || core.collisionSensors.IsWallFront)
-        // {
-        //     Animator.speed = 1;
-        //     Set(slideState);
-        // }
     }
+
+    #endregion
 
     public override void Exit()
     {
         Animator.speed = 1;
     }
+
+    public void SetIsJumping() => IsJumping = true;
+    public void SetIsJumpFalling() => IsJumpFalling = true;
+    public void SetIsJumpCut() => IsJumpCut = true;
 }

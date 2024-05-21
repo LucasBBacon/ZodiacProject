@@ -101,20 +101,20 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// Function to make player jump.
     /// </summary>
-    public void Jump()
-    {
-        // resets the timers to do with jumping
-        _player.TimeLastPressedJump = 0;
-        _player.TimeLastOnGround    = 0;
+    // public void Jump()
+    // {
+    //     // resets the timers to do with jumping
+    //     _player.TimeLastPressedJump = 0;
+    //     _player.TimeLastOnGround    = 0;
 
-        float force = Data.jumpForce;
+    //     float force = Data.jumpForce;
 
-        if(Body.velocity.y < 0)
-            force -= Body.velocity.y;
+    //     if(Body.velocity.y < 0)
+    //         force -= Body.velocity.y;
 
-        // applies an upward impulse force 
-        Body.AddForce(Vector2.up * force, ForceMode2D.Impulse);
-    }
+    //     // applies an upward impulse force 
+    //     Body.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+    // }
 
     public void WallJump(int dir)
     {
@@ -167,6 +167,27 @@ public class PlayerMovement : MonoBehaviour
             Body.velocity = new Vector2(0f, 0f);
         }
     }
+    
+    public IEnumerator ClimbingLedge(Vector2 topOfPlatform, float duration)
+    {
+        _player.IsLedgeClimbing = true;
+        float time = 0;
+        Vector2 startValue = _player.transform.position;
+
+        while(time < duration)
+        {
+            transform.position = Vector2.Lerp(startValue, topOfPlatform, time / duration);
+            time += Time.deltaTime;
+
+            yield return null;
+        }
+
+        _player.moved = false;
+        _player.IsLedgeGrabbing = false;
+        _player.IsLedgeClimbing = false;
+    }
+
+    
 
     #endregion
 

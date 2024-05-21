@@ -22,6 +22,8 @@ public class UserInput : MonoBehaviour
     public bool     GrabBeingHeld   { get; private set; }
     public bool     GrabReleased    { get; private set; }
 
+    public bool     AttackInput     { get; private set; }
+
     #endregion
 
     #region Input Actions
@@ -31,6 +33,8 @@ public class UserInput : MonoBehaviour
     private InputAction _jumpAction;
     private InputAction _dashAction;
     private InputAction _grabAction;
+
+    private InputAction _attackAction;
 
     #endregion
 
@@ -57,6 +61,7 @@ public class UserInput : MonoBehaviour
         _jumpAction = playerInput.actions["Jump"];
         _dashAction = playerInput.actions["Dash"];
         _grabAction = playerInput.actions["Grab"];
+        _attackAction = playerInput.actions["Attack"];
     }
 
     private void UpdateInputs()
@@ -72,5 +77,7 @@ public class UserInput : MonoBehaviour
         GrabInput       = _grabAction.WasPressedThisFrame();
         GrabBeingHeld   = _grabAction.IsPressed();
         GrabReleased    = _grabAction.WasReleasedThisFrame();
+
+        AttackInput     = _attackAction.WasPressedThisFrame();
     }
 }

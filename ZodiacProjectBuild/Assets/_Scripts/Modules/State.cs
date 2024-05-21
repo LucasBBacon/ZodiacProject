@@ -5,15 +5,17 @@ using UnityEngine;
 public abstract class State : MonoBehaviour
 {
     public      bool    IsComplete          { get; protected set; }
+    public      bool    IsAnimationFinished { get; protected set; }
     protected   float   startTime;
-    public      float   time                => Time.time - startTime;
+    public      float   StateTime                => Time.time - startTime;
 
     #region Blackboard variables
 
     protected   Core            core;
-    //protected   PlayerData      playerData;
     protected   Rigidbody2D     Body          => core.body;
     protected   Animator        Animator      => core.animator;
+    protected   Movement        Movement      => core.movement;
+    protected   EntityData      Data          => core.data;
 
     #endregion
 
@@ -36,6 +38,7 @@ public abstract class State : MonoBehaviour
 
     #endregion
 
+
     /// <summary>
     /// Assigns the core and inialises the StateMachine for potential child states.
     /// </summary>
@@ -54,6 +57,7 @@ public abstract class State : MonoBehaviour
     {
         parent      = _parent;
         IsComplete  = false;
+        IsAnimationFinished = false;
         startTime   = Time.time;
     }
 
@@ -63,6 +67,8 @@ public abstract class State : MonoBehaviour
     public virtual void Do()        { }
     public virtual void FixedDo()   { }
     public virtual void Exit()      { }
+    public virtual void AnimationTrigger() { }
+    public virtual void AnimationFinishedTrigger() => IsAnimationFinished = true;
     
     #endregion
 

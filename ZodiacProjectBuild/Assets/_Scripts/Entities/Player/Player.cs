@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class Player : Core 
 {
-    
-
     [HideInInspector]
     public  PlayerMovement  playerMovement;
 
@@ -26,6 +24,8 @@ public class Player : Core
     public  DashState       dashState;
     public  WallSlideState  slideState;
     public  WallGrabState   wallGrabState;
+    public  LedgeGrabState  ledgeGrabState;
+    public  LedgeClimbingState ledgeClimbingState;
     
     #endregion
 
@@ -51,6 +51,8 @@ public class Player : Core
     // Wall grab
     public  bool            IsWallGrabbing      { get; private set; }
 
+    [Space(10)]
+
     // Dash
     public  bool            IsDashing;
     public  int             DashesLeft;
@@ -58,9 +60,20 @@ public class Player : Core
     public  Vector2         LastDashDir;
     public  bool            IsDashAttacking;
 
+    [Space(10)]
+
+    public  bool            IsLedgeGrabbing;
+    public  bool            IsLedgeClimbing;
+    private bool            IsLedgeFalling;
+    [SerializeField] 
+    private Vector2         climbingOffset = new Vector2(1f, 1.6f);
+    public  bool            moved;
+    private Vector2         cornerPos;
+    private float           animationTime = .5f;
+
     #endregion
 
-    [Space(5)]
+    [Space(20)]
 
     #region Input Parameters
 
@@ -86,8 +99,15 @@ public class Player : Core
     public int FacingDirection;
     public Vector2 holdPosition;
 
+    // private RaycastHit2D[] hits;
+    // [SerializeField] private Transform attackTransform;
+    // [SerializeField] private float attackRange = 1.5f;
+    // [SerializeField] private LayerMask attackableLayer;
+    // [SerializeField] private int damageAmount;
+
 
     #region Unity Callback Methods
+
 
     private void Start()
     {
@@ -113,7 +133,7 @@ public class Player : Core
 
     private void FixedUpdate()
     {
-        if(!IsDashing && !IsWallGrabbing)
+        if(!IsDashing && !IsWallGrabbing && !IsLedgeClimbing && !IsLedgeGrabbing && !IsLedgeGrabbing && !IsLedgeClimbing)
         {
             if(IsWallJumping)
                 playerMovement.Run(Data.wallJumpRunLerp);
@@ -122,6 +142,19 @@ public class Player : Core
         }
         else if(IsDashAttacking)
             playerMovement.Run(Data.dashEndRunLerp);
+
+        if(collisionSensors.IsTouchingMiddle && !collisionSensors.IsTouchingTop && !IsLedgeFalling && !IsLedgeGrabbing && !IsWallJumping && !IsSliding)
+        {
+            IsLedgeGrabbing = true;
+        }
+        if(IsLedgeGrabbing)
+        {
+            AdjustPlayerPosition();
+            body.velocity = Vector2.zero;
+            SetGravityScale(0);
+            Set(ledgeGrabState);
+            Invoke("NotSliding", 1f);
+        }
 
         else if(IsWallGrabbing)
             playerMovement.HoldPosition(holdPosition);
@@ -146,8 +179,8 @@ public class Player : Core
             body.velocity.y < 0 
         )
         {   
-            IsJumping       = false;
             IsJumpFalling   = true;
+            IsJumping       = false;
 
             Set(airState);
             // player is no longer jumping, is falling, set in air state
@@ -163,6 +196,8 @@ public class Player : Core
             IsWallJumping   = false;
             // is no longer wall jumping
         }
+
+        
 
         // if touching ground, AND not jumping and walljumping
         if
@@ -188,12 +223,13 @@ public class Player : Core
             )
             {
                 IsJumping       = true;
+
                 IsWallJumping   = false;
                 IsJumpCut       = false;
                 IsJumpFalling   = false;
                 
                 Set(jumpState);
-                playerMovement.Jump();
+                // playerMovement.Jump();
                 // is jumping, and not jump cutting, walljumping, or falling
             }
 
@@ -205,6 +241,7 @@ public class Player : Core
             )
             {
                 IsWallJumping   = true;
+
                 IsJumping       = false;
                 IsJumpCut       = false;
                 IsJumpFalling   = false;
@@ -225,6 +262,7 @@ public class Player : Core
         )
         {
             IsDashing       = true;
+
             IsJumping       = false;
             IsWallJumping   = false;
             IsJumpCut       = false;
@@ -243,6 +281,8 @@ public class Player : Core
             // start dash method, check for direction
         }
 
+        
+
         // if can slide, AND the player is pointing towards the wall they are touching
         
         if
@@ -256,6 +296,7 @@ public class Player : Core
         )
         {
             IsWallGrabbing  = true;
+
             IsSliding       = false;
             IsJumpFalling   = false;
             IsJumpCut       = false;
@@ -265,6 +306,7 @@ public class Player : Core
 
         else if
         (
+            !IsLedgeGrabbing &&
             !IsWallGrabbing &&
             CanSlide() &&
             (
@@ -275,6 +317,7 @@ public class Player : Core
         {
             
             IsSliding       = true;
+
             IsJumpFalling   = false;
             IsWallGrabbing  = false;
             IsJumpCut       = false;
@@ -282,7 +325,6 @@ public class Player : Core
             Set(slideState);
             // is sliding, and not jump falling
         }
-
         // otherwise is not sliding
         else
         {
@@ -291,26 +333,121 @@ public class Player : Core
         }
 
 
-        // if is not jumping
-        if(!IsJumping)
+
+        // Ledge Grabbing Functions
+
+        if
+        (
+            IsLedgeGrabbing     &&
+            !IsLedgeClimbing    &&
+            !IsSliding          &&
+            MoveInput.y > 0 
+        )
         {
-            // AND if is grounded and not watching
-            if(collisionSensors.IsGrounded && !IsDashing)
-            {
-                Set(groundedState);
-                // is grounded
-            }
-            // AND is not grounded and not sliding 
-            else if(!collisionSensors.IsGrounded && !IsSliding && !IsWallGrabbing)
-            {
-                Set(airState);
-                // is in air
-            }
+            Set(ledgeClimbingState);
+            StartCoroutine
+                (playerMovement.ClimbingLedge
+                    (new Vector2
+                        (
+                            cornerPos.x + (climbingOffset.x * transform.localScale.x),
+                            cornerPos.y + climbingOffset.y
+                        ),
+                        animationTime - .3f
+                    )
+                );
         }
-        
-        // otherwise is in air
-        else 
+        if
+        (
+            IsLedgeGrabbing     &&
+            !IsLedgeClimbing    &&
+            (
+                MoveInput.y < 0 ||
+                (FacingDirection    > 0 &&  MoveInput.x < 0) ||
+                (FacingDirection    < 0 &&  MoveInput.x > 0)
+            )
+        )
+        {
+            moved           = false;
+
+            IsLedgeFalling  = true;
+            IsJumpFalling   = true;
+
+            IsLedgeGrabbing = false;
+            
             Set(airState);
+
+            Invoke("NotFalling", .5f);
+        }
+        if
+        (
+            IsLedgeGrabbing     &&
+            !IsLedgeClimbing    &&
+            !IsSliding          &&
+            (
+                (FacingDirection    > 0 &&  MoveInput.x > 0) ||
+                (FacingDirection    < 0 &&  MoveInput.x < 0)
+            )
+        )
+        {
+            moved           = false;
+
+            IsSliding       = true;
+            
+            IsLedgeClimbing = false;
+            IsLedgeGrabbing = false;
+
+            Set(slideState);
+        }
+        if
+        (
+            IsLedgeGrabbing     &&
+            !IsLedgeClimbing    &&
+            !IsSliding          &&
+            TimeLastPressedJump > 0
+        )
+        {
+            moved           = false;
+
+            IsWallJumping   = true;
+
+            IsLedgeClimbing = false;
+            IsLedgeGrabbing = false;
+            IsJumping       = false;
+            IsJumpCut       = false;
+            IsJumpFalling   = false;
+
+            TimeWallJumpStart   = Time.time;
+            LastWallJumpDir     = (TimeLastOnRightWall > 0) ? -1 : 1;
+
+            playerMovement.WallJump(LastWallJumpDir);
+        }
+        if
+        (
+            !IsLedgeGrabbing &&
+            !IsLedgeClimbing
+        )
+        {
+            // if is not jumping
+            if(!IsJumping)
+            {
+                // AND if is grounded and not watching
+                if(collisionSensors.IsGrounded && !IsDashing)
+                {
+                    Set(groundedState);
+                    // is grounded
+                }
+                // AND is not grounded and not sliding 
+                else if(!collisionSensors.IsGrounded && !IsSliding && !IsWallGrabbing)
+                {
+                    Set(airState);
+                    // is in air
+                }
+            }
+            
+            // otherwise is in air
+            else 
+                Set(airState);
+        }
 
         state.DoBranch();
     }
@@ -346,7 +483,8 @@ public class Player : Core
     private void CheckInput()
     {
         MoveInput = UserInput.instance.MoveInput;
-        if(MoveInput.x != 0)   CheckDirectionToFace(MoveInput.x > 0);
+        if(!IsLedgeGrabbing && !IsLedgeClimbing)
+            if(MoveInput.x != 0)                CheckDirectionToFace(MoveInput.x > 0);
 
         if(UserInput.instance.JumpJustPressed)  OnJumpInput();
         if(UserInput.instance.JumpReleased)     OnJumpUpInput();
@@ -355,6 +493,8 @@ public class Player : Core
 
         if(UserInput.instance.GrabInput)        OnGrabInput();
         if(UserInput.instance.GrabBeingHeld)    OnGrabHeldInput();
+
+        //if(UserInput.instance.AttackInput)      OnAttackInput();
     }
 
     #endregion
@@ -484,6 +624,12 @@ public class Player : Core
         TimeLastPressedGrab = Data.grabInputBufferTime;
     }
 
+    // public void OnAttackInput()
+    // {
+    //     Debug.Log("Attacking");
+    //     Attack();
+    // }
+
     #endregion
 
 
@@ -592,6 +738,21 @@ public class Player : Core
 
     #endregion
 
+    // private void Attack()
+    // {
+    //     hits = Physics2D.CircleCastAll(attackTransform.position, attackRange, transform.right, 0f, attackableLayer);
+
+    //     for(int i = 0; i < hits.Length; i++)
+    //     {
+    //         IDamageable iDamageable = hits[i].collider.gameObject.GetComponent<IDamageable>();
+
+    //         if(iDamageable != null)
+    //         {
+    //             iDamageable.Damage(damageAmount, Vector2.right);
+    //         }
+    //     }
+    // }
+
 
     #region Helper Methods
 
@@ -609,9 +770,71 @@ public class Player : Core
 
     private void CalculateHoldPos()
     {
-        
         holdPosition = collisionSensors.FindWallPos(FacingDirection) - (Vector2.right * 0.5f * FacingDirection);
     }
+
+    private void AdjustPlayerPosition()
+    {
+        float xdist = Physics2D.Raycast
+            (
+                new Vector2
+                    (
+                        transform.position.x, 
+                        transform.position.y + collisionSensors.middleCheckOffset.y - (collisionSensors.middleCheckSize.y/2)
+                    ), Vector2.right * transform.localScale.x,
+                2f,
+                collisionSensors.groundMask
+            ).point.x;
+        
+        float ydist = Physics2D.Raycast
+            (
+                new Vector2
+                    (
+                        xdist + (0.1f * transform.localScale.x),
+                        transform.position.y + collisionSensors.topCheckOffset.y
+                    ), Vector2.down,
+                2f,
+                collisionSensors.groundMask
+            ).point.y;
+        
+        cornerPos = new Vector2
+            (
+                xdist,
+                ydist
+            );
+
+        if(!moved)
+        {
+            moved = true;
+
+            transform.position = new Vector2
+                    (
+                        cornerPos.x - (transform.localScale.x * 0.5f),
+                        cornerPos.y - 0.8f
+                    ); 
+        }
+    }
+
+    private void NotFalling()
+    {
+        IsLedgeFalling = false;
+    }
+
+    private void NotSliding()
+    {
+        IsSliding = false;
+    }
+
+    #endregion
+
+    #region Debug
+
+    // private void OnDrawGizmos()
+    // {
+    //     Gizmos.DrawWireSphere(attackTransform.position, attackRange);
+    //     Gizmos.color = Color.blue;
+    //     Gizmos.DrawLine((Vector2)transform.position + new Vector2(0, collisionSensors.middleCheckOffset.y * 0.5f), (Vector2)transform.position + new Vector2(transform.localScale.x * 2f, collisionSensors.middleCheckOffset.y/2));
+    // }
 
     #endregion
 }
