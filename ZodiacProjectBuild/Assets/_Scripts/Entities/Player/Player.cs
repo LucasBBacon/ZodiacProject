@@ -11,10 +11,6 @@ public class Player : Core
 
     [Space(20)]
 
-    public  PlayerData      Data;
-
-    [Space(20)]
-
     #region State Definitions
 
     [Header("States")]
@@ -112,7 +108,7 @@ public class Player : Core
     private void Start()
     {
         IsFacingRight = true;
-        SetGravityScale(Data.gravityScale);
+        SetGravityScale(data.gravityScale);
         SetupInstances();
         Set(airState);
         TimeLastPressedDash = -1f;
@@ -136,12 +132,12 @@ public class Player : Core
         if(!IsDashing && !IsWallGrabbing && !IsLedgeClimbing && !IsLedgeGrabbing && !IsLedgeGrabbing && !IsLedgeClimbing)
         {
             if(IsWallJumping)
-                playerMovement.Run(Data.wallJumpRunLerp);
+                playerMovement.Run(data.wallJumpRunLerp);
             else
                 playerMovement.Run(1);
         }
         else if(IsDashAttacking)
-            playerMovement.Run(Data.dashEndRunLerp);
+            playerMovement.Run(data.dashEndRunLerp);
 
         if(collisionSensors.IsTouchingMiddle && !collisionSensors.IsTouchingTop && !IsLedgeFalling && !IsLedgeGrabbing && !IsWallJumping && !IsSliding)
         {
@@ -190,7 +186,7 @@ public class Player : Core
         if
         (
             IsWallJumping                                       &&
-            Time.time - TimeWallJumpStart > Data.wallJumpTime
+            Time.time - TimeWallJumpStart > data.wallJumpTime
         )
         {
             IsWallJumping   = false;
@@ -270,7 +266,7 @@ public class Player : Core
             // is dashing, and not jumping, wall jumping, or jump cutting
 
             Set(dashState);
-            Sleep(Data.dashSleepTime);
+            Sleep(data.dashSleepTime);
 
             if(MoveInput != Vector2.zero)
                 LastDashDir = MoveInput;
@@ -513,46 +509,46 @@ public class Player : Core
         // if currently falling downwards, AND the down button is pressed, change gravity to fast fall gravity
         else if(body.velocity.y < 0 && MoveInput.y < 0)
         {
-            SetGravityScale(Data.gravityScale * Data.fallGravityMultiplierFast);
+            SetGravityScale(data.gravityScale * data.fallGravityMultiplierFast);
         }
 
         // if the jump is cut, change gravity to jump cut gravity
         else if(IsJumpCut)
         {
-            SetGravityScale(Data.gravityScale * Data.jumpCutGravityMultiplier);
+            SetGravityScale(data.gravityScale * data.jumpCutGravityMultiplier);
             // sets x veloctiy to input velocity so player is able to move in the air
             body.velocity = new Vector2
                 (
                     body.velocity.x,
-                    Mathf.Max(body.velocity.y, -Data.fallMaxSpeed)
+                    Mathf.Max(body.velocity.y, -data.fallMaxSpeed)
                 );
         }
 
         else if
         (
             (IsJumping || IsWallJumping || IsJumpFalling)               &&
-            Mathf.Abs(body.velocity.y)  < Data.jumpHangTimeThreshold
+            Mathf.Abs(body.velocity.y)  < data.jumpHangTimeThreshold
         )
         {
-            SetGravityScale(Data.gravityScale * Data.jumpHangGravityMultiplier);
+            SetGravityScale(data.gravityScale * data.jumpHangGravityMultiplier);
         }
 
         // if the player is currently falling downwards, change gravity to fall gravity
         else if(body.velocity.y < 0)
         {
-            SetGravityScale(Data.gravityScale * Data.fallGravityMultiplier);
+            SetGravityScale(data.gravityScale * data.fallGravityMultiplier);
             // sets x veloctiy to input velocity so player is able to move in the air
             body.velocity = new Vector2
                 (
                     body.velocity.x,
-                    Mathf.Max(body.velocity.y, -Data.fallMaxSpeed)
+                    Mathf.Max(body.velocity.y, -data.fallMaxSpeed)
                 );
         }
 
         // otherwise, change gravity to default gravity
         else
         {
-            SetGravityScale(Data.gravityScale);
+            SetGravityScale(data.gravityScale);
         }
     }
 
@@ -574,13 +570,13 @@ public class Player : Core
     private void CheckCollisions()
     {
         if(collisionSensors.IsGrounded)
-            TimeLastOnGround    = Data.coyoteTime;
+            TimeLastOnGround    = data.coyoteTime;
 
         if(collisionSensors.IsWallLeft)
-            TimeLastOnLeftWall  = Data.coyoteTime;
+            TimeLastOnLeftWall  = data.coyoteTime;
 
         if(collisionSensors.IsWallRight)
-            TimeLastOnRightWall = Data.coyoteTime;
+            TimeLastOnRightWall = data.coyoteTime;
 
         TimeLastOnWall = Mathf.Max(TimeLastOnLeftWall, TimeLastOnRightWall);
     }
@@ -596,7 +592,7 @@ public class Player : Core
     public void OnJumpInput()
     {
         // resets the jump timer
-        TimeLastPressedJump = Data.jumpInputBufferTime;
+        TimeLastPressedJump = data.jumpInputBufferTime;
     }
 
     /// <summary>
@@ -611,7 +607,7 @@ public class Player : Core
 
     public void OnDashInput()
     {
-        TimeLastPressedDash = Data.dashInputBufferTime;
+        TimeLastPressedDash = data.dashInputBufferTime;
     }
 
     public void OnGrabInput()
@@ -621,7 +617,7 @@ public class Player : Core
 
     public void OnGrabHeldInput()
     {
-        TimeLastPressedGrab = Data.grabInputBufferTime;
+        TimeLastPressedGrab = data.grabInputBufferTime;
     }
 
     // public void OnAttackInput()
@@ -726,7 +722,7 @@ public class Player : Core
         if
         (
             !IsDashing                              &&
-            DashesLeft          < Data.dashAmount   &&
+            DashesLeft          < data.dashAmount   &&
             TimeLastOnGround    > 0                 &&
             !DashRefilling
         )
