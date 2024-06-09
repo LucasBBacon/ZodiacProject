@@ -11,11 +11,11 @@ public abstract class State : MonoBehaviour
 
     #region Blackboard variables
 
-    protected   Core            core;
-    protected   Rigidbody2D     Body          => core.body;
-    protected   Animator        Animator      => core.animator;
-    protected   Movement        Movement      => core.movement;
-    protected   EntityData      Data          => core.data;
+    protected Core core;
+    protected Rigidbody2D Body => core.body;
+    protected Animator Animator => core.animator;
+    protected Movement Movement => core.movement;
+    protected EntityData Data => core.data;
 
     #endregion
 
@@ -63,7 +63,7 @@ public abstract class State : MonoBehaviour
 
     #region Override Functions
     
-    public virtual void Enter()     { }
+    public virtual void Enter() => Debug.Log("Enter " + this.GetType().Name);
     public virtual void Do()        { }
     public virtual void FixedDo()   { }
     public virtual void Exit()      { }

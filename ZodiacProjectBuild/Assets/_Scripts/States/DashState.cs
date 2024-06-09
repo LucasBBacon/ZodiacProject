@@ -6,16 +6,41 @@ public class DashState : State
     [Header("Animation Clip")]
     public  AnimationClip   animClip;
 
-    [Header("Effects")]
-    [SerializeField]
-    private GameObject      _dashEffect;
 
-    [HideInInspector] public bool IsDashing;
-    private int DashesLeft;
-    private bool IsDashRefilling;
-    private bool IsDashAttacking;
+    #region States
+
+    [Header("States")]
+    [SerializeField] RunState runState;
+    [SerializeField] AirState airState;
+    [SerializeField] WallControlState wallControlState;
+
+    #endregion
+
+
+    [Header("Effects")]
+    [SerializeField] GameObject _dashEffect;
+
+    #region Blackboard Variables
+
+    [HideInInspector] public bool IsDashing { get; private set; }
+    [HideInInspector] public int DashesLeft { get; private set; } = 2;
+    [HideInInspector] public bool IsDashRefilling { get; private set; }
+    [HideInInspector] public bool IsDashAttacking { get; private set; }
+
+    //[HideInInspector] 
+    public Vector2 LastDashDir;
+
+    [HideInInspector] Player _player;
+
+    #endregion
+
 
     #region Callback Functions
+
+    private void Awake()
+    {
+        _player = GetComponentInParent<Player>();
+    }
 
     public override void Enter()
     {
@@ -23,15 +48,42 @@ public class DashState : State
 
         Animator.Play(animClip.name);
 
-        if(core.collisionSensors.IsGrounded)
-            DashParticles();
+        
     }
 
     public override void Do()
     {
         base.Do();
 
+        StartCoroutine(PerformSleep(Data.dashSleepTime));
+
+        if(UserInput.instance.MoveInput != Vector2.zero)
+            LastDashDir = UserInput.instance.MoveInput;
+        else
+            LastDashDir = _player.IsFacingRight ? Vector2.right : Vector2.left;
+
+        IsDashing = true;
+
+        airState.SetIsJumping(false);
+        airState.SetIsJumpCut(false);
+
+        wallControlState.SetWallJumping(false);
+
+        StartCoroutine(StartDash(LastDashDir));
+        // start dash method, check for direction
+
+        if(core.collisionSensors.IsGrounded)
+            DashParticles();
+
         IsComplete = true;
+    }
+
+    public override void FixedDo()
+    {
+        base.FixedDo();
+
+        if (IsDashAttacking)
+            runState.Run(Data.dashEndRunLerp);
     }
 
     #endregion
@@ -45,7 +97,7 @@ public class DashState : State
         (
             !IsDashing &&
             !IsDashRefilling &&
-            core.collisionSensors.IsGrounded &&
+            Data.TimeLastOnGround > 0 &&
             DashesLeft < Data.dashAmount
         )
             StartCoroutine(DashRefill(1));
@@ -60,16 +112,19 @@ public class DashState : State
 
     public IEnumerator StartDash(Vector2 direction)
     {
-        float startTime = Time.time;
+        Data.TimeLastOnGround = 0;
+        Data.TimeLastPressedDash = 0;
+
+        float stateTime = Time.time;
 
         DashesLeft--;
         IsDashAttacking = true;
 
-        //Set gravity
+        Body.gravityScale = 0;
 
-        while (Time.time - startTime <= Data.dashAttackTime)
+        while (Time.time - stateTime <= Data.dashAttackTime)
         {
-            Body.velocity = direction.normalized * Data.dashSpeed;
+            Body.velocity = Data.dashSpeed * direction.normalized;
 
             yield return null;
         }
@@ -78,7 +133,7 @@ public class DashState : State
 
         IsDashAttacking = false;
 
-        // Set gravity
+        Body.gravityScale = Data.gravityScale;
 
         Body.velocity = Data.dashEndSpeed * direction.normalized;
 
@@ -113,6 +168,17 @@ public class DashState : State
             );
         Destroy(obj, 0.4f);
     }
+
+    #endregion
+
+    #region Helper Methods
+
+    public IEnumerator PerformSleep(float duration)
+        {
+            Time.timeScale = 0;
+            yield return new WaitForSecondsRealtime(duration);
+            Time.timeScale = 1;
+        }
 
     #endregion
 }

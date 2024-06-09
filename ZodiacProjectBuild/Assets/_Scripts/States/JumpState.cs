@@ -5,17 +5,20 @@ using UnityEngine;
 public class JumpState : State
 {
     [Header("Animation Clip")]
-    public  AnimationClip   animClip;
+    public AnimationClip animClip;
+
+
+    #region States
 
     [Header("States")]
-    [SerializeField]
-    private AirState airState;
+    [SerializeField] AirState airState;
+
+    #endregion
 
     [Space(20)]
 
     [Header("Effects")]
-    [SerializeField]
-    private GameObject      _jumpEffect;
+    [SerializeField] GameObject _jumpEffect;
 
     #region Callback Functions
 
@@ -27,15 +30,21 @@ public class JumpState : State
 
         Jump();
         JumpParticles();
-
-        airState.SetIsJumping();
     }
 
     public override void Do()
     {
         base.Do();
 
+        Set(airState);
+        
         IsComplete = true;
+        return;
+    }
+
+    public override void FixedDo()
+    {
+        base.FixedDo();
     }
 
     #endregion
@@ -45,8 +54,12 @@ public class JumpState : State
 
     #region Checks
 
+    /// <summary>
+    /// Check if entity is able to jump.
+    /// </summary>
+    /// <returns>True if entity is able to jump.</returns>
     public bool CanJump()
-    => !airState.IsJumping && core.collisionSensors.IsGrounded;
+    => !airState.IsJumping && Data.TimeLastOnGround > 0; // if touching ground AND not currently jumping, return true
 
     public bool CanJumpCut()
     => airState.IsJumping && Body.velocity.y > 0;

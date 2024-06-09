@@ -83,6 +83,8 @@ public class EntityData : ScriptableObject
     public  float   wallJumpTime                    = 0.3f;
     [Space(5)]
     public  bool    wallJumpDoTurn                  = false;
+    [HideInInspector]
+    public int LastWallJumpDir;
 
     #endregion
 
@@ -137,7 +139,7 @@ public class EntityData : ScriptableObject
     #region Dash Parameters
 
     [Header("Dash")]
-    public  int     dashAmount                      = 1;
+    public  int     dashAmount                      = 2;
     public  float   dashSpeed                       = 20f;
     public  float   dashSleepTime                   = 0.05f;
     public  float   dashAttackTime                  = 0.15f;
@@ -200,6 +202,16 @@ public class EntityData : ScriptableObject
 
     #endregion
 
+    
+    public float TimeLastOnGround;
+    public float TimeLastOnWall { get; private set; }
+    public float TimeLastOnRightWall { get; private set; }
+    public float TimeLastOnLeftWall { get; private set; }
+
+    public float TimeLastPressedJump { get; private set; }
+    public float TimeLastPressedDash;
+    public float TimeLastPressedGrab { get; private set; }
+
     #region Variable Calculations
 
     /// <summary>
@@ -208,6 +220,49 @@ public class EntityData : ScriptableObject
     private void OnValidate()
     {
         Calculate();
+    }
+
+    public void UpdateTimers()
+    {
+        TimeLastOnGround -= Time.deltaTime;
+        TimeLastOnWall -= Time.deltaTime;
+        TimeLastOnRightWall -= Time.deltaTime;
+        TimeLastOnLeftWall -= Time.deltaTime;
+
+        TimeLastPressedJump -= Time.deltaTime;
+        TimeLastPressedDash -= Time.deltaTime;
+
+        TimeLastOnWall = Mathf.Max(TimeLastOnLeftWall, TimeLastOnRightWall);
+    }
+
+    public void ResetGroundTime()
+    {
+        TimeLastOnGround = coyoteTime;
+    }
+
+    public void ResetWallRightTime()
+    {
+        TimeLastOnRightWall = coyoteTime;
+    }
+
+    public void ResetWallLeftTime()
+    {
+        TimeLastOnLeftWall = coyoteTime;
+    }
+
+    public void ResetJumpTime()
+    {
+        TimeLastPressedJump = jumpInputBufferTime;
+    }
+
+    public void ResetDashTime()
+    {
+        TimeLastPressedDash = dashInputBufferTime;
+    }
+
+    public void ResetGrabTime()
+    {
+        TimeLastPressedGrab = grabInputBufferTime;
     }
 
     /// <summary>

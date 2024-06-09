@@ -5,22 +5,27 @@ using UnityEngine;
 public class CollisionSensors : MonoBehaviour
 {
     [Header("Body Collider")]
-    public  BoxCollider2D   mainCollider;
+    public BoxCollider2D   mainCollider;
 
     [Header("Check Colliders")]
-    public  BoxCollider2D   groundCheck;
-    public  BoxCollider2D   ceilingCheck;
-    public  BoxCollider2D   wallCheckLeft;
-    public  BoxCollider2D   wallCheckRight;
+    public BoxCollider2D   groundCheck;
+    public BoxCollider2D   ceilingCheck;
+    public BoxCollider2D   wallCheckLeft;
+    public BoxCollider2D   wallCheckRight;
     public Vector2 topCheckOffset, topCheckSize;
     public Vector2 middleCheckOffset, middleCheckSize;
+    public bool ground;
 
     [Header("Layer Mask")]
-    public  LayerMask       groundMask;
+    public LayerMask groundMask;
 
-    
+    private void FixedUpdate() {
+        ground = IsGrounded;
+    }
 
-    public  bool            IsGrounded {
+    #region Checks
+
+    public bool IsGrounded {
         get => Physics2D.OverlapAreaAll
         (
             groundCheck.bounds.min,
@@ -38,7 +43,7 @@ public class CollisionSensors : MonoBehaviour
         ).Length > 0;
     }
 
-    public  bool            IsWallLeft {
+    public bool            IsWallLeft {
         get => Physics2D.OverlapAreaAll
         (
             wallCheckLeft.bounds.min,
@@ -47,7 +52,7 @@ public class CollisionSensors : MonoBehaviour
         ).Length > 0;
     }
 
-    public  bool            IsWallRight {
+    public bool IsWallRight {
         get => Physics2D.OverlapAreaAll
         (
             wallCheckRight.bounds.min,
@@ -56,7 +61,11 @@ public class CollisionSensors : MonoBehaviour
         ).Length > 0;
     }
 
-    public bool             IsTouchingTop {
+    public bool IsWall {
+        get => IsWallRight || IsWallLeft;
+    }
+
+    public bool IsTouchingTop {
         get => Physics2D.OverlapBox
             (
                 new Vector2
@@ -70,7 +79,7 @@ public class CollisionSensors : MonoBehaviour
             );
     }
 
-    public bool             IsTouchingMiddle {
+    public bool IsTouchingMiddle {
         get => Physics2D.OverlapBox
             (
                 new Vector2
@@ -82,7 +91,9 @@ public class CollisionSensors : MonoBehaviour
                 0f,
                 groundMask
             );
-    } 
+    }
+
+    #endregion
 
     
 

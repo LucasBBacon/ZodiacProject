@@ -1,9 +1,20 @@
 using UnityEngine;
 
-public class CrouchMoveState : State
+public class CrouchIdleState : State
 {
     [Header("Animation Clip")]
     public AnimationClip animClip;
+
+    #region States
+
+    [Header("States")]
+    [SerializeField] IdleState idleState;
+    [SerializeField] CrouchMoveState crouchMoveState;
+
+    #endregion
+
+
+    #region Unity Callback Methods
 
     public override void Enter()
     {
@@ -17,7 +28,11 @@ public class CrouchMoveState : State
     {
         base.Do();
         
+        if (UserInput.instance.MoveInput.x != 0)
+            Set(crouchMoveState);
 
+        else if (!core.collisionSensors.IsCeiling && UserInput.instance.MoveInput.y != -1)
+            Set(idleState);
     }
 
     public override void Exit()
@@ -26,4 +41,6 @@ public class CrouchMoveState : State
 
         core.collisionSensors.SetAllColliderHeight(1.6f);
     }
+
+    #endregion
 }

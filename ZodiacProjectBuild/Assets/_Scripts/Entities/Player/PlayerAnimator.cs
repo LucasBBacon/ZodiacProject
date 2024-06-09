@@ -24,8 +24,8 @@ public class PlayerAnimator : MonoBehaviour
         float tiltProgress;
         tiltProgress = Mathf.InverseLerp
             (
-                -_player.Data.runMaxSpeed,
-                _player.Data.runMaxSpeed,
+                -_player.data.runMaxSpeed,
+                _player.data.runMaxSpeed,
                 _player.body.velocity.x
             );
 

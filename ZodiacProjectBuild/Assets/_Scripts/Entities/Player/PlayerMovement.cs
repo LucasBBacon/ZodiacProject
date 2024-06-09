@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private Player      _player;
     private Vector2     MoveInput   => _player.MoveInput;
-    private PlayerData  Data        => _player.Data;
+    private EntityData  Data        => _player.data;
     private Rigidbody2D Body        => _player.body;
     [SerializeField] private GameObject colliderTransform;
 
@@ -25,57 +25,57 @@ public class PlayerMovement : MonoBehaviour
 
     #region Run Methods
 
-    /// <summary>
-    /// Applies a force to the player's <c>Rigidbody2D</c> component in the x-axis.
-    /// </summary>
-    /// <param name="lerpAmount">Smoothing amount for entry into the run state from other states.</param>
-    public void Run(float lerpAmount)
-    {
-        float accelRate;
+    // /// <summary>
+    // /// Applies a force to the player's <c>Rigidbody2D</c> component in the x-axis.
+    // /// </summary>
+    // /// <param name="lerpAmount">Smoothing amount for entry into the run state from other states.</param>
+    // public void Run(float lerpAmount)
+    // {
+    //     float accelRate;
 
-        // Calculates the desired target speed
-        _targetSpeed = MoveInput.x * Data.runMaxSpeed;
-        _targetSpeed = Mathf.Lerp(Body.velocity.x, _targetSpeed, lerpAmount);
+    //     // Calculates the desired target speed
+    //     _targetSpeed = MoveInput.x * Data.runMaxSpeed;
+    //     _targetSpeed = Mathf.Lerp(Body.velocity.x, _targetSpeed, lerpAmount);
   
 
-        // if on contact with ground, set the correct acceleration and decceleration values
-        if(_player.TimeLastOnGround > 0)
-            accelRate = (Mathf.Abs(_targetSpeed) > 0.01f) ? 
-            Data.runAccelAmount : Data.runDeccelAmount;
-        // otherwise set the correct air acceleration and decceleration values
-        else
-            accelRate = (Mathf.Abs(_targetSpeed) > 0.01f) ? 
-            Data.runAccelAmount * Data.airAcceleration : Data.runDeccelAmount * Data.airDecceleration;
+    //     // if on contact with ground, set the correct acceleration and decceleration values
+    //     if(_player.TimeLastOnGround > 0)
+    //         accelRate = (Mathf.Abs(_targetSpeed) > 0.01f) ? 
+    //         Data.runAccelAmount : Data.runDeccelAmount;
+    //     // otherwise set the correct air acceleration and decceleration values
+    //     else
+    //         accelRate = (Mathf.Abs(_targetSpeed) > 0.01f) ? 
+    //         Data.runAccelAmount * Data.airAcceleration : Data.runDeccelAmount * Data.airDecceleration;
     
-        // if currently jumping or currently falling after a jump, AND the vertical velocity is less than threshold for jump hang    
-        if  (
-            (_player.IsJumping || _player.IsJumpFalling) &&
-            Mathf.Abs(Body.velocity.y) < Data.jumpHangTimeThreshold
-        )
-        {
-            // set the correct hang acceleration rate and target speed
-            accelRate       *= Data.jumpHangAccelerationMultiplier;
-            _targetSpeed    *= Data.jumpHangMaxSpeedMultiplier;
-        }
+    //     // if currently jumping or currently falling after a jump, AND the vertical velocity is less than threshold for jump hang    
+    //     if  (
+    //         (_player.IsJumping || _player.IsJumpFalling) &&
+    //         Mathf.Abs(Body.velocity.y) < Data.jumpHangTimeThreshold
+    //     )
+    //     {
+    //         // set the correct hang acceleration rate and target speed
+    //         accelRate       *= Data.jumpHangAccelerationMultiplier;
+    //         _targetSpeed    *= Data.jumpHangMaxSpeedMultiplier;
+    //     }
         
-        // if is set to conserve momentum, AND the player velocity is greater than target speed, 
-        // AND the direction of movement is hte same as the target speed AND the target speed is greater than 0, AND the player is currently touching the ground
-        if  (
-            Data.doConserveMomentum && 
-            Mathf.Abs(Body.velocity.x) > Mathf.Abs(_targetSpeed) && 
-            Mathf.Sign(Body.velocity.x) == Mathf.Sign(_targetSpeed) && 
-            Mathf.Abs(_targetSpeed) > 0.01f && 
-            _player.TimeLastOnGround > 0
-            )
-            accelRate = 0; // set the acceleration rate to 0
+    //     // if is set to conserve momentum, AND the player velocity is greater than target speed, 
+    //     // AND the direction of movement is hte same as the target speed AND the target speed is greater than 0, AND the player is currently touching the ground
+    //     if  (
+    //         Data.doConserveMomentum && 
+    //         Mathf.Abs(Body.velocity.x) > Mathf.Abs(_targetSpeed) && 
+    //         Mathf.Sign(Body.velocity.x) == Mathf.Sign(_targetSpeed) && 
+    //         Mathf.Abs(_targetSpeed) > 0.01f && 
+    //         _player.TimeLastOnGround > 0
+    //         )
+    //         accelRate = 0; // set the acceleration rate to 0
     
-        // calculates the speed difference from the target speed and current speed
-        float speedDiff     = _targetSpeed - Body.velocity.x;
-        // calculates the movement required to reach the speed with current acceleration rate
-        float movement      = speedDiff * accelRate;
-        // applies a force to the rigidbody
-        Body.AddForce(movement * Vector2.right, ForceMode2D.Force);
-    }
+    //     // calculates the speed difference from the target speed and current speed
+    //     float speedDiff     = _targetSpeed - Body.velocity.x;
+    //     // calculates the movement required to reach the speed with current acceleration rate
+    //     float movement      = speedDiff * accelRate;
+    //     // applies a force to the rigidbody
+    //     Body.AddForce(movement * Vector2.right, ForceMode2D.Force);
+    // }
 
     /// <summary>
     /// Turns the player by scaling the body by -1.
@@ -91,6 +91,7 @@ public class PlayerMovement : MonoBehaviour
         colliderTransform.transform.localScale = colScale;
 
         _player.IsFacingRight   = !_player.IsFacingRight;
+        _player.followOBJ.CallTurn();
     }
 
     #endregion
@@ -116,28 +117,28 @@ public class PlayerMovement : MonoBehaviour
     //     Body.AddForce(Vector2.up * force, ForceMode2D.Impulse);
     // }
 
-    public void WallJump(int dir)
-    {
-        _player.TimeLastPressedJump = 0;
-        _player.TimeLastOnGround    = 0;
-        _player.TimeLastOnRightWall = 0;
-        _player.TimeLastOnLeftWall  = 0;
+    // public void WallJump(int dir)
+    // {
+    //     _player.TimeLastPressedJump = 0;
+    //     _player.TimeLastOnGround    = 0;
+    //     _player.TimeLastOnRightWall = 0;
+    //     _player.TimeLastOnLeftWall  = 0;
 
-        Vector2 force = new Vector2
-            (
-                Data.wallJumpForce.x,
-                Data.wallJumpForce.y
-            );
-        force.x *= dir;
+    //     Vector2 force = new Vector2
+    //         (
+    //             Data.wallJumpForce.x,
+    //             Data.wallJumpForce.y
+    //         );
+    //     force.x *= dir;
         
-        if(Mathf.Sign(Body.velocity.x) != Mathf.Sign(force.x))
-            force.x -= Body.velocity.x;
+    //     if(Mathf.Sign(Body.velocity.x) != Mathf.Sign(force.x))
+    //         force.x -= Body.velocity.x;
         
-        if(Body.velocity.y < 0)
-            force.y -= Body.velocity.y;
+    //     if(Body.velocity.y < 0)
+    //         force.y -= Body.velocity.y;
 
-        Body.AddForce(force, ForceMode2D.Impulse);
-    }
+    //     Body.AddForce(force, ForceMode2D.Impulse);
+    // }
 
     #endregion
 
@@ -192,49 +193,49 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
 
-    #region Dash Method
+    // #region Dash Method
 
-    public IEnumerator StartDash(Vector2 dir)
-    {
-        _player.TimeLastOnGround    = 0;
-        _player.TimeLastPressedDash = 0;
+    // public IEnumerator StartDash(Vector2 dir)
+    // {
+    //     _player.TimeLastOnGround    = 0;
+    //     _player.TimeLastPressedDash = 0;
 
-        float startTime             = Time.time;
+    //     float startTime             = Time.time;
 
-        _player.DashesLeft--;
-        _player.IsDashAttacking     = true;
+    //     _player.DashesLeft--;
+    //     _player.IsDashAttacking     = true;
 
-        _player.SetGravityScale(0);
+    //     _player.SetGravityScale(0);
 
 
-        while(Time.time - startTime <= Data.dashAttackTime)
-        {
-            Body.velocity = dir.normalized * Data.dashSpeed;
+    //     while(Time.time - startTime <= Data.dashAttackTime)
+    //     {
+    //         Body.velocity = dir.normalized * Data.dashSpeed;
 
-            yield return null;
-        }
+    //         yield return null;
+    //     }
 
-        startTime               = Time.time;
-        _player.IsDashAttacking = false;
+    //     startTime               = Time.time;
+    //     _player.IsDashAttacking = false;
 
-        _player.SetGravityScale(Data.gravityScale);
-        Body.velocity = Data.dashEndSpeed * dir.normalized;
+    //     _player.SetGravityScale(Data.gravityScale);
+    //     Body.velocity = Data.dashEndSpeed * dir.normalized;
 
-        while(Time.time - startTime <= Data.dashEndTime)
-            yield return null;
+    //     while(Time.time - startTime <= Data.dashEndTime)
+    //         yield return null;
         
-        _player.IsDashing = false;
-    }
+    //     _player.IsDashing = false;
+    // }
 
-    public IEnumerator DashRefill(int amount)
-    {
-        _player.DashRefilling = true;
+    // public IEnumerator DashRefill(int amount)
+    // {
+    //     _player.DashRefilling = true;
 
-        yield return new WaitForSeconds(Data.dashRefillTime);
+    //     yield return new WaitForSeconds(Data.dashRefillTime);
 
-        _player.DashRefilling = false;
-        _player.DashesLeft = Mathf.Min(Data.dashAmount, _player.DashesLeft + amount);
-    }
+    //     _player.DashRefilling = false;
+    //     _player.DashesLeft = Mathf.Min(Data.dashAmount, _player.DashesLeft + amount);
+    // }
 
-    #endregion
+    // #endregion
 }

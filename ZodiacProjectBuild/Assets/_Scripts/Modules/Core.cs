@@ -6,11 +6,12 @@ public abstract class Core : MonoBehaviour
 {
     #region Blackboard instances
 
-    public  Rigidbody2D         body;
-    public  Animator            animator;
-    public  CollisionSensors    collisionSensors;
-    public  Movement            movement;
-    public  EntityData          data;
+    public Rigidbody2D body;
+    public Animator animator;
+    public EntityData data;
+    public CollisionSensors collisionSensors;
+    public Gravity gravity;
+    public Movement movement;
 
     #endregion
 
@@ -21,7 +22,7 @@ public abstract class Core : MonoBehaviour
     /// <summary>
     /// Wrappers to avoid having to call machine.state and its functions
     /// </summary>
-    public State        state           => stateMachine.state;
+    public State state => stateMachine.state;
     protected void Set(State newState, bool forceReset = false) 
     => stateMachine.Set(newState, forceReset);
 

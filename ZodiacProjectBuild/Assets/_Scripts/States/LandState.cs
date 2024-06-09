@@ -5,13 +5,21 @@ public class LandState : State
     [Header("Animation Clip")]
     public  AnimationClip   animClip;
 
+    [Header("State")]
+    [SerializeField] GroundedState groundedState;
+    [SerializeField] AirState airState;
+
     [Header("Effects")]
     [SerializeField]
     private GameObject      _landEffects;
 
+    #region Callback Functions
+
     public override void Enter()
     {
         base.Enter();
+
+        airState.SetIsJumping(false);
 
         Animator.Play(animClip.name);
         LandParticles();
@@ -21,9 +29,19 @@ public class LandState : State
     {
         base.Do();
 
-        if(!core.collisionSensors.IsGrounded)
+        if (
+            Time.deltaTime - startTime >= animClip.length
+            )
+        {
             IsComplete = true;
+            return;
+        }
     }
+
+    #endregion
+
+
+    #region Effects
 
     private void LandParticles()
     {
@@ -34,4 +52,6 @@ public class LandState : State
             );
         Destroy(obj, 1);  
     }
+
+    #endregion
 }
