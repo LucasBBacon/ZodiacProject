@@ -2,184 +2,162 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Player : Core 
+public class Player : Entity 
 {
-    [HideInInspector]
-    public  PlayerMovement  playerMovement;
 
-    public CameraFollowObject followOBJ;
-
-    [Space(20)]
-
-    #region State Definitions
-
-    [Header("States")]
-    [SerializeField] GroundedState groundedState;
-    [SerializeField] AirState airState;
-    [SerializeField] WallControlState wallControlState;
-    [SerializeField] AbilityState abilityState;
-    [SerializeField] JumpState jumpState;
-    [SerializeField] RunState runState; 
-    [SerializeField] WallJumpState wallJumpState;
-    [SerializeField] DashState dashState;
-
-    #endregion
-
-    [Space(20)]
-
-    #region State Parameters
-
-    [Header("State Parameters")]
-
-    public  bool            IsFacingRight;
-
-    public  bool            IsSliding           { get; private set; }
+    [Header("References")]
+    public MovementData MoveStats;
+    public Animator SwipeAnimator;
 
 
-    [Space(10)]
+    [Header("Weapon Data")]
+    public WeaponData WeaponData;
+    public Transform AttackTransform;
+    public Transform AttackUpTransform;
+    public Transform AttackDownTransform;
+    public CinemachineImpulseSource AttackShake;
 
-    [Space(10)]
 
-    public  bool            IsLedgeGrabbing;
-    public  bool            IsLedgeClimbing;
-    private bool            IsLedgeFalling;
-    [SerializeField] 
-    private Vector2         climbingOffset = new Vector2(1f, 1.6f);
-    public  bool            moved;
-    private Vector2         cornerPos;
-    private float           animationTime = .5f;
+    [Header("Ability Data")]
+    [SerializeField] ChariotAbilityData chariotAbilityData;
+
+
+    [Header("Effects")]
+    public Transform ParticleSpawnTransform;
+    public GameObject JumpParticles;
+    public GameObject LandParticles;
+    public GameObject StopParticles;
+    public ParticleSystem DashParticles;
+    public float DashParticleTime;
+    public ParticleSystem SpeedParticles;
+    public TrailRenderer TrailRenderer;
+    public GameObject HitEffect;
+    public GameObject SwipeEffect;
+    public GhostTrail GhostTrail;
+
+
+    #region Animation Variables
+
+    public const string IS_WALKING = "isWalking";
+    public const string JUMP = "jump";
+    public const string LAND = "land";
+    public const string FALL = "fall";
+    public const string IS_CHARIOT = "isChariot";
+    public const string IS_AIR_CHARIOT_FALLING = "isChariotFalling";
+
+    public Utilities.TimeNotifier AttackCounterResetTimeNotifier;
 
     #endregion
 
-    [Space(20)]
 
-    #region Input Parameters
+    #region State Machine References
 
-    [Header("Input Parameters")]
+    /// <summary>
+    /// Current StateMachine.
+    /// </summary>
+    public PlayerStateMachine stateMachine;
+    /// <summary>
+    /// Wrappers to avoid having to call machine.state and its functions
+    /// </summary>
+    public PlayerState CurrentState => stateMachine.CurrentState;
+    public PlayerState PreviousState => stateMachine.PreviousState;
+    
 
-    public  Vector2         MoveInput;
+    protected void ChangeState(PlayerState newState, bool forceReset = false) 
+    => stateMachine.ChangeState(newState, forceReset);
+
+
+    // state variables
+    public PlayerIdleState IdleState;
+    // public PlayerWalkState WalkState;
+    public PlayerRunState RunState;
+    
+    public PlayerJumpState JumpState;
+    public PlayerWallJumpState WallJumpState;
+    
+    public PlayerDashState DashState;
+    public PlayerLedgeClimbState LedgeClimbState;
+    public PlayerWallSlideState WallSlideState;
+
+    public PlayerAirborneState AirborneState;
+
+    public PlayerAttackState AttackState;
+
+
+    // ability variables
+    public AbilityState AbilityOneState;
+    public AbilityState AbilityTwoState;
+    public AbilityState AbilityThreeState;
+
+    public PlayerChariotState ChariotState;
 
     #endregion
-
-    public int FacingDirection;
-    public Vector2 holdPosition;
-
-    // private RaycastHit2D[] hits;
-    // [SerializeField] private Transform attackTransform;
-    // [SerializeField] private float attackRange = 1.5f;
-    // [SerializeField] private LayerMask attackableLayer;
-    // [SerializeField] private int damageAmount;
+    
 
 
     #region Unity Callback Methods
 
 
-    private void Start()
+    private void Awake()
     {
-        IsFacingRight = true;
-        body.gravityScale = data.gravityScale;
-        SetupInstances();
-        Set(airState);
-        // data.TimeLastPressedDash = -1f;
-        playerMovement = GetComponent<PlayerMovement>();
+        //SwipeEffect.SetActive(false);
+        AttackCounterResetTimeNotifier = new Utilities.TimeNotifier();
+
+        stateMachine = new PlayerStateMachine();
+
+        IdleState = new PlayerIdleState(this, stateMachine);
+        RunState = new PlayerRunState(this, stateMachine);
+        
+        JumpState = new PlayerJumpState(this, stateMachine);
+        WallJumpState = new PlayerWallJumpState(this, stateMachine);
+        
+        DashState = new PlayerDashState(this, stateMachine);
+        LedgeClimbState = new PlayerLedgeClimbState(this, stateMachine);
+        WallSlideState = new PlayerWallSlideState(this, stateMachine);
+        
+        AirborneState = new PlayerAirborneState(this, stateMachine);
+        
+        AttackState = new PlayerAttackState(this, stateMachine, WeaponData);
+
+        // Ability States
+        AbilityOneState = new AbilityState(this, stateMachine);
+        AbilityTwoState = new AbilityState(this, stateMachine);
+        AbilityThreeState = new AbilityState(this, stateMachine);
+
+        ChariotState = new PlayerChariotState(this, stateMachine, chariotAbilityData);
     }
+
+    public override void Start()
+    {
+        base.Start();
+
+        Initialize();
+
+        AbilityOneState = ChariotState;
+        
+        DashState.NumberOfDashesLeft = MoveStats.DashAmount;
+        GhostTrail = GetComponent<GhostTrail>();
+        AttackShake = GetComponent<CinemachineImpulseSource>();
+
+        stateMachine.InitalizeState(AirborneState);
+    }
+
+    protected virtual void Initialize() { }
 
     private void Update()
     {
-        FacingDirection = IsFacingRight ? 1 : -1;
-        dashState.LastDashDir = IsFacingRight ? Vector2.right : Vector2.left;
-        data.UpdateTimers();
-        CheckInput();
-        SelectState();
+        CurrentState.StateUpdate();
+
+        AttackCounterResetTimeNotifier.Tick();
     }
 
     private void FixedUpdate()
     {
-        CheckCollisions();
-        gravity.CalculateGravity();
-
-        if (
-            !dashState.IsDashing
-            )
-        {
-            Set(runState);
-        }
-
-        state.FixedDoBranch();
-    }
-
-    #endregion
-    
-
-    #region State Selection
-
-    /// <summary>
-    /// Select the correct state
-    /// </summary>
-    private void SelectState()
-    {
-        if (collisionSensors.IsGrounded)
-        {
-            if (
-                UserInput.instance.MoveInput == Vector2.zero
-                )
-                Set(groundedState);
-        }
-
-        if (
-            !dashState.IsDashing
-            )
-        {
-            if (
-                jumpState.CanJump() &&
-                data.TimeLastPressedJump > 0 
-                )
-            {
-                airState.SetIsJumping(true);
-                Set(jumpState);
-            }
-
-            else if (
-                wallJumpState.CanWallJump() &&
-                data.TimeLastPressedJump > 0
-                )
-            {
-                wallControlState.SetWallJumping(true);
-                Set(wallControlState);
-            }
-        }
-
-        
-        if (
-            !collisionSensors.IsGrounded
-            )
-        {
-            Set(airState);
-        }
-
-
-        if (
-            !collisionSensors.IsGrounded &&
-            body.velocity.y >= 0 &&
-            data.TimeLastOnWall > 0
-            )
-        {
-            Set(wallControlState);
-        }
-
-        
-
-        if (
-            dashState.CanDash() &&
-            data.TimeLastPressedDash > 0
-            )
-        {
-            Set(abilityState);
-        }
-
-        state.DoBranch();
+        CurrentState.StateFixedUpdate();
     }
 
     #endregion
@@ -190,19 +168,17 @@ public class Player : Core
     /// <summary>
     /// Fetches the inputs from <c>UserInput</c>.
     /// </summary>
-    private void CheckInput()
-    {
-        MoveInput = UserInput.instance.MoveInput;
-        if(!IsLedgeGrabbing && !IsLedgeClimbing)
-            if(MoveInput.x != 0)                CheckDirectionToFace(MoveInput.x > 0);
+    public void CheckInput()
+    {            
 
-        if(UserInput.instance.JumpJustPressed)  OnJumpInput();
-        if(UserInput.instance.JumpReleased)     OnJumpUpInput();
+        if(InputManager.JumpJustPressed) OnJumpPressed();
+        if(InputManager.JumpReleased) OnJumpReleasedInput();
 
-        if(UserInput.instance.DashInput)        OnDashInput();
+        if(InputManager.DashInput) OnDashInput();
 
-        if(UserInput.instance.GrabInput)        OnGrabInput();
-        if(UserInput.instance.GrabBeingHeld)    OnGrabHeldInput();
+        // if(UserInput.AbilityOne) OnAbilityOneInput();
+
+        // if(UserInput.GrabInput)        OnGrabInput();
 
         //if(UserInput.instance.AttackInput)      OnAttackInput();
     }
@@ -210,66 +186,111 @@ public class Player : Core
     #endregion
 
 
-    #region Collision Methods
+    #region Timers
 
-    /// <summary>
-    /// Resets the ground timer based on ground check collisions.
-    /// </summary>
-    private void CheckCollisions()
+    public void Sleep(float duration)
     {
-        if(collisionSensors.IsGrounded)
-            data.ResetGroundTime();
+        StartCoroutine(PerformSleep(duration));
+    }
 
-        if(collisionSensors.IsWallRight)
-            data.ResetWallRightTime();
+    IEnumerator PerformSleep(float duration)
+    {
+        Time.timeScale = 0;
 
-        if(collisionSensors.IsWallLeft)
-            data.ResetWallLeftTime();
+        yield return new WaitForSecondsRealtime(duration);
+
+        Time.timeScale = 1;
     }
 
     #endregion
 
 
+    #region Particles
+
+    public void SpawnParticles(GameObject particleToTransform)
+    {
+        Instantiate
+            (
+                particleToTransform,
+                ParticleSpawnTransform.position,
+                Quaternion.identity
+            );
+    }
+
+    public void SpawnParticles(GameObject particleToTransform, Quaternion rotation)
+    {
+        Instantiate
+            (
+                particleToTransform,
+                ParticleSpawnTransform.position,
+                rotation
+            );
+    }
+
+    #endregion
+
+
+    
+
+
     #region Input Callbacks
+
 
     /// <summary>
     /// Method called when jump button is pressed.
     /// </summary>
-    public void OnJumpInput()
+    public void OnJumpPressed()
     {
-        // resets the jump timer
-        data.ResetJumpTime();
+        JumpState.JumpBufferTimer = MoveStats.JumpBufferTime;
+        JumpState.JumpReleasedDuringBuffer = false;
     }
 
     /// <summary>
     /// Method called when jump button is released.
     /// </summary>
-    public void OnJumpUpInput()
+    public void OnJumpReleasedInput()
     {
-        // checks if the jump can be cut, and cuts it
-        if(jumpState.CanJumpCut() || wallJumpState.CanWallJumpCut())
-            airState.SetIsJumpCut(true);
+        if (JumpState.JumpBufferTimer > 0f)
+        {
+            JumpState.JumpReleasedDuringBuffer = true;
+        }
+
+        if (
+            AirborneState.IsJumping &&
+            Movement.VerticalVelocity > 0f
+            )
+        {
+            if (AirborneState.IsPastApexThreshold)
+            {
+                AirborneState.IsPastApexThreshold = false;
+                AirborneState.IsFastFalling = true;
+                AirborneState.FastFallTime = MoveStats.TimeForUpwardsCancel;
+
+                Movement.SetVerticalVelocity(0f);
+            }
+            else
+            {
+                AirborneState.IsFastFalling = true;
+                AirborneState.FastFallReleaseSpeed = Movement.VerticalVelocity;
+            }
+        }
     }
 
     public void OnDashInput()
     {
-        data.ResetDashTime();
+        DashState.DashBufferTimer = MoveStats.DashInputBufferTime;
     }
 
-    public void OnGrabInput()
-    {
-        CalculateHoldPos();
-    }
-
-    public void OnGrabHeldInput()
-    {
-        data.ResetGrabTime();
-    }
-
-    // public void OnAttackInput()
+    // public void OnAbilityOneInput()
     // {
-    //     Debug.Log("Attacking");
-    //     Attack();
+    //     if (CollisionSensors.IsGrounded && AbilityOneState.CanCheck())
+    //     {
+    //         ChangeState(AbilityOneState);
+    //     }
+    //     else if (!CollisionSensors.IsGrounded && AbilityOneState.CanAirCheck())
+    //     {
+    //         ChangeState(AbilityOneState);
+    //     }
     // }
 
     #endregion
@@ -277,118 +298,127 @@ public class Player : Core
 
     #region Check Methods
 
-    /// <summary>
-    /// Checks and sets the players facing direction.
-    /// </summary>
-    /// <param name="isMovingRight">If the player is moving right.</param>
-    public void CheckDirectionToFace(bool isMovingRight)
+    public void CheckForFalling()
     {
-        // if the player is not facing the direction of their movement, call turn method
-        if(isMovingRight != IsFacingRight)
-            playerMovement.Turn();
-    }    
-
-    private bool CanGrab()
-    {
-        if
-        (
-            data.TimeLastOnWall > 0 &&
-            !airState.IsJumping &&
-            !wallControlState.IsWallJumping &&
-            data.TimeLastOnGround <= 0
-        )
-            return true;
-        else
-            return false;
+        if (
+            !CollisionSensors.IsGrounded &&
+            !AirborneState.IsJumping &&
+            !AirborneState.IsFalling &&
+            !CollisionSensors.IsWall &&
+            !AirborneState.IsWallJumping &&
+            !DashState.IsDashing &&
+            !DashState.IsDashFastFalling &&
+            !ChariotState.IsChariot &&
+            !ChariotState.IsChariotFastFalling
+            )
+        {
+            if (!AirborneState.IsFalling)
+            {
+                AirborneState.IsFalling = true;
+                Animator.ResetTrigger(LAND);
+                Animator.SetTrigger(FALL);
+            }
+            
+            ChangeState(AirborneState);
+                
+        }
     }
 
     #endregion
-
-    // private void Attack()
-    // {
-    //     hits = Physics2D.CircleCastAll(attackTransform.position, attackRange, transform.right, 0f, attackableLayer);
-
-    //     for(int i = 0; i < hits.Length; i++)
-    //     {
-    //         IDamageable iDamageable = hits[i].collider.gameObject.GetComponent<IDamageable>();
-
-    //         if(iDamageable != null)
-    //         {
-    //             iDamageable.Damage(damageAmount, Vector2.right);
-    //         }
-    //     }
-    // }
 
 
     #region Helper Methods
 
-    private void CalculateHoldPos()
-    {
-        holdPosition = collisionSensors.FindWallPos(FacingDirection) - (Vector2.right * 0.5f * FacingDirection);
-    }
-
-    private void AdjustPlayerPosition()
-    {
-        float xdist = Physics2D.Raycast
-            (
-                new Vector2
-                    (
-                        transform.position.x, 
-                        transform.position.y + collisionSensors.middleCheckOffset.y - (collisionSensors.middleCheckSize.y/2)
-                    ), Vector2.right * transform.localScale.x,
-                2f,
-                collisionSensors.groundMask
-            ).point.x;
-        
-        float ydist = Physics2D.Raycast
-            (
-                new Vector2
-                    (
-                        xdist + (0.1f * transform.localScale.x),
-                        transform.position.y + collisionSensors.topCheckOffset.y
-                    ), Vector2.down,
-                2f,
-                collisionSensors.groundMask
-            ).point.y;
-        
-        cornerPos = new Vector2
-            (
-                xdist,
-                ydist
-            );
-
-        if(!moved)
-        {
-            moved = true;
-
-            transform.position = new Vector2
-                    (
-                        cornerPos.x - (transform.localScale.x * 0.5f),
-                        cornerPos.y - 0.8f
-                    ); 
-        }
-    }
-
-    private void NotFalling()
-    {
-        IsLedgeFalling = false;
-    }
-
-    private void NotSliding()
-    {
-        IsSliding = false;
-    }
+    public void NotLedgeFalling() => LedgeClimbState.IsLedgeFalling = false;
 
     #endregion
 
-    #region Debug
 
-    // private void OnDrawGizmos()
-    // {
-    //     Gizmos.DrawWireSphere(attackTransform.position, attackRange);
-    //     Gizmos.color = Color.blue;
-    //     Gizmos.DrawLine((Vector2)transform.position + new Vector2(0, collisionSensors.middleCheckOffset.y * 0.5f), (Vector2)transform.position + new Vector2(transform.localScale.x * 2f, collisionSensors.middleCheckOffset.y/2));
-    // }
+    #region Jump Visualition Tool
 
+    private void OnDrawGizmos()
+    {
+        if (MoveStats.ShowWalkJumpArc)
+        {
+            DrawJumpArc(MoveStats.MaxWalkSpeed, Color.white);
+        }
+
+        if (MoveStats.ShowRunJumpArc)
+        {
+            DrawJumpArc(MoveStats.MaxRunSpeed, Color.red);
+        }
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(AttackTransform.position, WeaponData.AttackRange);
+    }
+
+    private void DrawJumpArc(float moveSpeed, Color gizmoColor)
+    {
+        Vector2 startPosition = new Vector2(CollisionSensors.FeetColl.bounds.center.x, CollisionSensors.FeetColl.bounds.min.y);
+        Vector2 previousPosition = startPosition;
+        float speed = 0f;
+        if (MoveStats.DrawRight)
+        {
+            speed = moveSpeed;
+        }
+        else { speed = -moveSpeed; }
+        Vector2 velocity = new Vector2(speed, MoveStats.InitialJumpVelocity);
+
+        Gizmos.color = gizmoColor;
+
+        float timeStep = 2 * MoveStats.TimeTillJumpApex / MoveStats.ArcResolution;
+
+        for (int i = 0; i < MoveStats.VisualizationSteps; i++)
+        {
+            float simulationTime = i * timeStep;
+            Vector2 displacement;
+            Vector2 drawPoint;
+            float downTime = MoveStats.Gravity * MoveStats.GravityOnReleaseMultiplier;
+
+            //ascending
+            if (simulationTime < MoveStats.TimeTillJumpApex)
+            {
+                displacement = velocity * simulationTime + 0.5f * new Vector2(0, MoveStats.Gravity) * simulationTime * simulationTime;
+            }
+
+            //apex hang time
+            else if (simulationTime < MoveStats.TimeTillJumpApex + MoveStats.ApexHangTime)
+            {
+                float apexTime = simulationTime - MoveStats.TimeTillJumpApex;
+                displacement = velocity * MoveStats.TimeTillJumpApex + 0.5f * new Vector2(0, MoveStats.Gravity) * MoveStats.TimeTillJumpApex * MoveStats.TimeTillJumpApex;
+                displacement += new Vector2(speed, 0) * apexTime;
+            }
+
+            //descending
+            else
+            {
+                float descendTime = simulationTime - (MoveStats.TimeTillJumpApex + MoveStats.ApexHangTime);
+                displacement = velocity * MoveStats.TimeTillJumpApex + 0.5f * new Vector2(0, MoveStats.Gravity) * MoveStats.TimeTillJumpApex * MoveStats.TimeTillJumpApex;
+                displacement += new Vector2(speed, 0) * MoveStats.ApexHangTime;
+
+                downTime *= descendTime * descendTime;
+
+
+                displacement += new Vector2(speed, 0) * descendTime + 0.5f * new Vector2(0, downTime);
+            }
+
+            drawPoint = startPosition + displacement;
+
+            if (MoveStats.StopOnCollision)
+            {
+                RaycastHit2D hit = Physics2D.Raycast(previousPosition, drawPoint - previousPosition, Vector2.Distance(previousPosition, drawPoint), MoveStats.GroundLayer);
+                if (hit.collider != null)
+                {
+                    // If a hit is detected, stop drawing the arc at the hit point
+                    Gizmos.DrawLine(previousPosition, hit.point);
+                    break;
+                }
+            }
+
+            Gizmos.DrawLine(previousPosition, drawPoint);
+            previousPosition = drawPoint;
+        }
+    }
+    
     #endregion
 }

@@ -1,0 +1,312 @@
+fileFormatVersion: 2
+guid: 21caed47be54bd84dbe90ae22659d827
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 600
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: knight_ledge_climb_effect_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 7680
+        width: 2880
+        height: 3840
+      alignment: 9
+      pivot: {x: 0.3595351, y: 0.25442633}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20ec8e1a0724a7f4aa360ac396c8a22f
+      internalID: -731907519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: knight_ledge_climb_effect_1
+      rect:
+        serializedVersion: 2
+        x: 2880
+        y: 7680
+        width: 2880
+        height: 3840
+      alignment: 9
+      pivot: {x: 0.3595351, y: 0.2544263}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 843a89bb632cf7b4fa3b5e8dea9902cd
+      internalID: -3968581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: knight_ledge_climb_effect_2
+      rect:
+        serializedVersion: 2
+        x: 5760
+        y: 7680
+        width: 2880
+        height: 3840
+      alignment: 9
+      pivot: {x: 0.3595351, y: 0.2544263}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba93d6b785885b640a3da2ed515589b9
+      internalID: 760391354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: knight_ledge_climb_effect_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3840
+        width: 2880
+        height: 3840
+      alignment: 9
+      pivot: {x: 0.3595351, y: 0.2544263}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 590303b720d286d4885d0eab6764310f
+      internalID: 1558649605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: knight_ledge_climb_effect_4
+      rect:
+        serializedVersion: 2
+        x: 2880
+        y: 3840
+        width: 2880
+        height: 3840
+      alignment: 9
+      pivot: {x: 0.3595351, y: 0.2544263}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1fbd3597a47e67d46b052d05282df7fa
+      internalID: -602955365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: knight_ledge_climb_effect_5
+      rect:
+        serializedVersion: 2
+        x: 5760
+        y: 3840
+        width: 2880
+        height: 3840
+      alignment: 9
+      pivot: {x: 0.3595351, y: 0.2544263}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e50308987485bb4b9d4bdfcc241bfd6
+      internalID: 1071262103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: knight_ledge_climb_effect_6
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 0
+        width: 2880
+        height: 3840
+      alignment: 9
+      pivot: {x: 0.3595351, y: 0.2544263}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd1778d0acafcee4db83f0dfb979a205
+      internalID: 2003569273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: knight_ledge_climb_effect_7
+      rect:
+        serializedVersion: 2
+        x: 2880
+        y: 0
+        width: 2880
+        height: 3840
+      alignment: 9
+      pivot: {x: 0.3595351, y: 0.2544263}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e48cbbbe08084144e9214611cbd55ab9
+      internalID: -1068739236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: knight_ledge_climb_effect_8
+      rect:
+        serializedVersion: 2
+        x: 5760
+        y: 0
+        width: 2880
+        height: 3840
+      alignment: 9
+      pivot: {x: 0.3595351, y: 0.2544263}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fde04fce241f2ab4b968d42cf1b554e4
+      internalID: -1241974895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      knight_ledge_climb_effect_0: -731907519
+      knight_ledge_climb_effect_1: -3968581
+      knight_ledge_climb_effect_2: 760391354
+      knight_ledge_climb_effect_3: 1558649605
+      knight_ledge_climb_effect_4: -602955365
+      knight_ledge_climb_effect_5: 1071262103
+      knight_ledge_climb_effect_6: 2003569273
+      knight_ledge_climb_effect_7: -1068739236
+      knight_ledge_climb_effect_8: -1241974895
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

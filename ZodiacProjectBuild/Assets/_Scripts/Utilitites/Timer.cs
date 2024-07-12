@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Utilities
 {
@@ -78,5 +79,49 @@ namespace Utilities
 
         public void Reset() => Time = 0;
         public float GetTime() => Time;
+    }
+
+    public class TimeNotifier
+    {
+        public event Action OnNotify;
+
+        float duration;
+        float targetTime;
+        bool enabled;
+
+        public void Init(float dur, bool reset = false)
+        {
+            enabled = true;
+            duration = dur;
+
+            SetTargetTime();
+
+            if (reset)
+                OnNotify += SetTargetTime;
+            
+            else
+                OnNotify += Disable;
+        }
+
+        private void SetTargetTime()
+        {
+            targetTime = Time.time + duration;
+        }
+
+        public void Disable()
+        {
+            enabled = false;
+
+            OnNotify -= Disable;
+        }
+
+        public void Tick()
+        {
+            if (!enabled)
+                return;
+
+            if (Time.time >= targetTime)
+                OnNotify?.Invoke();
+        }
     }
 }

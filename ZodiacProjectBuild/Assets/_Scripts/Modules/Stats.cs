@@ -2,12 +2,22 @@ using UnityEngine;
 
 public class Stats : MonoBehaviour
 {
-    [SerializeField] private EntityData _entityData;
+    [field: SerializeField] public Stat Health { get; private set; }
+    [field: SerializeField] public Stat Poise { get; private set; }
 
-    public int currentHealth;
+    [SerializeField] float PoiseRecoveryRate;
 
     private void Awake() 
     {
-        currentHealth = _entityData.maxHealth;
+        Health.Init();
+        Poise.Init();
+    }
+
+    private void Update()
+    {
+        if (Poise.CurrentValue.Equals(Poise.MaxValue))
+            return;
+
+        Poise.Increase(PoiseRecoveryRate * Time.deltaTime);    
     }
 }

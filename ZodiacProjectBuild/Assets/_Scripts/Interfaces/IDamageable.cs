@@ -1,8 +1,10 @@
-using UnityEngine;
-
 public interface IDamageable
 {
-    public void Damage(int damageAmount, Vector2 attackDirection);
+    public void Damage(DamageData data);
+
+    public bool HasTakenDamage { get; set; }
+    public float InvincibilityTime { get; set; }
+    public bool IsInvincible { get; set; }
 
     void Die();
 }

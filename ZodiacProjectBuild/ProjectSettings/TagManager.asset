@@ -3,7 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - CameraController
+  - ParticleContainer
+  - EnvironmentHazard
+  - Slot
   layers:
   - Default
   - TransparentFX
@@ -12,10 +17,10 @@ TagManager:
   - Water
   - UI
   - Attackable
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Ghost
+  - Weapon
+  - Hazard
   - 
   - 
   - 
@@ -44,12 +49,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Particles
+    uniqueID: 1301399345
+    locked: 0
   - name: Enemies
     uniqueID: 2570421303
     locked: 0
   - name: Player
     uniqueID: 4084467407
     locked: 0
-  - name: Particles
-    uniqueID: 1301399345
+  - name: Front Particles
+    uniqueID: 560502599
     locked: 0

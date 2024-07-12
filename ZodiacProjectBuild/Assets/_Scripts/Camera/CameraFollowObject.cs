@@ -12,12 +12,21 @@ public class CameraFollowObject : MonoBehaviour
     Player _player;
     bool _isFacingRight;
 
+    Vector2 velocity = Vector2.zero;
+
     float _panTimer;
+
+    [SerializeField] Movement movement;
 
     private void Awake()
     {
         _player = _playerTransform.gameObject.GetComponent<Player>();
-        _isFacingRight = _player.IsFacingRight;
+        _isFacingRight = _player.Movement.IsFacingRight;
+    }
+
+    private void Start()
+    {
+        movement.TurnEvent.AddListener(CallTurn);
     }
 
     private void Update()
@@ -26,11 +35,13 @@ public class CameraFollowObject : MonoBehaviour
             _panTimer >= 0
             )
             _panTimer -= Time.deltaTime;
+            
+        transform.position = Vector3.Lerp(transform.position, _playerTransform.position, Time.deltaTime * 100);
     }
 
     private void FixedUpdate() 
     {
-        transform.position = _playerTransform.position;
+        //transform.position = _playerTransform.position;
     }
 
     public void CallTurn()
@@ -72,6 +83,7 @@ public class CameraFollowObject : MonoBehaviour
     float DetermineEndRotation()
     {
         _isFacingRight = !_isFacingRight;
+        // Debug.Log(_player.movement.IsFacingRight + " + " + _isFacingRight);
 
         if (
             _isFacingRight
