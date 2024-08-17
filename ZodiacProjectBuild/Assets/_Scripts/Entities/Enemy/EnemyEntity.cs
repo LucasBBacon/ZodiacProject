@@ -5,9 +5,10 @@ using UnityEngine;
 public class EnemyEntity : Entity
 {   
     [Header("Enemy Data")]
-    public EntityData EntityData;
+    public SOEntityData EntityData;
     public AnimationToStateMachine AnimationToStateMachine;
     [SerializeField] Transform playerCheck;
+    FieldOfView fieldOfView;
 
 
     #region State Machine References
@@ -24,7 +25,6 @@ public class EnemyEntity : Entity
 
     #region Entity Variables
 
-    float currentHealth;
     float currentStunResitance;
     float lastDamageTime;
     public bool CanSetVelocity { get; set; }
@@ -41,6 +41,7 @@ public class EnemyEntity : Entity
     {
         stateMachine = new EntityStateMachine();
         AnimationToStateMachine = GetComponentInChildren<AnimationToStateMachine>();
+        fieldOfView = GetComponent<FieldOfView>();
     }
 
     public override void Start()
@@ -59,7 +60,6 @@ public class EnemyEntity : Entity
 
     public virtual void FixedUpdate()
     {
-        CollisionSensors.CollisionChecks();
         CurrentState.StateFixedUpdate();
     }
     
@@ -68,32 +68,41 @@ public class EnemyEntity : Entity
 
     #region Check Functions
 
+    // public virtual bool CheckPlayerInMinAgroRange()
+    // => Physics2D.Raycast
+    //     (
+    //         playerCheck.position,
+    //         transform.right,
+    //         EntityData.MinAgroDistance,
+    //         EntityData.PlayerMask
+    //     );
+
+    // public virtual bool CheckPlayerInMaxAgroRange()
+    // => Physics2D.Raycast
+    //     (
+    //         playerCheck.position,
+    //         transform.right,
+    //         EntityData.MaxAgroDistance,
+    //         EntityData.PlayerMask
+    //     );
+
+    // public virtual bool CheckPlayerInCloseRangeAction()
+    // => Physics2D.Raycast
+    //     (
+    //         playerCheck.position,
+    //         transform.right,
+    //         EntityData.CloseRangeActionDistance,
+    //         EntityData.PlayerMask
+    //     );
+
     public virtual bool CheckPlayerInMinAgroRange()
-    => Physics2D.Raycast
-        (
-            playerCheck.position,
-            transform.right,
-            EntityData.MinAgroDistance,
-            EntityData.PlayerMask
-        );
+    => fieldOfView.FindVisibleTargets(EntityData.MinAgroDistance);
 
     public virtual bool CheckPlayerInMaxAgroRange()
-    => Physics2D.Raycast
-        (
-            playerCheck.position,
-            transform.right,
-            EntityData.MaxAgroDistance,
-            EntityData.PlayerMask
-        );
+    => fieldOfView.FindVisibleTargets(EntityData.MaxAgroDistance);
 
     public virtual bool CheckPlayerInCloseRangeAction()
-    => Physics2D.Raycast
-        (
-            playerCheck.position,
-            transform.right,
-            EntityData.CloseRangeActionDistance,
-            EntityData.PlayerMask
-        );
+    => fieldOfView.FindVisibleTargets(EntityData.CloseRangeActionDistance);
 
     #endregion
 
@@ -104,8 +113,8 @@ public class EnemyEntity : Entity
     }
 
     public virtual void OnDrawGizmos() {
-        Gizmos.DrawWireSphere(playerCheck.position + (Vector3)(Vector2.right * EntityData.CloseRangeActionDistance), 0.2f);
-        Gizmos.DrawWireSphere(playerCheck.position + (Vector3)(Vector2.right * EntityData.MinAgroDistance), 0.2f);
-        Gizmos.DrawWireSphere(playerCheck.position + (Vector3)(Vector2.right * EntityData.MaxAgroDistance), 0.2f);
+        //Gizmos.DrawWireSphere(playerCheck.position + (Vector3)(EntityData.CloseRangeActionDistance * Movement.FacingDirection * Vector2.right), 0.2f);
+        //Gizmos.DrawWireSphere(playerCheck.position + (Vector3)(EntityData.MinAgroDistance * Movement.FacingDirection * Vector2.right), 0.2f);
+       // Gizmos.DrawWireSphere(playerCheck.position + (Vector3)(EntityData.MaxAgroDistance * Movement.FacingDirection * Vector2.right), 0.2f);
 	}
 }

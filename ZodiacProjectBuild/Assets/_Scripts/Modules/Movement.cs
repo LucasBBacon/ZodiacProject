@@ -8,8 +8,8 @@ public class Movement : MonoBehaviour
 {
     public Rigidbody2D Body { get; private set; }
 
-    public float HorizontalVelocity { get; set; }
-    public float VerticalVelocity { get; set;}
+    public bool CanSetVelocity { get; set; }
+    public Vector2 CurrentVelocity { get; set; }
 
     public bool IsFacingRight { get; private set; }
     public int FacingDirection {
@@ -19,144 +19,26 @@ public class Movement : MonoBehaviour
     public bool IsOnPlatform;
     public Rigidbody2D PlatformBody;
 
-    private CollisionSensors CollisionSensors;
-
-    
-
     [HideInInspector] public UnityEvent TurnEvent;
 
 
     Vector2 _workspace;
-    float TurnBufferTimer;
+    Vector2 _workspaceForce;
 
 
     #region Callback Methods
 
     private void Awake()
     {
-        Body = GetComponent<Rigidbody2D>();
-        CollisionSensors = GetComponentInChildren<CollisionSensors>();
+        Body = GetComponentInParent<Rigidbody2D>();
 
         IsFacingRight = true;
+        CanSetVelocity = true;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        if (IsOnPlatform)
-        {
-            _workspace = new Vector2(Body.velocity.x + PlatformBody.velocity.x, Body.velocity.y);
-        }
-        else
-        {
-            _workspace = new Vector2(Body.velocity.x, Body.velocity.y);
-        }
-        SetFinalVelocity();
-    }
-
-    #endregion
-
-
-    #region Movement
-
-    // public void Move
-    //     (
-    //         float acceleration,
-    //         float deceleration,
-    //         Vector2 moveInput,
-    //         float MoveSpeed
-    //     )
-    // {
-    //     if (moveInput.x != 0f)
-    //     {
-    //         TurnCheck(moveInput);
-    //         if (CollisionSensors.IsGrounded && !isOnSlope)
-    //         {
-    //             float targetVelocity = moveInput.x * MoveSpeed;
-        
-    //             HorizontalVelocity = Mathf.Lerp
-    //                 (
-    //                     HorizontalVelocity,
-    //                     targetVelocity,
-    //                     acceleration * Time.fixedDeltaTime
-    //                 );
-                
-    //             float speedDiff = targetVelocity - Body.velocity.x;
-    //             float movement = speedDiff * acceleration;
-    //             ApplyMovementForce(movement);
-    //         }
-    //         else if (CollisionSensors.IsGrounded && isOnSlope && canWalkOnSlope)
-    //         {
-    //             float targetVelocity = moveInput.x * MoveSpeed;
-        
-    //             HorizontalVelocity = Mathf.Lerp
-    //                 (
-    //                     HorizontalVelocity,
-    //                     targetVelocity * slopeNormalPerp.x,
-    //                     acceleration * Time.fixedDeltaTime
-    //                 );
-                
-    //             float speedDiff = targetVelocity - Body.velocity.x;
-    //             float movement = speedDiff * acceleration;
-    //             ApplyMovementForce(movement);
-    //         }
-    //     }
-
-    //     else
-    //     {
-    //         HorizontalVelocity = Mathf.Lerp
-    //             (
-    //                 HorizontalVelocity,
-    //                 0f,
-    //                 deceleration * Time.deltaTime
-    //             );
-            
-    //         float speedDiff = 0 - Body.velocity.x;
-    //         float movement = speedDiff * deceleration;
-    //         ApplyMovementForce(movement);
-    //     }
-    // }
-
-    public void Move
-        (
-            Vector2 moveInput,
-            float moveSpeed,
-            bool isIdleOrRun = false
-        )
-    {
-        TurnCheck(moveInput);
-
-        if (
-            CollisionSensors.IsGrounded
-            && !CollisionSensors.IsOnSlope
-            && isIdleOrRun
-            )
-        {
-            _workspace.Set(moveInput.x * moveSpeed, Body.velocity.y);
-            
-            
-            //ApplyForce(new Vector2(-moveInput.x * slopeNormalPerp.x * MoveSpeed, -moveInput.x * slopeNormalPerp.y * MoveSpeed));
-        }
-        else if (
-            CollisionSensors.IsGrounded
-            && CollisionSensors.IsOnSlope
-            && CollisionSensors.CanWalkOnSlope
-            && isIdleOrRun
-            )
-        {
-            _workspace.Set
-                (
-                    -moveInput.x * CollisionSensors.SlopeNormalPerp.x * moveSpeed,
-                    -moveInput.x * CollisionSensors.SlopeNormalPerp.y * moveSpeed
-                );
-
-            //ApplyForce(new Vector2(moveInput.x * MoveSpeed, Body.velocity.y));
-        }
-        else if (!CollisionSensors.IsGrounded)
-        {
-            _workspace.Set(moveSpeed * moveInput.x, Body.velocity.y);
-        }
-
-        SetFinalVelocity();
+        CurrentVelocity = Body.velocity;
     }
 
     #endregion
@@ -164,69 +46,19 @@ public class Movement : MonoBehaviour
 
     #region Velocity Methods
 
-    public void ApplyVelocity()
-    {
-        // if (!player.DashState.IsDashing)
-        SetVerticalVelocity(Mathf.Clamp(VerticalVelocity, -20f, 50f));
-        // else
-        //     SetVerticalVelocity(Mathf.Clamp(VerticalVelocity, -50f, 50f));
-
-        _workspace.Set(HorizontalVelocity, VerticalVelocity);
-
-        SetFinalVelocity();
-    }
-
     public void SetVelocityZero()
     {
-        VerticalVelocity = 0f;
-        HorizontalVelocity = 0f;
-
-        _workspace.Set
-            (
-                HorizontalVelocity,
-                VerticalVelocity
-            );
-        
-        SetFinalVelocity();
-    }
-
-    public void SetVerticalVelocity(float changeAmount)
-    {
-        VerticalVelocity = changeAmount;
-
-        _workspace.Set
-            (
-                Body.velocity.x,
-                VerticalVelocity
-            );
+        _workspace.Set(0f, 0f);
 
         SetFinalVelocity();
     }
 
-
-    public void IncrementVerticalVelocity(float incrementAmount)
+    public void SetVelocity(
+        float velocityX,
+        float velocityY
+    )
     {
-        VerticalVelocity += incrementAmount;
-
-        _workspace.Set
-            (
-                Body.velocity.x,
-                VerticalVelocity
-            );
-
-        SetFinalVelocity();
-    }
-
-
-    public void SetHorizontalVelocity(float changeAmount)
-    {
-        HorizontalVelocity = changeAmount;
-
-        _workspace.Set
-            (
-                HorizontalVelocity,
-                Body.velocity.y
-            );
+        _workspace.Set(velocityX, velocityY);
 
         SetFinalVelocity();
     }
@@ -239,14 +71,10 @@ public class Movement : MonoBehaviour
         )
     {
         angle.Normalize();
-
-        HorizontalVelocity = angle.x * velocity * direction;
-        VerticalVelocity = angle.y * velocity;
-        
         _workspace.Set
             (
-                HorizontalVelocity,
-                VerticalVelocity
+                angle.x * velocity * direction,
+                angle.y * velocity
             );
         
         SetFinalVelocity();
@@ -263,36 +91,36 @@ public class Movement : MonoBehaviour
         SetFinalVelocity();
     }
 
-    
+    public void SetVelocityX(float velocity)
+    {
+        _workspace.Set(velocity, CurrentVelocity.y);
+
+        SetFinalVelocity();
+    }
+
+    public void SetVelocityY(float velocity)
+    {
+        _workspace.Set(CurrentVelocity.x, velocity);
+
+        SetFinalVelocity();
+    }
 
     void SetFinalVelocity()
-    => Body.velocity = _workspace;
-
-    #endregion
-
-
-    #region Force Methods
-
-    public void SetForce
-    (
-            float force,
-            Vector2 angle,
-            int direction
-        )
     {
-        angle.Normalize();
-        
-        Body.AddForce(new Vector2(angle.x * force * direction, angle.y * force), ForceMode2D.Force);
-    }
+        if (CanSetVelocity)
+        {
+            if (IsOnPlatform)
+            {
+                _workspace.Set(_workspace.x + PlatformBody.velocity.x, _workspace.y);
+            }
+            else
+            {
+                _workspace.Set(_workspace.x, _workspace.y);
+            }
 
-    void ApplyMovementForce(float force)
-    {
-        Body.AddForce(force * Vector2.right, ForceMode2D.Force);
-    }
-
-    void ApplyForce(Vector2 force)
-    {
-        Body.AddForce(force, ForceMode2D.Force);
+            CurrentVelocity = _workspace;
+            Body.velocity = _workspace;
+        }
     }
 
     #endregion
@@ -302,50 +130,42 @@ public class Movement : MonoBehaviour
 
     public void TurnCheck(Vector2 moveInput)
     {
-        if (
-            IsFacingRight &&
-            moveInput.x < 0
-            )
+        if (IsFacingRight && moveInput.x < 0)
+        {
             Turn(false);
-
-        else if (
-            !IsFacingRight &&
-            moveInput.x > 0
-            )
-            Turn(true);
-    }
-
-    public void TurnCheck(int moveInput)
-    {
-        if (
-            moveInput != 0 &&
-            moveInput != FacingDirection
-        )
-        Turn();
-    }
-
-    public void Turn(bool turnRight)
-    {
-        TurnEvent.Invoke();
-
-        if (turnRight)
-        {
-            IsFacingRight = true;
-            transform.Rotate(0f, 180f, 0f);
         }
-        else
+
+        else if (!IsFacingRight && moveInput.x > 0)
         {
-            IsFacingRight = false;
-            transform.Rotate(0f, -180f, 0f);
+            Turn(true);
         }
     }
 
     public void Turn()
     {
-        TurnEvent.Invoke();
 
         IsFacingRight = !IsFacingRight;
         Body.transform.Rotate(0f, 180f, 0f);
+        if (gameObject.GetComponentInParent<Player>())
+            TurnEvent.Invoke();
+    }
+
+    public void Turn(bool turnRight)
+    {
+
+        if (turnRight)
+        {
+            IsFacingRight = true;
+            Body.transform.Rotate(0f, 180f, 0f);
+        }
+
+        else
+        {
+            IsFacingRight = false;
+            Body.transform.Rotate(0f, -180f, 0f);
+        }
+        if (gameObject.GetComponentInParent<Player>())
+            TurnEvent.Invoke();
     }
 
     public Vector2 FindRelativePoint(Vector2 offset)

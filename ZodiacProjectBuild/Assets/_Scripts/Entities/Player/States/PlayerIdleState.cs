@@ -2,26 +2,36 @@ using UnityEngine;
 
 public class PlayerIdleState : PlayerState
 {
-    public PlayerIdleState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
+    bool _isGrounded;
+    bool _isCeiling;
+    bool _isLedge;
+    bool _isWall;
+
+    public PlayerIdleState(Player player, PlayerStateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
     {
     }
 
     public override void StateEnter()
     {
         base.StateEnter();
-
-        Animator.SetBool("isIdle", true);
-
-        Movement?.SetVelocityZero();
-    
-        _player.TrailRenderer.emitting = false;
     }
 
     public override void StateExit()
     {
         base.StateExit();
+    }
 
-        Animator.SetBool("isIdle", false);
+    public override void DoChecks()
+    {
+        base.DoChecks();
+
+        if (CollisionSensors)
+        {
+            _isGrounded = CollisionSensors.IsGrounded;
+            _isCeiling = CollisionSensors.IsCeiling;
+            _isLedge = CollisionSensors.IsLedgeHorizontal;
+            _isWall = CollisionSensors.IsWall;
+        }
     }
 
     public override void StateUpdate()
@@ -29,73 +39,69 @@ public class PlayerIdleState : PlayerState
         base.StateUpdate();
 
         if (
-            !_player.CollisionSensors.IsGrounded
+            InputManager.instance.AttackInput
+            && player.AttackState.CanAttack()
             )
         {
-            ChangeState(_player.AirborneState);
+            Debug.Log("Entereing attacke");
+            ChangeState(player.AttackState);
         }
 
-        // if (
-        //     UserInput.MoveInput != Vector2.zero &&
-        //     !UserInput.RunIsHeld
-        //     )
-        // {
-        //     ChangeState(_player.WalkState);
-        // }
-
-        else if (
-            InputManager.MoveInput.x != 0 &&
-            InputManager.MoveInput.y == 0
-            )
+        if (InputManager.instance.BlockInput)
         {
-            ChangeState(_player.RunState);
+            ChangeState(player.BlockState);
         }
 
-       else if (
-            InputManager.JumpJustPressed
-            )
+        if (Mathf.Abs(InputManager.instance.MoveInput.x) > MoveData.MoveThreshold)
         {
-            _player.SpawnParticles(_player.JumpParticles);
-
-            ChangeState(_player.JumpState);
+            ChangeState(player.RunState);
         }
 
-        else if (
-            _player.JumpState.JumpBufferedOrCoyoteTimed()
-        )
+        else if (InputManager.instance.JumpJustPressed)
         {
-            _player.SpawnParticles(_player.JumpParticles);
-
-            ChangeState(_player.JumpState);
+            if (player.JumpState.CanJump())
+            {
+                ChangeState(player.JumpState);
+            }
         }
 
-        // if (
-        //     InputManager.DashInput &&
-        //     (_player.DashState.CanDash() || _player.DashState.CanAirDash())
-        //     )
-        // {
-        //     ChangeState(_player.DashState);
-        // }
-
-        if (
-            InputManager.DashInput &&
-            _player.DashState.CanDash()
-            )
+        else if (player.JumpState.JumpBufferedOrCoyoteTimed())
         {
-            ChangeState(_player.DashState);
+            ChangeState(player.JumpState);
+        }
+        
+        else if (!CollisionSensors.IsGrounded)
+        {
+            ChangeState(player.AirborneState);
         }
 
-        if (InputManager.AttackInput && _player.AttackState.CanAttack())
+        else if (InputManager.instance.DashInput && player.DashState.CanDash() && player.DashEnabled)
         {
-            ChangeState(_player.AttackState);
+            ChangeState(player.DashState);
         }
 
         if (
-            InputManager.AbilityOne &&
-            (_player.AbilityOneState.CanCheck() || _player.AbilityOneState.CanAirCheck())
+            InputManager.instance.AbilityUse[(int)AbilityInputs.First] &&
+            (player.AbilityOneState.CanCheck() || player.AbilityOneState.CanAirCheck())
             )
         {
-            ChangeState(_player.AbilityOneState);
+            ChangeState(player.AbilityOneState);
+        }
+
+        if (
+            InputManager.instance.AbilityUse[(int)AbilityInputs.Second] &&
+            (player.AbilityTwoState.CanCheck() || player.AbilityTwoState.CanAirCheck())
+            )
+        {
+            ChangeState(player.AbilityTwoState);
+        }
+
+        if (
+            InputManager.instance.AbilityUse[(int)AbilityInputs.Third] &&
+            (player.AbilityThreeState.CanCheck() || player.AbilityThreeState.CanAirCheck())
+            )
+        {
+            ChangeState(player.AbilityThreeState);
         }
     }
 
@@ -103,13 +109,10 @@ public class PlayerIdleState : PlayerState
     {
         base.StateFixedUpdate();
 
-        Movement?.SetVelocityZero();
-
-        Movement.Move
-            (
-                InputManager.MoveInput,
-                MoveStats.MaxWalkSpeed,
-                true
+        player.Move(
+            MoveData.GroundAcceleration,
+            MoveData.GroundDeceleration,
+            InputManager.instance.MoveInput
             );
     }
 }

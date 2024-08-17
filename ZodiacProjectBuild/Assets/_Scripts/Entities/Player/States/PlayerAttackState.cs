@@ -1,80 +1,112 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerAttackState : PlayerState
 {
-    readonly WeaponData weaponData;
+    public SOWeaponData Data;
 
-    public int AttackCounter 
+    AnimationEventHandler EventHandler => player.EventHandler;
+
+    bool _isGrounded;
+
+    Vector2 _knockbackDirection;
+
+    public bool IsAttacking;
+    float _attackTimer = 0f;
+    public Transform AttackPos;
+    AttackDirections _attackDirection;
+
+    bool _canInterrupt;
+    bool _checkFlip;
+    bool _isAbilityDone;
+    bool _isAttackActive;
+
+    public float AttackStartTime { get; set; }
+
+    bool _input;
+    bool _currentInput;
+    bool _minHoldPassed;
+
+
+    public List<IDamageable> DetectedDamageables = new List<IDamageable>();
+    public List<IKnockbackable> DetectedIKnockbackables = new List<IKnockbackable>();
+
+
+    public PlayerAttackState(
+        Player player,
+        PlayerStateMachine stateMachine,
+        SOWeaponData weaponData,
+        string animBoolName
+        ) : base(player, stateMachine, animBoolName)
     {
-        get => attackCounter;
-        private set => attackCounter = value >= _player.WeaponData.NumberOfAttacks ? 0 : value;
-    }
-    public float AttackTimer;
-
-    bool isAbilityDone;
-    bool meleeAttack;
-    
-    bool isDamageActive;
-    
-    // attack animations
-    int attackCounter;
-    Utilities.TimeNotifier AttackCounterResetTimeNotifier => _player.AttackCounterResetTimeNotifier;
-
-    // damage lists
-    RaycastHit2D[] hits;
-    readonly List<IDamageable> iDamaged = new List<IDamageable>();
-    readonly List<IKnockbackable> iKnockbacked = new List<IKnockbackable>();
-
-    // attack direction
-    bool collided;
-    readonly bool downwardStrike;
-    Vector2 direction;
-    public Vector2 attackPos;
-
-    // player recoil
-    float upwardsForce = 5000;
-    float defaultForce = 300;
-
-    public PlayerAttackState(Player player, PlayerStateMachine stateMachine, WeaponData weaponData) : base(player, stateMachine)
-    {
-        this.weaponData = weaponData;
+        Data = weaponData;
     }
 
     #region Callback Functions
 
-    private void OnEnable()
-    {
-        AttackCounterResetTimeNotifier.OnNotify += ResetAttackCounter;    
-    }
-
     private void OnDisable()
     {
-        AttackCounterResetTimeNotifier.OnNotify -= ResetAttackCounter;    
+        EventHandler.OnEnableInterrupt -= HandleEnableInterrupt;
+        EventHandler.OnFinish -= HandleFinish;
+        EventHandler.OnFlipSetActive -= HandleTurnCheckSetActive;
+        EventHandler.OnAttackAction -= HandleAttackAction;
+
+        EventHandler.OnUseInput -= HandleUseInput;
+
+        EventHandler.OnMinHoldPassed -= HandleMinHoldPassed;
+
+        EventHandler.OnStartMovement -= HandleStartMovement;
+        EventHandler.OnStopMovement -= HandleStopMovement;
     }
 
     public override void StateEnter()
     {
         base.StateEnter();
 
-        _player.StartCoroutine(AttackDamage());
+        EventHandler.OnEnableInterrupt += HandleEnableInterrupt;
+        EventHandler.OnFinish += HandleFinish;
+        EventHandler.OnFlipSetActive += HandleTurnCheckSetActive;
+        EventHandler.OnAttackAction += HandleAttackAction;
 
-        Animator.SetInteger("attackCounter", AttackCounter);
+        EventHandler.OnUseInput += HandleUseInput;
 
-        isAbilityDone = false;
-        CheckMeleeInput();
+        EventHandler.OnMinHoldPassed += HandleMinHoldPassed;
+
+        EventHandler.OnStartMovement += HandleStartMovement;
+        EventHandler.OnStopMovement += HandleStopMovement;
+
+        _isAbilityDone = false;
+
+        _checkFlip = true;
+        _canInterrupt = false;
+
+        CheckAttackDirection();
+
+        AttackStartTime = Time.time;
+        _isAttackActive = true;
+        _minHoldPassed = false;
+
+        Movement.SetVelocityZero();
     }
 
     public override void StateExit()
     {
         base.StateExit();
-        AttackCounterResetTimeNotifier.Init(_player.WeaponData.AttackCounterResetCooldown);
-        
-        if (CollisionSensors.IsGrounded)
+
+        _isAttackActive = false;
+    }
+
+    public override void DoChecks()
+    {
+        base.DoChecks();
+
+        if (CollisionSensors)
         {
-            _player.AirborneState.ResetJumpValues();
+            _isGrounded = CollisionSensors.IsGrounded;
         }
     }
 
@@ -82,270 +114,193 @@ public class PlayerAttackState : PlayerState
     {
         base.StateUpdate();
 
-        if (IsAnimationFinished)
+        if (_isAbilityDone)
         {
-            if (CollisionSensors.IsGrounded && Movement.VerticalVelocity < 0.01f)
+            if (_isGrounded && Movement.CurrentVelocity.y < 0.01f)
             {
-                ChangeState(_player.IdleState);
+                ChangeState(player.IdleState);
             }
             else
             {
-                ChangeState(_player.AirborneState);
+                ChangeState(player.AirborneState);
             }
         }
+
+        if (!_canInterrupt)
+            return;
+
+        if (InputManager.instance.MoveInput.x != 0 || InputManager.instance.AttackInput)
+            _isAbilityDone = true;
     }
 
     public override void StateFixedUpdate()
     {
         base.StateFixedUpdate();
 
-        HandleMovement();
+        player.Move(MoveData.GroundAcceleration, MoveData.GroundDeceleration, Vector2.zero);
 
-        _player.AirborneState.JumpPhysics();
+        if (_checkFlip)
+            Movement.TurnCheck(InputManager.instance.MoveInput);
+    }
 
-        if (CollisionSensors.IsGrounded)
+    #endregion
+
+
+    #region Check Methods
+
+    void CheckAttackDirection()
+    {
+        if (_isGrounded)
         {
-            Movement?.SetHorizontalVelocity(0f);
+            Animator.SetBool("groundedAttack", true);
+            if (InputManager.instance.MoveInput.y > 0)
+            {
+                _attackDirection = AttackDirections.Up;
+                _knockbackDirection = Vector2.zero;
+            }
+
+            if (InputManager.instance.MoveInput.y <= 0)
+            {
+                _attackDirection = AttackDirections.Side;
+            }
         }
+
         else
         {
-            Movement.Move(InputManager.MoveInput, MoveStats.MaxRunSpeed);
+            Animator.SetBool("groundedAttack", false);
+            if (InputManager.instance.MoveInput.y > 0)
+            {
+                _attackDirection = AttackDirections.Up;
+                _knockbackDirection = Vector2.zero;
+            }
+
+            if (InputManager.instance.MoveInput.y == 0)
+            {
+                _attackDirection= AttackDirections.Side;
+            }
+
+            if (InputManager.instance.MoveInput.y < 0)
+            {
+                _attackDirection = AttackDirections.Down;
+            }
         }
-        
+
+        switch (_attackDirection)
+        {
+            case AttackDirections.Up:
+                AttackPos = player.AttackUpTransform;
+                Animator.SetInteger("attackDirection", 0);
+                break;
+            case AttackDirections.Side:
+                AttackPos = player.AttackTransform;
+                Animator.SetInteger("attackDirection", 1);
+                if (Movement.IsFacingRight)
+                    _knockbackDirection = Vector2.left;
+                else
+                    _knockbackDirection = Vector2.right;
+                break;
+            case AttackDirections.Down:
+                Animator.SetInteger("attackDirection", 2);
+                AttackPos = player.AttackDownTransform;
+                _knockbackDirection = Vector2.up;
+                break;
+            default:
+                AttackPos = player.AttackTransform;
+                Animator.SetInteger("attackDirection", 1);
+                if (Movement.IsFacingRight)
+                    _knockbackDirection = Vector2.left;
+                else
+                    _knockbackDirection = Vector2.right;
+                break;
+        }
     }
-
-    #endregion
-
-
-    #region Triggers
-
-    public override void AnimationTrigger()
-    {
-        base.AnimationTrigger();
-
-        //_player.SwipeEffect.SetActive(true);
-        AttackCounterResetTimeNotifier.Disable();
-        isDamageActive = true;
-    }
-
-    public override void AnimationFinishedTrigger()
-    {
-        base.AnimationFinishedTrigger();
-
-        //_player.SwipeEffect.SetActive(false);
-        isDamageActive = false;
-        AttackCounter++;
-    }
-
-    #endregion
-
-
-    #region Checks
 
     public bool CanAttack()
     {
-        if (AttackTimer >= weaponData.TimeBetweenAttacks)
+        if (_attackTimer >= Data.TimeBetweenAttacks)
         {
-            AttackTimer = 0f;
+            _attackTimer = 0f;
 
             return true;
         }
+
         return false;
     }
 
-    void CheckMeleeInput()
-    {
-        if (InputManager.AttackInput)
-        {
-            meleeAttack = true;
-        }
-        else
-        {
-            meleeAttack = false;
-        }
-
-        if (CollisionSensors.IsGrounded)
-        {
-            if (meleeAttack && InputManager.MoveInput.y > 0)
-            {
-                Animator.SetTrigger("isAttackingUp");
-                _player.SwipeAnimator.SetTrigger("UpwardMeleeSwipe");
-
-                attackPos = _player.AttackUpTransform.position;
-
-                direction = Vector2.zero;
-            }
-
-            if (meleeAttack && InputManager.MoveInput.y <= 0)
-            {
-                Animator.SetTrigger("isAttacking");
-                _player.SwipeAnimator.SetTrigger("MeleeSwipe");
-                
-                attackPos = _player.AttackTransform.position;
-
-                if (Movement.IsFacingRight)
-                {
-                    direction = Vector2.left;
-                }
-                else
-                {
-                    direction = Vector2.right;
-                }
-            }
-        }
-        else
-        {
-            if (meleeAttack && InputManager.MoveInput.y > 0)
-            {
-                Animator.SetTrigger("isAirAttackingUp");
-                _player.SwipeAnimator.SetTrigger("UpwardMeleeSwipe");
-
-                attackPos = _player.AttackUpTransform.position;
-
-                direction = Vector2.down;
-            }   
-            if (meleeAttack && InputManager.MoveInput.y == 0)
-            {
-                Animator.SetTrigger("isAirAttacking");
-                _player.SwipeAnimator.SetTrigger("MeleeSwipe");
-
-                attackPos = _player.AttackTransform.position;
-
-                if (Movement.IsFacingRight)
-                {
-                    direction = Vector2.left;
-                }
-                else
-                {
-                    direction = Vector2.right;
-                }
-            }
-            if (meleeAttack && InputManager.MoveInput.y < 0)
-            {
-                Animator.SetTrigger("isAirAttackingDown");
-                _player.SwipeAnimator.SetTrigger("DownwardMeleeSwipe");
-
-                attackPos = _player.AttackDownTransform.position;
-
-                direction = Vector2.up;
-            }
-        }
-    }
-
     #endregion
 
 
-    #region Functionality
+    #region Animation Handlers
+
+    void HandleAttackAction()
+    {
+        player.StartCoroutine(player.MeleeAttack());
+    }
 
     public void AttackTimers()
-    => AttackTimer += Time.deltaTime;
+    => _attackTimer += Time.deltaTime;
 
-    public IEnumerator AttackDamage()
+    void HandleTurnCheckSetActive(bool value)
+    => _checkFlip = value;
+
+    void HandleEnableInterrupt()
+    => _canInterrupt = true;
+
+    void HandleStartMovement()
     {
-        isDamageActive = true;
-
-        while (isDamageActive)
-        {
-            hits = Physics2D.CircleCastAll
-                (
-                    attackPos,
-                    weaponData.AttackRange,
-                    Vector2.right,
-                    0f,
-                    weaponData.AttackLayer
-                );
-            
-            if (hits.Length > 0)
-            {
-                // Debug.Log("hit objects");
-                for (int i = 0; i < hits.Length; i++)
-                {
-                    IDamageable iDamageable = hits[i].collider.gameObject.GetComponent<IDamageable>();
-                    if (
-                        iDamageable != null &&
-                        !iDamageable.HasTakenDamage &&
-                        !iDamageable.IsInvincible
-                        )
-                    {
-                        iDamageable.Damage
-                            (
-                                new DamageData
-                                    (
-                                        weaponData.DamageAmount,
-                                        _player.gameObject
-                                    )
-                            );
-                        iDamaged.Add(iDamageable);
-
-                        _player.ParticleManager.StartEffect(_player.HitEffect, hits[i].point, Quaternion.identity, 0.6f);
-                        _player.Sleep(0.1f);
-                        CameraShakeManager.instance.CameraShake(_player.AttackShake);
-                        
-                        RumbleManager.Instance.RumblePulse(0.15f, 0.43f, 0.25f);
-                        
-                        collided = true;
-                    }
-
-                    IKnockbackable iKnockbackable = hits[i].collider.gameObject.GetComponent<IKnockbackable>();
-                    if (
-                        iKnockbackable != null &&
-                        !iKnockbackable.HasKnockbacked &&
-                        !iKnockbackable.IsNotKnockbackable
-                        )
-                    {
-                        iKnockbackable.Knockback
-                            (
-                                new KnockbackData
-                                    (
-                                        weaponData.KnockbackAngle,
-                                        weaponData.KnockbackStrength,
-                                        Movement.FacingDirection,
-                                        _player.gameObject
-                                    )
-                            );
-                        iKnockbacked.Add(iKnockbackable);
-                    }
-                }
-            }
-
-            yield return null;
-        }
-
-        ResetLists();
+        
     }
 
-    private void ResetLists()
+    void HandleStopMovement()
     {
-        foreach (IDamageable damaged in iDamaged)
-        {
-            damaged.HasTakenDamage = false;
-        }
-
-        collided = false;
-
-        iDamaged.Clear();
-        iKnockbacked.Clear();
+        
     }
 
-    private void ResetAttackCounter()
+    void HandleUseInput() { }
+
+    void HandleFinish()
     {
-        AttackCounter = 0;
+        AnimationFinishedTrigger();
+        IsAttacking = false;
+        _isAbilityDone = true;
     }
 
-    private void HandleMovement()
+    void HandleCurrentInputChange(bool newInput)
     {
-        if (collided)
+        _input = newInput;
+
+        SetAnimatorParameter();
+    }
+
+    void SetAnimatorParameter()
+    {
+        if (_input)
         {
-            if (downwardStrike)
-            {
-                Body.AddForce(direction * upwardsForce, ForceMode2D.Impulse);
-            }
-            else
-            {
-                Body.AddForce(direction * defaultForce);
-            }
+            Animator.SetBool("hold", _input);
         }
+
+        if (_minHoldPassed)
+        {
+            Animator.SetBool("hold", false);
+        }
+    }
+
+    void HandleMinHoldPassed()
+    {
+        _minHoldPassed = true;
+
+        SetAnimatorParameter();
     }
 
     #endregion
+
+
+    
+}
+
+public enum AttackDirections
+{
+    Up,
+    Down,
+    Side
 }

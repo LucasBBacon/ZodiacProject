@@ -1,0 +1,997 @@
+fileFormatVersion: 2
+guid: 2e02b98095d596f42b4a37d509d9da4a
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Grass_Snow
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 949
+        width: 256
+        height: 97
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d98b378ad80162a468c5bf7ca9b47dd7
+      internalID: -1324378912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vine_3
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 942
+        width: 162
+        height: 114
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39762c5876a240b4aa9e4a9252c00eef
+      internalID: 295594391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vine_1
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 928
+        width: 81
+        height: 130
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb0e5a4623050e34d8ea0ea854f1d38b
+      internalID: -889392059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Ground_Stalactite_Big
+      rect:
+        serializedVersion: 2
+        x: 1591
+        y: 717
+        width: 296
+        height: 265
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9cb6b322111d5e946825c084b6947681
+      internalID: -1231409727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Bush
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 808
+        width: 116
+        height: 120
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e46788fd7d0b1cf4795eacf3829613a5
+      internalID: 304553306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Grass
+      rect:
+        serializedVersion: 2
+        x: 223
+        y: 825
+        width: 89
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c49c4e4d39ff5e148973d9273d6e455d
+      internalID: 162796300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Ground_Stalactite_Small
+      rect:
+        serializedVersion: 2
+        x: 1403
+        y: 758
+        width: 146
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 339f5e3596090664e991c09a250994dc
+      internalID: -1280121142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_SnowLayer_Left
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 753
+        width: 19
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7654ab5673444af4d8719f51fb3e5084
+      internalID: 1889661282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_SnowLayer_Mid
+      rect:
+        serializedVersion: 2
+        x: 826
+        y: 700
+        width: 255
+        height: 109
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 659ab392ea9515c46a9ab7f68dd56f69
+      internalID: 1785720646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_SnowLayer_Right
+      rect:
+        serializedVersion: 2
+        x: 1097
+        y: 754
+        width: 19
+        height: 49
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7f2ede549981a442a0af5d7e49bb5b9
+      internalID: 412623745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vine_2
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 631
+        width: 206
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a217c4b2b2496046b57460545660cdb
+      internalID: 774279058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Ice_Stalactite_Small
+      rect:
+        serializedVersion: 2
+        x: 1404
+        y: 573
+        width: 146
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35a35708f0799394c89d7dd5f994ea34
+      internalID: 1101187675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Ice_Stalactite_Big
+      rect:
+        serializedVersion: 2
+        x: 1589
+        y: 426
+        width: 296
+        height: 265
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9dadcf63d589d904e9ed2e62444c8caa
+      internalID: -1770446742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_IceLayer_Left
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 552
+        width: 24
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eee31ae5e4c855f459b91d096d22c708
+      internalID: 758913375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_IceLayer_Mid
+      rect:
+        serializedVersion: 2
+        x: 838
+        y: 511
+        width: 247
+        height: 114
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d672e6de62fce94db627af687a7d11a
+      internalID: 284705895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_IceLayer_Right
+      rect:
+        serializedVersion: 2
+        x: 1098
+        y: 552
+        width: 20
+        height: 71
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 533202565e301fc4d8940a4b831ad6da
+      internalID: -348288755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_2_Broken_Bit_5
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 482
+        width: 9
+        height: 5
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d743f5d52188454cb9b28109f41e59b
+      internalID: 1009447079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_2_Broken_Bit_4
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 457
+        width: 19
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d2499a07c498324289e8499e68f761d
+      internalID: 1264879035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_1_Broken_Bit_5
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 431
+        width: 11
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 045c8baa7f0d35c4598e3d934372f893
+      internalID: -973579278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_2_Broken_Bit_3
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 428
+        width: 15
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 066bc0818ef840b428c69ca2e7538ebe
+      internalID: 1293929116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_1_Broken_Bit_4
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 411
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41d4d1b114f56c0478a6928c4f39247a
+      internalID: 136103994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_23
+      rect:
+        serializedVersion: 2
+        x: 459
+        y: 220
+        width: 80
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd408281eff446c4298eea5f72b36233
+      internalID: 1693282047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_1_Broken_Bit_3
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 389
+        width: 23
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9c8ac7af82ccb84c8da4dd3f72ac3b1
+      internalID: 2005339086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_2_Broken_Bit_2
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 393
+        width: 33
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 967baf6262e65e641ac19acda7555117
+      internalID: 1818495108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Ground
+      rect:
+        serializedVersion: 2
+        x: 845
+        y: 144
+        width: 261
+        height: 254
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bce7a3cdb8123b44c97120f6dd512ee5
+      internalID: -540753643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_1_Broken_Bit_2
+      rect:
+        serializedVersion: 2
+        x: 122
+        y: 363
+        width: 31
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab74472d0aca7f743bc34ec4a1680b7e
+      internalID: -609909537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_2_Broken_Bit_1
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 352
+        width: 34
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8acd3096a15ee90428a97e19b0655d52
+      internalID: -1980945725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_1_Broken_Bit_1
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 340
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15076f82d06021a46ae6920d6fb71f47
+      internalID: -1804753272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 258
+        width: 48
+        height: 69
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6bf705ce56a79e74f991490b3c094301
+      internalID: 1907278659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_2_Broken
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 257
+        width: 108
+        height: 82
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04c682fcdc9d6e84898a640fc7b9c00e
+      internalID: -1167634303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_1
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 121
+        width: 57
+        height: 113
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9fa1f27f76a37614388c33adf127eac8
+      internalID: 2002847386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Rock_3
+      rect:
+        serializedVersion: 2
+        x: 1451
+        y: 109
+        width: 179
+        height: 183
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0116ad19dd9e399488fade09bf77ba88
+      internalID: 94034774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Rock_2
+      rect:
+        serializedVersion: 2
+        x: 1640
+        y: 108
+        width: 106
+        height: 190
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed878d430b59af24fb9e461810be6d41
+      internalID: 197418316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_4
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 124
+        width: 52
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb0e00de7be745140b3f41183b209eda
+      internalID: 1843084858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_3
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 126
+        width: 33
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f00bb6de3016454c9b20c1014691991
+      internalID: -1928319655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_2
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 111
+        width: 111
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e4acd2789fe3ea48bd37716f12fe565
+      internalID: 114669744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Lantern
+      rect:
+        serializedVersion: 2
+        x: 470
+        y: 132
+        width: 35
+        height: 49
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 48b1eba7fda15b5458410b4d9ff710f6
+      internalID: 260644251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Campfire
+      rect:
+        serializedVersion: 2
+        x: 547
+        y: 123
+        width: 115
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2274e639453d214b885129756af97f2
+      internalID: -1512068112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Rock_4
+      rect:
+        serializedVersion: 2
+        x: 1371
+        y: 108
+        width: 64
+        height: 47
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0aa3ed4a18c8314d8b28566c78153d6
+      internalID: 284217243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Rock_1
+      rect:
+        serializedVersion: 2
+        x: 1754
+        y: 108
+        width: 110
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2efdae6a56efd9747b5a1423e48cf9ae
+      internalID: -1743367142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_17: 1930996576
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_18: 1168547563
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_23: 1693282047
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_42: 1210392850
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Bush: 304553306
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Campfire: -1512068112
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Grass: 162796300
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Grass_Snow: -1324378912
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Ground: -540753643
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Ground_Stalactite_Big: -1231409727
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Ground_Stalactite_Small: -1280121142
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_IceLayer_Left: 758913375
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_IceLayer_Mid: 284705895
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_IceLayer_Right: -348288755
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Ice_Stalactite_Big: -1770446742
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Ice_Stalactite_Small: 1101187675
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Lantern: 260644251
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Rock_1: -1743367142
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Rock_2: 197418316
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Rock_3: 94034774
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Rock_4: 284217243
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_SnowLayer_Left: 1889661282
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_SnowLayer_Mid: 1785720646
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_SnowLayer_Right: 412623745
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_: 1907278659
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_1: 2002847386
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_1_Broken_Bit_1: -1804753272
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_1_Broken_Bit_2: -609909537
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_1_Broken_Bit_3: 2005339086
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_1_Broken_Bit_4: 136103994
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_1_Broken_Bit_5: -973579278
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_2: 114669744
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_2_Broken: -1167634303
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_2_Broken_Bit_1: -1980945725
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_2_Broken_Bit_2: 1818495108
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_2_Broken_Bit_3: 1293929116
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_2_Broken_Bit_4: 1264879035
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_2_Broken_Bit_5: 1009447079
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_3: -1928319655
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vase_4: 1843084858
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vine_1: -889392059
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vine_2: 774279058
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Vine_3: 295594391
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

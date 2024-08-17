@@ -5,7 +5,7 @@ public class DamageState : State
     protected bool DamageTimeOver;
     protected bool IsPlayerInMinAgroRange;
 
-    public DamageState(EnemyEntity entity, EntityStateMachine stateMachine) : base(entity, stateMachine)
+    public DamageState(EnemyEntity entity, EntityStateMachine stateMachine, string animBoolName) : base(entity, stateMachine, animBoolName)
     {
     }
 

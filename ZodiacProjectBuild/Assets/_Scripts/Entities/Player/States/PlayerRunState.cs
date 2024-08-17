@@ -2,7 +2,13 @@ using UnityEngine;
 
 public class PlayerRunState : PlayerState
 {
-    public PlayerRunState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
+    bool _isGrounded;
+    bool _isCeiling;
+    bool _isLedge;
+    bool _isWall;
+    bool _isSlope;
+
+    public PlayerRunState(Player player, PlayerStateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
     {
     }
 
@@ -12,97 +18,85 @@ public class PlayerRunState : PlayerState
     {
         base.StateEnter();
 
-        Animator.SetBool("isRunning", true);
+        player.JumpState.ResetJumps();
     }
 
     public override void StateExit()
     {
         base.StateExit();
 
-        if (_player.SpeedParticles.isPlaying)
-            _player.SpeedParticles.Stop();
+        if (player.SpeedParticles.isPlaying)
+            player.SpeedParticles.Stop();
+    }
 
-        Animator.SetBool("isRunning", false);
+    public override void DoChecks()
+    {
+        base.DoChecks();
+
+        if (CollisionSensors)
+        {
+            _isLedge = CollisionSensors.IsLedgeHorizontal;
+            _isGrounded = CollisionSensors.IsGrounded;
+            _isCeiling = CollisionSensors.IsCeiling;
+            _isSlope = CollisionSensors.IsOnSlope;
+            _isWall = CollisionSensors.IsWall;
+        }
     }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
 
-        if (InputManager.AttackInput && _player.AttackState.CanAttack())
+        if (InputManager.instance.AttackInput && player.AttackState.CanAttack())
         {
-            ChangeState(_player.AttackState);
+            ChangeState(player.AttackState);
         }
 
-        if (
-            InputManager.MoveInput == Vector2.zero
-            || Mathf.Abs(InputManager.MoveInput.y) > 0.1f
-            )
+        if (InputManager.instance.BlockInput)
         {
-            ChangeState(_player.IdleState);
+            ChangeState(player.BlockState);
         }
 
-        // else if (
-        //     UserInput.MoveInput != Vector2.zero &&
-        //     !UserInput.RunIsHeld
-        //     )
-        // {
-        //     ChangeState(_player.WalkState);
-        // }
-
-        else if (
-            InputManager.JumpJustPressed
-            )
+        if (Mathf.Abs(InputManager.instance.MoveInput.x) < MoveData.MoveThreshold)
         {
-            if (_player.JumpState.CanJump())
+            ChangeState(player.IdleState);
+        }
+
+        else if (InputManager.instance.JumpJustPressed)
+        {
+            if (player.JumpState.CanJump())
             {
-                _player.SpawnParticles(_player.JumpParticles);
-
-                ChangeState(_player.JumpState);
+                ChangeState(player.JumpState);
             }
         }
 
-        else if (_player.JumpState.JumpBufferedOrCoyoteTimed())
+        else if (player.JumpState.JumpBufferedOrCoyoteTimed())
         {
-            _player.SpawnParticles(_player.JumpParticles);
-
-            ChangeState(_player.JumpState);
+            ChangeState(player.JumpState);
         }
-
-        // if (
-        //     InputManager.DashInput &&
-        //     (_player.DashState.CanDash() || _player.DashState.CanAirDash())
-        //     )
-        // {
-        //     ChangeState(_player.DashState);
-        // }
-
-        if (
-            InputManager.DashInput &&
-            _player.DashState.CanDash()
-            )
-        {
-            ChangeState(_player.DashState);
-        }
-
-        if (
-            InputManager.AbilityOne &&
-            (_player.AbilityOneState.CanCheck() || _player.AbilityOneState.CanAirCheck())
-            )
-        {
-            ChangeState(_player.AbilityOneState);
-        }
-
-
-        DashParticles();
-        HandleSpeedParticles();
     }
 
     public override void StateFixedUpdate()
     {
         base.StateFixedUpdate();
 
-        Movement.Move(InputManager.MoveInput, MoveStats.MaxRunSpeed, true);
+        player.Move(
+            MoveData.GroundAcceleration,
+            MoveData.GroundDeceleration,
+            InputManager.instance.MoveInput
+            );
+        
+        // if (!_isSlope)
+        // {
+        //     Movement.SetVelocityX(MoveData.MaxRunSpeed * InputManager.instance.MoveInput.x);
+        // }
+        // else if (_isSlope && CollisionSensors.CanWalkOnSlope)
+        // {
+        //     Movement.SetVelocity(
+        //         MoveData.MaxRunSpeed * CollisionSensors.SlopeNormalPerp.x * -InputManager.instance.MoveInput.x,
+        //         MoveData.MaxRunSpeed * CollisionSensors.SlopeNormalPerp.y * -InputManager.instance.MoveInput.x
+        //         );
+        // }
     }
 
     #endregion
@@ -113,15 +107,15 @@ public class PlayerRunState : PlayerState
     void HandleSpeedParticles()
     {
         // Debug.Log(Body.velocity.x);
-        if (Mathf.Abs(Movement.HorizontalVelocity) >= MoveStats.MaxRunSpeed - 2f)
+        if (Mathf.Abs(Movement.CurrentVelocity.x) >= MoveData.MaxRunSpeed - 2f)
             {
                 // Debug.Log("Speed!");
-                if (!_player.SpeedParticles.isPlaying)
-                    _player.SpeedParticles.Play();
+                if (!player.SpeedParticles.isPlaying)
+                    player.SpeedParticles.Play();
             }
         else
-            if (_player.SpeedParticles.isPlaying)
-                _player.SpeedParticles.Stop();
+            if (player.SpeedParticles.isPlaying)
+                player.SpeedParticles.Stop();
     }
 
     void DashParticles()
@@ -129,9 +123,9 @@ public class PlayerRunState : PlayerState
         float counter = 0f + Time.deltaTime;
         // Debug.Log(counter);
 
-        if (counter >= _player.DashParticleTime)
+        if (counter >= player.DashParticleTime)
         {
-            _player.DashParticles.Play();
+            player.DashParticles.Play();
             counter = 0f;
         }
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Combat : MonoBehaviour, IDamageable, IKnockbackable
@@ -25,13 +26,15 @@ public class Combat : MonoBehaviour, IDamageable, IKnockbackable
     #endregion
 
 
-    float knockbackStartTime;
+    float _knockbackStartTime;
 
     #region Callback Functions
 
     private void Awake()
     {
         entity = GetComponent<Entity>();
+
+        
     }
 
     private void Update()
@@ -52,7 +55,7 @@ public class Combat : MonoBehaviour, IDamageable, IKnockbackable
     #endregion
 
 
-    #region Functionality
+    #region Damage
 
     public void Damage(DamageData data)
     {
@@ -69,7 +72,60 @@ public class Combat : MonoBehaviour, IDamageable, IKnockbackable
         Stats.Health.Decrease(data.Amount);
         Debug.Log(Stats.Health.CurrentValue);
 
-        Vector3 relativePos = gameObject.transform.InverseTransformDirection(data.Source.transform.position);
+        SpawnDamageParticles(data.Source.transform.position);
+
+        IsInvincible = true;
+        if (entity.isActiveAndEnabled) StartCoroutine(ResetInvicible());
+    }
+
+    public void Die()
+    {
+        entity.Die();
+    }
+
+    #endregion
+
+
+    #region Knockback
+
+    public void Knockback(KnockbackData data)
+    {
+        HasKnockbacked = true;
+        
+        Movement.SetVelocity(data.Strength, data.Angle, data.Direction);
+        Movement.CanSetVelocity = false;
+        IsNotKnockbackable = true;
+        _knockbackStartTime = Time.time;
+    }
+
+    private void CheckKnockback()
+    {
+        if (
+            HasKnockbacked &&
+            ((Movement.Body.velocity.y <= 0.01f && CollisionSensors.IsGrounded)
+            || (Time.time >= _knockbackStartTime + MaxKnockbackTime))    
+        )
+        {  
+            HasKnockbacked = false;
+            Movement.CanSetVelocity = true;
+        }
+    }
+
+    #endregion
+
+    IEnumerator ResetInvicible()
+    {
+        yield return new WaitForSeconds(InvincibilityTime);
+
+        IsInvincible = false;
+        IsNotKnockbackable = false;
+    }
+
+    #region Effects
+
+    void SpawnDamageParticles(Vector3 sourcePos)
+    {
+        Vector3 relativePos = gameObject.transform.InverseTransformDirection(sourcePos);
         Quaternion rotation = Quaternion.FromToRotation
             (
                 Vector2.right,
@@ -81,44 +137,6 @@ public class Combat : MonoBehaviour, IDamageable, IKnockbackable
                 new Vector2(0.2f, 0f),
                 rotation
             );
-
-        IsInvincible = true;
-        StartCoroutine(ResetInvicible());
-    }
-
-    public void Die()
-    {
-        Destroy(gameObject);
-    }
-
-    public void Knockback(KnockbackData data)
-    {
-        HasKnockbacked = true;
-        
-        Movement.SetForce(data.Strength, data.Angle, data.Direction);
-        knockbackStartTime = Time.time;
-        IsNotKnockbackable = true;
-    }
-
-    private void CheckKnockback()
-    {
-        if (
-            HasKnockbacked &&
-            ((Movement.Body.velocity.y <= 0.01f && CollisionSensors.IsGrounded)
-            || (Time.time >= knockbackStartTime + MaxKnockbackTime))    
-        )
-        {  
-            HasKnockbacked = false;
-            Movement.SetVelocityZero();     
-        }
-    }
-
-    IEnumerator ResetInvicible()
-    {
-        yield return new WaitForSeconds(InvincibilityTime);
-
-        IsInvincible = false;
-        IsNotKnockbackable = false;
     }
 
     #endregion

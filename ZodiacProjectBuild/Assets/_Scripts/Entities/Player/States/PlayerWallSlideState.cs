@@ -5,11 +5,15 @@ public class PlayerWallSlideState : PlayerState
     #region Blackboard Variables
 
     public bool IsWallSliding { get; private set; }
-    public bool IsWallSlideFalling { get; set; }
+
+    bool _isWallLedge;
+    bool _isGrounded;
+    bool _isLedge;
+    bool _isWall;
 
     #endregion
 
-    public PlayerWallSlideState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
+    public PlayerWallSlideState(Player player, PlayerStateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
     {
     }
 
@@ -19,21 +23,52 @@ public class PlayerWallSlideState : PlayerState
     {
         base.StateEnter();
 
-        _player.AirborneState.ResetJumpValues();
-        _player.AirborneState.ResetWallJumpValues();
-
-        IsWallSliding = true;
-        IsWallSlideFalling = false;
-
-        if (_player.MoveStats.ResetJumpsOnWallSlide)
+        if (player.WallSlideParticles.isPlaying)
         {
-            _player.JumpState.ResetJumps();
+            player.WallSlideParticles.Stop(false, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
+        player.WallSlideParticles.gameObject.SetActive(true);
+        player.WallSlideParticles.Play();
+
+        if (player.MoveData.ResetJumpsOnWallSlide)
+        {
+            Debug.Log("Resetting");
+            player.JumpState.ResetJumps();
+        }
+
+        player.AirborneState.ResetJumpValues();
+        player.AirborneState.ResetWallJumpValues();
+
+        player.AirborneState.IsWallSlideFalling = false;
+        IsWallSliding = true;
+
+        if (player.MoveData.ResetJumpsOnWallSlide)
+            player.JumpState.ResetJumps();
     }
 
     public override void StateExit()
     {
         base.StateExit();
+
+        player.WallSlideParticles.Stop();
+    }
+
+    public override void DoChecks()
+    {
+        base.DoChecks();
+
+        if (CollisionSensors)
+        {
+            _isLedge = CollisionSensors.IsLedgeHorizontal;
+            _isWallLedge = CollisionSensors.IsWallLedge;
+            _isGrounded = CollisionSensors.IsGrounded;
+            _isWall = CollisionSensors.IsWall;
+        }
+
+        if (_isWallLedge && !_isLedge)
+        {
+            player.LedgeClimbState.SetDetectedPosition(player.transform.position);
+        }
     }
 
     public override void StateUpdate()
@@ -42,36 +77,39 @@ public class PlayerWallSlideState : PlayerState
 
         if (ShouldStopWallSliding())
         {
-            IsWallSlideFalling = true;
+            player.AirborneState.IsWallSlideFalling = true;
             StopWallSliding();
 
-            ChangeState(_player.AirborneState);
+            ChangeState(player.AirborneState);
+        }
+
+        else if (player.AirborneState.HasLanded())
+        {
+            ChangeState(player.LandState);
         }
 
         else if (
-            _player.AirborneState.HasLanded()
+            InputManager.instance.JumpJustPressed
+            && player.WallJumpState.CanWallJumpDueToPostBufferTimer()
+            && player.WallJumpEnabled
             )
         {
-            ChangeState(_player.IdleState);
+            player.WallJumpState.UseWallJumpMoveStats = true;
+            ChangeState(player.WallJumpState);
         }
 
-        else if (
-            InputManager.JumpJustPressed
-            && _player.WallJumpState.CanWallJumpDueToPostBufferTimer()
-            )
-        {  
-            //_player.WallJumpState.DetermineWallJumpDirection(CollisionSensors.IsWallFront);
-            _player.AirborneState.UseWallJumpMoveStats = true;
-
-            ChangeState(_player.WallJumpState);     
-        }
-
-        else if (
-            !CollisionSensors.IsWall || 
-            (InputManager.MoveInput.x != Movement.FacingDirection)
-            )
+        else if (CollisionSensors.IsGrounded)
         {
-            ChangeState(_player.AirborneState);
+            ChangeState(player.IdleState);
+        }
+        // else if (!_isWall || (InputManager.instance.MoveInput.x != Movement.FacingDirection))
+        // {
+        //     ChangeState(player.AirborneState);
+        // }
+
+        else if (_isWallLedge && !_isLedge)
+        {
+            ChangeState(player.LedgeClimbState);
         }
     }
 
@@ -79,9 +117,22 @@ public class PlayerWallSlideState : PlayerState
     {
         base.StateFixedUpdate();
 
-        Movement.SetVerticalVelocity(Mathf.Lerp(Movement.VerticalVelocity, -MoveStats.WallSlideVelocity, MoveStats.WallSlideDecelerationSpeed * Time.fixedDeltaTime));
-    
-        Movement.Move(InputManager.MoveInput, MoveStats.MaxRunSpeed);
+        Movement.SetVelocityY(
+            Mathf.Lerp(
+                Movement.CurrentVelocity.y,
+                -MoveData.WallSlideVelocity,
+                MoveData.WallSlideDecelerationSpeed * Time.fixedDeltaTime
+                )
+            );
+
+        if (player.WallJumpState.UseWallJumpMoveStats)
+            player.Move(
+                MoveData.WallJumpMoveAcceleration,
+                MoveData.WallJumpMoveDeceleration,
+                InputManager.instance.MoveInput
+                );
+
+        MoveCheck();
     }
 
     #endregion
@@ -91,14 +142,15 @@ public class PlayerWallSlideState : PlayerState
 
     public bool ShouldWallSlide()
     {
+        //Debug.Log(CollisionSensors.IsWall + ", " + !CollisionSensors.IsGrounded + ", " + !player.DashState.IsDashing);
         if (
             CollisionSensors.IsWall
             && !CollisionSensors.IsGrounded
-            && !_player.DashState.IsDashing
+            && !player.DashState.IsDashing
             )
         {
             if (
-                Movement.VerticalVelocity < 0f &&
+                Movement.CurrentVelocity.y < 0f &&
                 !IsWallSliding
                 )
             {
@@ -110,21 +162,65 @@ public class PlayerWallSlideState : PlayerState
     }
 
     public bool ShouldStopWallSliding()
-    => IsWallSliding
-    && CollisionSensors.IsWall
-    && !CollisionSensors.IsGrounded
-    && !_player.AirborneState.IsWallSlideFalling;
+    {
+        if (
+            IsWallSliding
+            && !CollisionSensors.IsWall
+            && !CollisionSensors.IsGrounded
+            && !player.AirborneState.IsWallSlideFalling
+            )
+        {
+            return true;
+        }
+
+        return false;
+    }
 
     #endregion
 
 
     #region Functionality
 
+    void MoveCheck()
+    {
+        if (CollisionSensors.WallHit.collider != null)
+        {
+            Vector2 hitPosition = CollisionSensors.WallHit.collider.ClosestPoint(player.transform.position);
+
+            if (InputManager.instance.MoveInput.x > 0 && hitPosition.x > player.transform.position.x)
+            {
+                player.Move(
+                    MoveData.AirAcceleration,
+                    MoveData.AirDeceleration,
+                    Vector2.zero
+                    );
+            }
+
+            else if (InputManager.instance.MoveInput.x < 0 && hitPosition.x < player.transform.position.x)
+            {
+                player.Move(
+                    MoveData.AirAcceleration,
+                    MoveData.AirDeceleration,
+                    Vector2.zero
+                    );
+            }
+
+            else
+            {
+                player.Move(
+                    MoveData.AirAcceleration,
+                    MoveData.AirDeceleration,
+                    InputManager.instance.MoveInput
+                    );
+            }
+        }
+    }
+
     public void StopWallSliding()
     {
         if (IsWallSliding)
         {
-            _player.JumpState.NumberOfJumpsUsed++;
+            player.JumpState.AmountOfJumpsLeft--;
 
             IsWallSliding = false;
         }

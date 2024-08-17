@@ -12,7 +12,7 @@ public class IdleState : State
 
     #endregion
 
-    public IdleState(EnemyEntity entity, EntityStateMachine stateMachine) : base(entity, stateMachine)
+    public IdleState(EnemyEntity entity, EntityStateMachine stateMachine, string animBoolName) : base(entity, stateMachine, animBoolName)
     {
     }
 
@@ -22,7 +22,7 @@ public class IdleState : State
     {
         base.StateEnter();
 
-        Movement?.SetHorizontalVelocity(0f);
+        Movement?.SetVelocityX(0f);
 
         IdleTimeOver = false;
 
@@ -53,7 +53,7 @@ public class IdleState : State
     {
         base.StateUpdate();
 
-        Movement?.SetHorizontalVelocity(0f);
+        Movement?.SetVelocityX(0f);
 
         if (Time.time >= StartTime + IdleTime)
             IdleTimeOver = true;

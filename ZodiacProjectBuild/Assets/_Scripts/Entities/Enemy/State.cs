@@ -8,11 +8,13 @@ public class State
     public float StateTime => Time.time - StartTime;
 
     protected EnemyEntity entity;
-    protected EntityData EntityData => entity.EntityData;
+    protected SOEntityData EntityData => entity.EntityData;
     protected Animator Animator => entity.Animator;
     protected Movement Movement => entity.Movement;
     protected Rigidbody2D Body => Movement.Body;
     protected CollisionSensors CollisionSensors => entity.CollisionSensors;
+
+    protected string animBoolName;
     
     protected EntityStateMachine stateMachine;
     public State CurrentState => stateMachine.CurrentState;
@@ -20,18 +22,20 @@ public class State
     protected void ChangeState(State newState, bool forceReset = false)
     => stateMachine.ChangeState(newState, forceReset);
 
-    public State(EnemyEntity entity, EntityStateMachine stateMachine)
+    public State(EnemyEntity entity, EntityStateMachine stateMachine, string animBoolName)
     {
         this.entity = entity;
         this.stateMachine = stateMachine;
+        this.animBoolName = animBoolName;
     }
 
     public virtual void StateEnter()
     {
-        // Debug.Log("Enter " + this.GetType().Name);
+        Debug.Log("Enter " + this.GetType().Name);
 
         IsExitingState = false;
         StartTime = Time.time;
+        Animator.SetBool(animBoolName, true);
         IsAnimationFinished = false;
 
         StateChecks();
@@ -40,6 +44,7 @@ public class State
     public virtual void StateExit()
     {
         IsExitingState = true;
+        Animator.SetBool(animBoolName, false);
     }
 
     public virtual void StateUpdate() { }
@@ -53,7 +58,4 @@ public class State
     {
         
     }
-
-    public virtual void AnimationTrigger() {}
-    public virtual void AnimationFinishedTrigger() => IsAnimationFinished = true;
 }

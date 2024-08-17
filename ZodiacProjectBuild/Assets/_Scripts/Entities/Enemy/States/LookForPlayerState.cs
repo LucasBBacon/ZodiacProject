@@ -15,7 +15,7 @@ public class LookForPlayerState : State
 
     #endregion
 
-    public LookForPlayerState(EnemyEntity entity, EntityStateMachine stateMachine) : base(entity, stateMachine)
+    public LookForPlayerState(EnemyEntity entity, EntityStateMachine stateMachine, string animBoolName) : base(entity, stateMachine, animBoolName)
     {
     }
 
@@ -31,7 +31,7 @@ public class LookForPlayerState : State
         LastTurnTime = StartTime;
         AmountOfTurnsDone = 0;
 
-        Movement?.SetHorizontalVelocity(0f);
+        Movement.SetVelocityX(0f);
     }
 
     public override void StateExit()
@@ -50,13 +50,13 @@ public class LookForPlayerState : State
     {
         base.StateUpdate();
 
-        Movement?.SetHorizontalVelocity(0f);
+        Movement.SetVelocityX(0f);
 
         if (
             TurnImmediately
             )
         {
-			Movement?.Turn();
+			Movement.Turn();
 			
             LastTurnTime = Time.time;
 			AmountOfTurnsDone++;
@@ -68,7 +68,7 @@ public class LookForPlayerState : State
             !IsAllTurnsDone
         )
         {
-			Movement?.Turn();
+			Movement.Turn();
 			LastTurnTime = Time.time;
 			AmountOfTurnsDone++;
 		}

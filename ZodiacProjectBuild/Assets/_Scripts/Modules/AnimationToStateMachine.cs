@@ -10,8 +10,18 @@ public class AnimationToStateMachine : MonoBehaviour
     }
 
     private void TriggerAttack()
-    => birdEnemy.MeleeAttackState.AnimationTrigger();
+    {
+        birdEnemy.MeleeAttackState.TriggerAttack();
+    }
 
     private void FinishAttack()
-    => birdEnemy.MeleeAttackState.AnimationFinishedTrigger();
+    {
+        birdEnemy.MeleeAttackState.FinishAttack();
+        birdEnemy.SpecialAttackState.FinishAttack();
+    }
+
+    private void TriggerRangedAttack()
+    {
+        birdEnemy.SpecialAttackState.TriggerAttack();
+    }
 }

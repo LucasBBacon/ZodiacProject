@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour
@@ -6,6 +7,7 @@ public class MovingPlatform : MonoBehaviour
     [SerializeField] GameObject wayPointsGO;
     [SerializeField] Transform[] wayPoints;
     [SerializeField] float speed = 1.5f;
+    [SerializeField] float waitDuration = 0.5f;
 
     Movement movement;
     Rigidbody2D playerBody;
@@ -21,7 +23,7 @@ public class MovingPlatform : MonoBehaviour
 
     private void Awake()
     {
-        movement = GameObject.FindGameObjectWithTag("Player").GetComponent<Movement>();
+        movement = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Movement>();
         
         body = GetComponent<Rigidbody2D>();
 
@@ -62,7 +64,7 @@ public class MovingPlatform : MonoBehaviour
             Debug.Log("On Platform");
             movement.IsOnPlatform = true;
             movement.PlatformBody = body;
-            playerBody.gravityScale = 50;
+            playerBody.gravityScale *= 10;
         }
     }
 
@@ -71,7 +73,7 @@ public class MovingPlatform : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             movement.IsOnPlatform = false;
-            playerBody.gravityScale = 0;
+            playerBody.gravityScale /= 10;
         }
     }
 
@@ -83,6 +85,7 @@ public class MovingPlatform : MonoBehaviour
     private void NextPoint()
     {
         transform.position = targetPos;
+        moveDirection = Vector3.zero;
 
         if (pointIndex == pointCount - 1)
         {
@@ -97,6 +100,13 @@ public class MovingPlatform : MonoBehaviour
 
         pointIndex += direction;
         targetPos = wayPoints[pointIndex].transform.position;
+        
+        StartCoroutine(WaitNextPoint());
+    }
+
+    IEnumerator WaitNextPoint()
+    {
+        yield return new WaitForSeconds(waitDuration);
         DirectionToCalculate();
     }
 }

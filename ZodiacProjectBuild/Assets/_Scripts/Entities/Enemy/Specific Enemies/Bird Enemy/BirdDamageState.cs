@@ -4,7 +4,7 @@ public class BirdDamageState : DamageState
 {
     BirdEnemy enemy;
 
-    public BirdDamageState(EnemyEntity entity, EntityStateMachine stateMachine, BirdEnemy enemy) : base(entity, stateMachine)
+    public BirdDamageState(EnemyEntity entity, EntityStateMachine stateMachine, BirdEnemy enemy, string animBoolName) : base(entity, stateMachine, animBoolName)
     {
         this.enemy = enemy;
     }
@@ -12,15 +12,11 @@ public class BirdDamageState : DamageState
     public override void StateEnter()
     {
         base.StateEnter();
-
-        Animator.SetBool(BirdEnemy.DAMAGE, true);
     }
 
     public override void StateExit()
     {
         base.StateExit();
-
-        Animator.SetBool(BirdEnemy.DAMAGE, false);
     }
 
     public override void StateUpdate()

@@ -12,7 +12,8 @@ public class ParticleManager : MonoBehaviour
 
     private void Start()
     {
-        movement = GetComponentInParent<Movement>();    
+        movement = GetComponentInChildren<Movement>();
+        Debug.Log(movement);  
     }
 
     public void StartEffect

@@ -12,7 +12,7 @@ public class PlayerDetectedState : State
     
     #endregion
 
-    public PlayerDetectedState(EnemyEntity entity, EntityStateMachine stateMachine) : base(entity, stateMachine)
+    public PlayerDetectedState(EnemyEntity entity, EntityStateMachine stateMachine, string animBoolName) : base(entity, stateMachine, animBoolName)
     {
     }
 
@@ -22,7 +22,7 @@ public class PlayerDetectedState : State
     {
         base.StateEnter();
 
-        Movement?.SetHorizontalVelocity(0f);
+        Movement.SetVelocityZero();
     }
 
     public override void StateExit()
@@ -45,7 +45,7 @@ public class PlayerDetectedState : State
     {
         base.StateUpdate();
 
-        Movement?.SetHorizontalVelocity(0f);
+        Movement.SetVelocityZero();
 
         if (Time.time >= StartTime + EntityData.LongRangeActionTime)
         {

@@ -4,7 +4,9 @@ public class BirdPlayerDetectedState : PlayerDetectedState
 {
     BirdEnemy birdEnemy;
 
-    public BirdPlayerDetectedState(EnemyEntity entity, EntityStateMachine stateMachine, BirdEnemy birdEnemy) : base(entity, stateMachine)
+    bool _shouldAttack;
+
+    public BirdPlayerDetectedState(EnemyEntity entity, EntityStateMachine stateMachine, BirdEnemy birdEnemy, string animBoolName) : base(entity, stateMachine, animBoolName)
     {
         this.birdEnemy = birdEnemy;
     }
@@ -14,15 +16,11 @@ public class BirdPlayerDetectedState : PlayerDetectedState
     public override void StateEnter()
     {
         base.StateEnter();
-
-        Animator.SetBool(BirdEnemy.PLAYER_DETECTED, true);
     }
 
     public override void StateExit()
     {
         base.StateExit();
-
-        Animator.SetBool(BirdEnemy.PLAYER_DETECTED, false);
     }
 
     public override void StateUpdate()
@@ -31,9 +29,21 @@ public class BirdPlayerDetectedState : PlayerDetectedState
 
         if (
             PerformCloseRangeAction
+            && _shouldAttack
             )
         {
+            _shouldAttack = !_shouldAttack;
             ChangeState(birdEnemy.MeleeAttackState);
+        }
+
+        else if (
+            PerformCloseRangeAction
+            && !_shouldAttack
+            )
+        {
+            Debug.Log("I should be doing special attack rn!");
+            _shouldAttack = !_shouldAttack;
+            ChangeState(birdEnemy.SpecialAttackState);
         }
 
         else if (
@@ -54,7 +64,7 @@ public class BirdPlayerDetectedState : PlayerDetectedState
             !IsDetectingLedge
             )
         {
-            Movement?.Turn();
+            Movement.Turn();
             ChangeState(birdEnemy.MoveState);
         }
     }

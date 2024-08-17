@@ -1,0 +1,222 @@
+fileFormatVersion: 2
+guid: 2ef4a8232b073d546ae9594641cc7991
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Front_Rock2
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 551
+        width: 315
+        height: 529
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2348afa7618f634fa653b6786d44c3d
+      internalID: -2002082114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Front_Rock1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 573
+        width: 575
+        height: 419
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 172b28894669659468fe9da308b6510c
+      internalID: 146214567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Front_Ice1
+      rect:
+        serializedVersion: 2
+        x: 1136
+        y: 426
+        width: 314
+        height: 577
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b95409e88d03cc4caf5d3cce1f7c8aa
+      internalID: 784186795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Front_Ice2
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 43
+        width: 519
+        height: 504
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1344b09148c8ff643b3041f0b4d16a19
+      internalID: -330554795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Front_Ice1: 784186795
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Front_Ice2: -330554795
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Front_Rock1: 146214567
+      SPRITESHEET_ENV_MIDGROUND_MountainClimb_Assets_Front_Rock2: -2002082114
+      Stuff_To_Go_In_Front_1: -1918575625
+      Stuff_To_Go_In_Front_10: -941226261
+      Stuff_To_Go_In_Front_11: -123628809
+      Stuff_To_Go_In_Front_12: -330794913
+      Stuff_To_Go_In_Front_13: 1741430890
+      Stuff_To_Go_In_Front_14: -1079875989
+      Stuff_To_Go_In_Front_15: 974208017
+      Stuff_To_Go_In_Front_16: -473823960
+      Stuff_To_Go_In_Front_17: 1037877719
+      Stuff_To_Go_In_Front_18: 1083063915
+      Stuff_To_Go_In_Front_19: -1476422609
+      Stuff_To_Go_In_Front_2: 1855317669
+      Stuff_To_Go_In_Front_23: -1585569974
+      Stuff_To_Go_In_Front_3: -414730188
+      Stuff_To_Go_In_Front_4: 795746954
+      Stuff_To_Go_In_Front_5: 2080414809
+      Stuff_To_Go_In_Front_6: 1549076640
+      Stuff_To_Go_In_Front_7: -70896806
+      Stuff_To_Go_In_Front_8: -581353396
+      Stuff_To_Go_In_Front_9: -2051384410
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

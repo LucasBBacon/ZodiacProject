@@ -8,27 +8,21 @@ public class PlayerDashState : PlayerState
     public Vector2 DashDirection;
 
     public bool IsDashing;
-    public bool IsDashAttacking;
-    public bool IsDashRefilling;
-    public bool IsAirDashing;
 
-    public int NumberOfDashesLeft;
-    public int NumberOfDashesUsed;
+    bool _isAbilityDone;
 
-    public float DashTimer;
-    public float DashBufferTimer;
-    public float WallJumpPostBufferTimer;
-    public float DashOnGroundTimer;
-
-    public int DashDirectionMult;
-
-    public float DashFastFallTime { get; private set; }
-    public float DashFastFallReleaseSpeed { get; private set; }
-    public bool IsDashFastFalling { get; private set; }
+    bool _isGrounded;
+    bool _isSlope;
+    
+    float _lastPressedDashTime;
+    int _numberOfDashesLeft;
+    bool _isDashAttacking;
+    bool _dashRefilling;
+    Vector2 _lastDashDirection;
 
     #endregion
 
-    public PlayerDashState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
+    public PlayerDashState(Player player, PlayerStateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
     {
     }
 
@@ -38,33 +32,19 @@ public class PlayerDashState : PlayerState
     {
         base.StateEnter();
 
-        // _player.Sleep(MoveStats.DashSleepTime);
+        _isAbilityDone = false;
 
-        // Vector2 lastDashDirection;
+        player.Sleep(MoveData.DashSleepTime);
 
-        // if (UserInput.MoveInput != Vector2.zero)
-        //     lastDashDirection =  UserInput.MoveInput;
-        // else
-        //     lastDashDirection = Movement.IsFacingRight ? Vector2.right : Vector2.left;
-
-        // IsDashing = true;
+        if (InputManager.instance.MoveInput != Vector2.zero)
+            _lastDashDirection = InputManager.instance.MoveInput;
         
-        // _player.AirborneState.IsJumping = false;
+        else
+            _lastDashDirection = Movement.IsFacingRight ? Vector2.right : Vector2.left;
 
-        // _player.StartCoroutine(StartDash(lastDashDirection));
+        IsDashing = true;
 
-        // if (
-        //     CollisionSensors.IsGrounded
-        //     )
-        // {
-        //     ChangeState(_player.IdleState);
-        // }
-        // else
-        // {
-        //     ChangeState(_player.AirborneState);
-        // }
-
-        InitiateDash();
+        player.StartCoroutine(StartDash(_lastDashDirection));
     }
 
     public override void StateExit()
@@ -72,41 +52,30 @@ public class PlayerDashState : PlayerState
         base.StateExit();
     }
 
+    public override void DoChecks()
+    {
+        base.DoChecks();
+
+        if (CollisionSensors)
+        {
+            _isGrounded = CollisionSensors.IsGrounded;
+            _isSlope = CollisionSensors.IsOnSlope;
+        }
+    }
+
     public override void StateUpdate()
     {
         base.StateUpdate();
 
-        //Debug.Log(IsDashing + ", " + CollisionSensors.IsGrounded + ", " + IsExitingState);
-
-        if (_player.WallSlideState.ShouldWallSlide())
+        if (_isAbilityDone)
         {
-            ChangeState(_player.AirborneState);
-        }
-
-        else if (
-            !IsDashing &&
-            !CollisionSensors.IsGrounded &&
-            !IsExitingState
-            )
-        {
-            ChangeState(_player.AirborneState);
-        }
-
-        else if (
-            !IsDashing &&
-            CollisionSensors.IsGrounded &&
-            !IsExitingState
-            )
-        {
-            ChangeState(_player.IdleState);
-        }
-
-        else if (InputManager.JumpJustPressed)
-        {
-            if (_player.JumpState.CanJump())
+            if (_isGrounded && Movement.CurrentVelocity.y < 0.01f)
             {
-                _player.SpawnParticles(_player.JumpParticles);
-                ChangeState(_player.JumpState);
+                ChangeState(player.IdleState);
+            }
+            else
+            {
+                ChangeState(player.AirborneState);
             }
         }
     }
@@ -114,8 +83,6 @@ public class PlayerDashState : PlayerState
     public override void StateFixedUpdate()
     {
         base.StateFixedUpdate();
-
-        DashPhysics();
     }
 
     #endregion
@@ -126,20 +93,15 @@ public class PlayerDashState : PlayerState
     public bool CanDash()
     {
         if (
-            CollisionSensors.IsGrounded &&
-            DashOnGroundTimer < 0 &&
-            !IsDashing &&
-            NumberOfDashesUsed < MoveStats.NumberOfDashes
+            !IsDashing
+            && _numberOfDashesLeft < MoveData.NumberOfDashes
+            && _isGrounded
+            && !_dashRefilling
             )
-        {
-            //Debug.Log("Can Dash");
-            return true;
-        }
-        else
-        {
-            //Debug.Log("No Dash");
-            return false;
-        }
+            player.StartCoroutine(RefillDash(1));
+        
+        Debug.Log(_numberOfDashesLeft > 0);
+        return _numberOfDashesLeft > 0;   
     }
 
     #endregion
@@ -148,157 +110,68 @@ public class PlayerDashState : PlayerState
     #region Functionality
 
     public void ResetDashes()
-    => NumberOfDashesUsed = 0;
+    => _numberOfDashesLeft = MoveData.NumberOfDashes;
 
-    public void ResetDashValues()
-    {
-        IsDashFastFalling = false;
-        DashOnGroundTimer = -0.01f;
-    }
-
-    public void DashTimers()
-    {
-        if (CollisionSensors.IsGrounded)
-            DashOnGroundTimer -= Time.deltaTime;
-    }
-
-
-    public void InitiateDash()
-    {
-        NumberOfDashesUsed++;
-        IsDashing = true;
-        DashTimer = 0f;
-        DashOnGroundTimer = MoveStats.TimeBetweenDashesGround;
-
-        DashDirection = Movement.IsFacingRight ? Vector2.right : Vector2.left;
-
-        _player.AirborneState.ResetJumpValues();
-        _player.AirborneState.ResetWallJumpValues();
-    }
-
-    public void DashPhysics()
-    {
-        if (IsDashing)
-        {
-            DashTimer += Time.fixedDeltaTime;
-            
-            if (DashTimer >= MoveStats.DashTime)
-            {
-                if (CollisionSensors.IsGrounded)
-                {
-                    ResetDashes();
-                }
-                
-                IsAirDashing = false;
-                IsDashing = false;
-
-                if (
-                    !_player.AirborneState.IsJumping
-                    && !_player.AirborneState.IsWallJumping
-                    )
-                {
-                    DashFastFallTime = 0f;
-                    DashFastFallReleaseSpeed = Movement.VerticalVelocity;
-
-                    if (!CollisionSensors.IsGrounded)
-                    {
-                        IsDashFastFalling = true;
-                    }
-                }
-
-                return;
-            }
-
-            Movement.HorizontalVelocity = MoveStats.DashSpeed * CollisionSensors.SlopeNormalPerp.x * -DashDirection.x;
-            Movement.VerticalVelocity = MoveStats.DashSpeed * CollisionSensors.SlopeNormalPerp.y;
-
-            if (DashDirection.y != 0f)
-            {
-                Movement.SetVerticalVelocity(MoveStats.DashSpeed * DashDirection.y);
-            }
-        }
-        // dash cut time
-        else if (IsDashFastFalling)
-        {
-            if (Movement.VerticalVelocity > 0f)
-            {
-                if (DashFastFallTime < MoveStats.DashTimeForUpwardsCancel)
-                {
-                    Movement.SetVerticalVelocity
-                        (
-                            Mathf.Lerp
-                                (
-                                    DashFastFallReleaseSpeed,
-                                    0f,
-                                    DashFastFallTime / MoveStats.DashTimeForUpwardsCancel
-                                )
-                        );
-                }
-
-                else if (DashFastFallTime >= MoveStats.DashTimeForUpwardsCancel)
-                {
-                    Movement.IncrementVerticalVelocity
-                        (
-                            MoveStats.Gravity * MoveStats.DashGravityOnReleaseMultiplier * Time.fixedDeltaTime
-                        );
-                }
-
-                DashFastFallTime += Time.fixedDeltaTime;
-            }
-            else
-            {
-                Movement.IncrementVerticalVelocity
-                    (
-                        MoveStats.Gravity * MoveStats.DashGravityOnReleaseMultiplier * Time.fixedDeltaTime
-                    );
-            }
-        }
-    }
-
-    /*
     IEnumerator StartDash(Vector2 direction)
     {
-        DashBufferTimer = 0f;
+        _lastPressedDashTime = 0;
 
-        startTime = Time.time;
+        float startTime = Time.time;
 
-        NumberOfDashesLeft--;
-        IsDashAttacking = true;
+        _numberOfDashesLeft--;
+        _isDashAttacking = true;
 
-        Movement.SetVerticalVelocity(false, 0f, 0f);
+        Movement.SetVelocityY(0f);
 
-        while (Time.time - startTime <= MoveStats.DashAttackTime)
+        while (Time.time - startTime <= MoveData.DashAttackTime)
         {
-            DashParticles();
-
-            Movement.SetVelocity(MoveStats.DashSpeed, direction.normalized);
+            Movement.SetVelocity(
+                MoveData.DashSpeed * CollisionSensors.SlopeNormalPerp.x * -direction.normalized.x,
+                MoveData.DashSpeed * CollisionSensors.SlopeNormalPerp.y * -direction.normalized.x
+                );
 
             yield return null;
         }
 
         startTime = Time.time;
 
-        IsDashAttacking = false;
+        _isDashAttacking = false;
 
-        Body.velocity = direction.normalized * MoveStats.DashEndSpeed;
+        // Body.gravityScale = MoveData.GravityScale;
 
-        while (Time.time - startTime <= MoveStats.DashEndTime)
+        if (!_isSlope)
+        {
+            Movement.SetVelocity(MoveData.DashEndSpeed, direction.normalized);
+        }
+        else if (_isSlope && CollisionSensors.CanWalkOnSlope)
+        {
+            Movement.SetVelocity(
+                MoveData.DashEndSpeed * CollisionSensors.SlopeNormalPerp.x * -direction.normalized.x,
+                MoveData.DashEndSpeed * CollisionSensors.SlopeNormalPerp.y * -direction.normalized.x
+                );
+        }
+
+        Movement.SetVelocityY(Mathf.Clamp(Movement.CurrentVelocity.y, -MoveData.MaxFallSpeed, 50f));
+
+        while (Time.time - startTime <= MoveData.DashEndTime)
+        {
             yield return null;
+        }
 
-        IsDashing = false;
+        player.StartCoroutine(RefillDash(1));
+
+        _isAbilityDone = true;
     }
 
     IEnumerator RefillDash(int amount)
     {
-        IsDashRefilling = true;
+        _dashRefilling = true;
 
-        yield return new WaitForSeconds(MoveStats.DashRefillTime);
+        yield return new WaitForSeconds(MoveData.DashRefillTime);
 
-        IsDashRefilling = false;
-
-        NumberOfDashesLeft = Mathf.Min(MoveStats.DashAmount, NumberOfDashesLeft + amount);
+        _dashRefilling = false;
+        _numberOfDashesLeft = Mathf.Min(MoveData.NumberOfDashes, _numberOfDashesLeft + amount);
     }
-    */
 
     #endregion
 
@@ -310,9 +183,9 @@ public class PlayerDashState : PlayerState
         float counter = 0f + Time.deltaTime;
         Debug.Log(counter);
 
-        if (counter >= _player.DashParticleTime)
+        if (counter >= player.DashParticleTime)
         {
-            _player.DashParticles.Play();
+            player.DashParticles.Play();
             counter = 0f;
         }
     }

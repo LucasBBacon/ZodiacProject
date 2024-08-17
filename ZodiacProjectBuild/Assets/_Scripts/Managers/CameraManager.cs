@@ -7,16 +7,18 @@ public class CameraManager : MonoBehaviour
     public static CameraManager instance;
 
     [SerializeField] CinemachineVirtualCamera[] _allVirtualCameras;
+    CompositeCollider2D _currentCollider;
+    CinemachineConfiner2D _cameraConfiner;
 
     [Header("Y Damping during free fall")]
     [SerializeField] float _fallPanAmount = 0.25f;
     [SerializeField] float _fallYPanTime = 0.35f;
-    float _fallSpeedYDampingChangeThreshold = -15f;
+    //float _fallSpeedYDampingChangeThreshold = -15f;
 
     public bool IsLerpingYDamping { get; private set; }
     public bool LerpedFromplayerFalling { get; set;}
 
-    CinemachineVirtualCamera _currentCamera;
+    public CinemachineVirtualCamera CurrentCamera { get; private set; }
     CinemachineFramingTransposer _framingTransposer;
 
     float _normYPanAmount;
@@ -30,9 +32,9 @@ public class CameraManager : MonoBehaviour
         {
             if (_allVirtualCameras[i].enabled)
             {
-                _currentCamera = _allVirtualCameras[i];
+                CurrentCamera = _allVirtualCameras[i];
 
-                _framingTransposer = _currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+                _framingTransposer = CurrentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
             }
         }
 
@@ -40,6 +42,26 @@ public class CameraManager : MonoBehaviour
 
         _startingTrackedObjectOffset = _framingTransposer.m_TrackedObjectOffset;
     }
+
+    private void Start() {
+        SetCameraBoundary();
+    }
+
+    #region Boundary
+
+    public void SetCameraBoundary()
+    {
+        _cameraConfiner = CurrentCamera.GetComponent<CinemachineConfiner2D>();
+        Debug.Log(_cameraConfiner);
+        if (GameObject.FindGameObjectWithTag("CameraBoundary").GetComponent<CompositeCollider2D>())
+        {
+            _currentCollider = GameObject.FindGameObjectWithTag("CameraBoundary").GetComponent<CompositeCollider2D>();
+            Debug.Log(_currentCollider);
+            _cameraConfiner.m_BoundingShape2D = _currentCollider;
+        }
+    }
+
+    #endregion
 
 
     #region Lerp Y Damping
@@ -246,28 +268,28 @@ public class CameraManager : MonoBehaviour
     {
         if
         (
-            _currentCamera == cameraFromLeft &&
+            CurrentCamera == cameraFromLeft &&
             triggerExitDirection.x > 0f
         )
         {
             cameraFromRight.enabled = true;
             cameraFromLeft.enabled = false;
 
-            _currentCamera = cameraFromRight;
-            _framingTransposer = _currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+            CurrentCamera = cameraFromRight;
+            _framingTransposer = CurrentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         }
 
         else if
         (
-            _currentCamera == cameraFromRight &&
+            CurrentCamera == cameraFromRight &&
             triggerExitDirection.x < 0f
         )
         {
             cameraFromLeft.enabled = true;
             cameraFromRight.enabled = false;
 
-            _currentCamera = cameraFromLeft;
-            _framingTransposer = _currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+            CurrentCamera = cameraFromLeft;
+            _framingTransposer = CurrentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         }
     }
 

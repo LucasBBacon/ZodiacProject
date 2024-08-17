@@ -3,8 +3,9 @@ using UnityEngine;
 public class BirdIdleState : IdleState
 {
     BirdEnemy enemy;
+    float _restingTime;
 
-    public BirdIdleState(EnemyEntity entity, EntityStateMachine stateMachine, BirdEnemy enemy) : base(entity, stateMachine)
+    public BirdIdleState(EnemyEntity entity, EntityStateMachine stateMachine, BirdEnemy enemy, string animBoolName) : base(entity, stateMachine, animBoolName)
     {
         this.enemy = enemy;
     }
@@ -12,34 +13,38 @@ public class BirdIdleState : IdleState
     public override void StateEnter()
     {
         base.StateEnter();
-
-        Animator.SetBool(BirdEnemy.IDLE, true);
     }
 
     public override void StateExit()
     {
         base.StateExit();
-
-        Animator.SetBool(BirdEnemy.IDLE, false);
     }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
 
-        if (
-            IsPlayerInMinAgroRange
-            )
+        //Debug.Log(_restingTime);
+
+        if (_restingTime > 0)
+            _restingTime -= Time.deltaTime;
+
+        if (_restingTime <= 0)
         {
-            ChangeState(enemy.PlayerDetectedState);
-        }
+            if (
+                IsPlayerInMinAgroRange
+                )
+            {
+                ChangeState(enemy.PlayerDetectedState);
+            }
 
         
-        else if (
-            IdleTimeOver
-            )
-        {
-            ChangeState(enemy.MoveState);
+            else if (
+                IdleTimeOver
+                )
+            {
+                ChangeState(enemy.MoveState);
+            }
         }
     }
 
@@ -47,4 +52,7 @@ public class BirdIdleState : IdleState
     {
         base.StateFixedUpdate();
     }
+
+    public void SetIsResting(float restTime)
+    => _restingTime = restTime;
 }

@@ -10,7 +10,7 @@ public class AttackState : State
 
     #endregion
 
-    public AttackState(EnemyEntity entity, EntityStateMachine stateMachine, Transform attackPosition) : base(entity, stateMachine)
+    public AttackState(EnemyEntity entity, EntityStateMachine stateMachine, string animBoolName, Transform attackPosition) : base(entity, stateMachine, animBoolName)
     {
         this.AttackPosition = attackPosition;
     }
@@ -23,7 +23,7 @@ public class AttackState : State
 
         IsAnimationFinished = false;
 
-        Movement?.SetHorizontalVelocity(0f);
+        Movement?.SetVelocityX(0f);
     }
 
     public override void StateExit()
@@ -42,8 +42,13 @@ public class AttackState : State
     {
         base.StateUpdate();
     
-        Movement?.SetHorizontalVelocity(0f);
+        Movement?.SetVelocityX(0f);
     }
+
+    public virtual void TriggerAttack() { }
+
+    public virtual void FinishAttack()
+    => IsAnimationFinished = true;
 
     #endregion
 }

@@ -1,178 +1,168 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerWallJumpState : PlayerState
 {
-    /*
-
-    #region Callback Functions
-
-    public override void StateEnter()
-    {
-        base.StateEnter();
-
-        _player.JumpState.NumberOfJumpsUsed = 0;
-
-        // Movement.SetVelocity(MoveStats.WallJumpVelocity, MoveStats.WallJumpAngle, wallJumpDirection);
-
-        Movement.SetVerticalVelocity(MoveStats.WallJumpVelocity * MoveStats.WallJumpAngle.normalized.y);
-
-        Movement.SetHorizontalVelocity
-            (
-                MoveStats.WallJumpVelocity * MoveStats.WallJumpAngle.normalized.x * wallJumpDirection
-            );
-
-        Movement.TurnCheck(wallJumpDirection);
-        _player.AirborneState.IsWallJumping = true;
-
-        _player.JumpState.NumberOfJumpsUsed = MoveStats.NumberOfJumpsAllowed;
-
-        if (!_player.TrailRenderer.emitting)
-            _player.TrailRenderer.emitting = true;
-
-        // if (_player.JumpState.JumpReleasedDuringBuffer)
-        // {
-        //     _player.AirborneState.IsFastFalling = true;
-        //     _player.AirborneState.FastFallReleaseSpeed = Movement.VerticalVelocity;
-        // }
-
-        ChangeState(_player.AirborneState);
-    }
-
-    public override void StateExit()
-    {
-        base.StateExit();
-    }
-
-    public override void StateUpdate()
-    {
-        base.StateUpdate();
-    }
-
-    public override void StateFixedUpdate()
-    {
-        base.StateFixedUpdate();
-
-        Movement.Move(InputManager.MoveInput, MoveStats.MaxRunSpeed);
-        
-        // Body.velocity = new Vector2(Body.velocity.x, Movement.VerticalVelocity);
-    }
-
-    #endregion
-
-
-    #region Checks
-
-    public bool CanWallJump()
-    {
-        if (
-            _player.JumpState.JumpBufferTimer > 0f &&
-            !_player.AirborneState.IsWallJumping &&
-            (CollisionSensors.IsWall || _player.JumpState.CoyoteTimer > 0f)
-        )
-        {
-            _player.JumpState.JumpBufferTimer = 0f;
-
-            _player.AirborneState.IsFastFalling = false;
-            _player.AirborneState.IsFalling = false;
-
-            
-            return true;
-        }
-        
-        return false;
-    }
-
-    public void DetermineWallJumpDirection(bool isTouchingRightWall)
-    {
-        if (isTouchingRightWall)
-            wallJumpDirection = -(Movement.IsFacingRight ? 1 : -1);
-        else
-            wallJumpDirection = Movement.IsFacingRight ? 1 : -1;
-    }
-
-    #endregion
-
-    */
-
+    public bool UseWallJumpMoveStats { get; set; }
     public float WallJumpPostBufferTimer { get; set; }
 
-    int wallJumpDirection;
+    bool _isAbilityDone;
 
-    public PlayerWallJumpState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
+    public PlayerWallJumpState(Player player, PlayerStateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
     {
     }
+
+    #region Callback Methods
 
     public override void StateEnter()
     {
         base.StateEnter();
 
-        _player.AirborneState.InitiateWallJump();
-        ChangeState(_player.AirborneState);
+        _isAbilityDone = false;
+
+        InitiateWallJump();
+        ChangeState(player.AirborneState);
     }
 
     public override void StateExit()
     {
         base.StateExit();
+    }
 
+    public override void DoChecks()
+    {
+        base.DoChecks();
     }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
+    
+        Animator.SetFloat("yVelocity", Movement.CurrentVelocity.y);
+        Animator.SetFloat("xVelocity", Mathf.Abs(Movement.CurrentVelocity.x));
     }
 
     public override void StateFixedUpdate()
     {
         base.StateFixedUpdate();
 
-        _player.AirborneState.WallJumpPhysics();
+        player.AirborneState.WallJumpPhysics();
 
-        Movement.Move(InputManager.MoveInput, MoveStats.MaxRunSpeed);
+        player.Move(
+            MoveData.WallJumpMoveAcceleration, 
+            MoveData.WallJumpMoveDeceleration, 
+            InputManager.instance.MoveInput
+            );
     }
+
+    #endregion
+
+    
+    #region Timers
+
+    public void WallJumpTimers()
+    {
+        if (!ShouldApplyPostWallJumpBuffer())
+            WallJumpPostBufferTimer -= Time.deltaTime;
+    }
+
+    #endregion
 
     #region Checks
-
-    public bool CanWallJumpDueToPostBufferTimer()
-    {
-        if (WallJumpPostBufferTimer > 0f)
-            return true;
-        
-        return false;
-    }
 
     public void WallJumpChecks()
     {
         if (ShouldApplyPostWallJumpBuffer())
         {
-            WallJumpPostBufferTimer = MoveStats.WallJumpPostBufferTime;
+            WallJumpPostBufferTimer = MoveData.WallJumpPostBufferTime;
         }
 
-        if (InputManager.JumpReleased)
+        if (InputManager.instance.JumpReleased)
         {
-            _player.AirborneState.WallJumpWasReleased();
+            WallJumpReleased();
         }
     }
 
-    private bool ShouldApplyPostWallJumpBuffer()
+    public bool CanWallJumpDueToPostBufferTimer()
+    {
+        Debug.Log(WallJumpPostBufferTimer);
+        if (WallJumpPostBufferTimer > 0f)
+            return true;
+
+        return false;
+    }
+
+    void WallJumpReleased()
     {
         if (
-            CollisionSensors.IsGrounded
-            && (CollisionSensors.IsWall || _player.WallSlideState.IsWallSliding)
+            !player.WallSlideState.IsWallSliding
+            && !CollisionSensors.IsWall
+            && player.AirborneState.IsWallJumping
+            )
+        {
+            if (
+                player.AirborneState.IsWallJumping
+                && Movement.CurrentVelocity.y > 0f
+                )
+            {
+                if (player.AirborneState.IsPastWallJumpApexThreshold)
+                {
+                    player.AirborneState.IsPastWallJumpApexThreshold = false;
+                    player.AirborneState.IsWallJumpFastFalling = false;
+                    player.AirborneState.WallJumpFastFallTime = MoveData.TimeForUpwardsCancel;
+
+                    Movement.SetVelocityY(0f);
+                }
+                else
+                {
+                    player.AirborneState.IsWallJumpFastFalling = true;
+                    player.AirborneState.WallJumpFastFallReleaseSpeed = Movement.CurrentVelocity.y;
+                }
+            }
+        }
+    }
+
+    public bool ShouldApplyPostWallJumpBuffer()
+    {
+        if (
+            !CollisionSensors.IsGrounded
+            && (CollisionSensors.IsWall || player.WallSlideState.IsWallSliding)
             )
             return true;
         else
             return false;
     }
 
-    
+    #endregion
 
-    public void WallJumpTimers()
+
+    #region Functionality
+
+    public void InitiateWallJump()
     {
-        if(!ShouldApplyPostWallJumpBuffer())
+        if (!player.AirborneState.IsWallJumping)
         {
-            WallJumpPostBufferTimer -= Time.deltaTime;
+            player.AirborneState.IsWallJumping = true;
+            UseWallJumpMoveStats = true;
         }
+
+        player.WallSlideState.StopWallSliding();
+
+        player.AirborneState.ResetJumpValues();
+        player.AirborneState.WallJumpTime = 0f;
+
+        Movement.SetVelocityY(MoveData.InitialWallJumpVelocity);
+
+        int dirMultiplier;
+        Vector2 hitDir = CollisionSensors.LastWallHit.collider.ClosestPoint(CollisionSensors.BodyColl.bounds.center);
+    
+        if (hitDir.x > player.transform.position.x)
+            dirMultiplier = -1;
+        else
+            dirMultiplier = 1;
+
+        Movement.SetVelocityX(Mathf.Abs(MoveData.WallJumpDirection.x) * dirMultiplier);
     }
 
     #endregion

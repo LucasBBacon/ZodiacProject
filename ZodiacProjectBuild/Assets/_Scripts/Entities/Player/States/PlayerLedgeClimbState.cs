@@ -4,19 +4,16 @@ using UnityEngine;
 
 public class PlayerLedgeClimbState : PlayerState
 {
-    public bool IsLedgeGrabbing { get; private set; }
+    public bool IsLedgeHanging { get; private set; }
     public bool IsLedgeClimbing { get; private set; }
-    public bool IsLedgeFalling { get; set; }
-    //public float xDist;
 
-    Vector2 detectedPosition;
-    Vector2 cornerPosition;
-    Vector2 startPosition;
-    Vector2 endPosition;
+    Vector2 _detectedPosition;
+    Vector2 _cornerPosition;
+    Vector2 _startPosition;
+    Vector2 _endPosition;
+    Vector2 _workspace;
 
-    IEnumerator climbingCouroutine;
-
-    public PlayerLedgeClimbState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
+    public PlayerLedgeClimbState(Player player, PlayerStateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
     {
     }
 
@@ -26,55 +23,37 @@ public class PlayerLedgeClimbState : PlayerState
     {
         base.StateEnter();
 
-        if (_player.TrailRenderer.emitting)
-            _player.TrailRenderer.emitting = false;
+        if (player.TrailRenderer.emitting)
+            player.TrailRenderer.emitting = false;
         
-        if (!IsLedgeFalling)
-        {
-            Movement.SetVelocityZero();
-            Movement.VerticalVelocity = 0;
-            Animator.SetBool("LedgeHang", true);
+        Movement.SetVelocityZero();
+        player.transform.position = _detectedPosition;
 
-            IsLedgeGrabbing = true;
+        _cornerPosition = DetermineCornerPosition();
 
-            _player.transform.position = detectedPosition;
-
-            cornerPosition = CollisionSensors.LedgeCheck.transform.position;
-
-            startPosition.Set
-                (
-                    cornerPosition.x - (Movement.FacingDirection * MoveStats.StartOffset.x),
-                    cornerPosition.y - MoveStats.StartOffset.y
-                );
-            endPosition.Set
-                (
-                    cornerPosition.x + (Movement.FacingDirection * MoveStats.EndOffset.x),
-                    cornerPosition.y + MoveStats.EndOffset.y
-                );
-
-            _player.transform.position = startPosition;
-        }
-
-        else
-        {
-            ChangeState(_player.AirborneState);
-        }
-        
+        _startPosition.Set(
+            _cornerPosition.x - (Movement.FacingDirection * MoveData.StartOffset.x),
+            _cornerPosition.y - MoveData.StartOffset.y
+        );
+        _endPosition.Set(
+            _cornerPosition.x + (Movement.FacingDirection * MoveData.EndOffset.x),
+            _cornerPosition.y + MoveData.EndOffset.y
+        );
+        player.transform.position = _startPosition;
     }
+
+    
 
     public override void StateExit()
     {
         base.StateExit();
 
-        IsLedgeGrabbing = false;
-        Animator.SetBool("LedgeHang", false);
-        Animator.SetBool("LedgeClimb", false);
+        IsLedgeHanging = false;
 
         if (IsLedgeClimbing)
-        {  
-            _player.transform.position = endPosition;
+        {
+            player.transform.position = _endPosition;
             IsLedgeClimbing = false;
-            //ChangeState(_player.AirborneState);
         }
     }
 
@@ -82,88 +61,90 @@ public class PlayerLedgeClimbState : PlayerState
     {
         base.StateUpdate();
 
-        Movement.SetVelocityZero();
-        _player.transform.position = startPosition;
-
-        if (
-            (InputManager.MoveInput.y == 1 || InputManager.MoveInput.x == Movement.FacingDirection) &&
-            IsLedgeGrabbing &&
-            !IsLedgeClimbing
-            )
+        if (IsAnimationFinished)
         {
-            IsLedgeClimbing = true;
-            
-            climbingCouroutine = ClimbingLedge(endPosition, 0.5f);
-            _player.StartCoroutine(climbingCouroutine);
-            
+            ChangeState(player.IdleState);
         }
-
-        else if (
-            InputManager.MoveInput.y == -1 &&
-            IsLedgeGrabbing &&
-            !IsLedgeClimbing
-            )
-        {  
-            IsLedgeFalling = true;
-            IsLedgeGrabbing = false;
-
-            ChangeState(_player.AirborneState);
-        }
-
-        else if (
-            InputManager.JumpJustPressed &&
-            IsLedgeGrabbing &&
-            !IsLedgeClimbing
-            )
+        else
         {
-            IsLedgeGrabbing = false;
+            Movement.SetVelocityZero();
+            player.transform.position = _startPosition;
 
-            //_player.WallJumpState.DetermineWallJumpDirection(true);
-            ChangeState(_player.WallJumpState);
+            if (
+                InputManager.instance.MoveInput.x == Movement.FacingDirection
+                && IsLedgeHanging
+                && !IsLedgeClimbing
+                )
+            {
+                IsLedgeClimbing = true;
+                Animator.SetBool("climbLedge", true);
+            }
+            else if (
+                InputManager.instance.MoveInput.normalized.y == -1
+                && IsLedgeHanging
+                && !IsLedgeClimbing
+                )
+            {
+                player.AirborneState.IsFalling = true;
+                ChangeState(player.AirborneState);
+            }
+            else if (
+                player.JumpState.LastPressedJumpTime > 0
+                && !IsLedgeClimbing
+                )
+            {
+                ChangeState(player.WallJumpState);
+            }
         }
+    }
+
+    public override void AnimationFinishedTrigger()
+    {
+        base.AnimationFinishedTrigger();
+
+        Animator.SetBool("climbLedge", false);
+    }
+
+    public override void AnimationTrigger()
+    {
+        base.AnimationTrigger();
+
+        IsLedgeHanging = true;
     }
 
     #endregion
 
-    
+
     #region Functionality
 
-    public void SetDetectedPosition(Vector2 position) => detectedPosition = position;
+    public void SetDetectedPosition(Vector2 position)
+    => _detectedPosition = position;
 
-
-    public IEnumerator ClimbingLedge(Vector2 endPosition, float duration)
+    Vector2 DetermineCornerPosition()
     {
-        Animator.SetBool("LedgeClimb", true);
-        IsLedgeClimbing = true;
-        
-        //float time = 0;
+        RaycastHit2D xHit = Physics2D.Raycast(
+            CollisionSensors.WallCheck.position,
+            Vector2.right * Movement.FacingDirection,
+            CollisionSensors.WallCheckDistance,
+            CollisionSensors.GroundMask
+        );
+        float xDist = xHit.distance;
 
-        Vector2 startPos = _player.transform.position;
+        _workspace.Set((xDist + 0.015f) * Movement.FacingDirection, 0f);
 
-        CollisionSensors.UseGroundChecks = false;
+        RaycastHit2D yHit = Physics2D.Raycast(
+            CollisionSensors.LedgeCheckHorizontal.position + (Vector3)_workspace,
+            Vector2.down,
+            CollisionSensors.LedgeCheckHorizontal.position.y - CollisionSensors.WallCheck.position.y + 0.015f,
+            CollisionSensors.GroundMask
+        );
+        float yDist = yHit.distance;
 
-        // while (time < duration)
-        // {
-        //     _player.transform.position = Vector2.Lerp(startPos, endPosition, time / duration);
-
-        //     time += Time.deltaTime;
-
-        //     yield return null;
-        // }
-
-        yield return new WaitForSeconds(duration);
-
-        _player.transform.position = endPosition;
-
-        CollisionSensors.UseGroundChecks = true;
-
-        IsLedgeFalling = false;
-        IsLedgeGrabbing = false;
-        IsLedgeClimbing = false;
-
-        _player.AirborneState.IsFalling = true;
-
-        ChangeState(_player.AirborneState);
+        _workspace.Set(
+            CollisionSensors.WallCheck.position.x + (xDist * Movement.FacingDirection),
+            CollisionSensors.LedgeCheckHorizontal.position.y - yDist
+            );
+        return _workspace;
     }
 
     #endregion

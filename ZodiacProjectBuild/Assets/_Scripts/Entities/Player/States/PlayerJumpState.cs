@@ -5,17 +5,21 @@ public class PlayerJumpState : PlayerState
     
     #region Blackboard Variables
 
-    
-    public int NumberOfJumpsUsed { get; set; }
+    public int AmountOfJumpsLeft { get; set; }
+    public bool IsJumpCut { get; set; }
+    public float LastPressedJumpTime { get; set; }
     public float JumpBufferTimer { get; set; }
-    public bool JumpReleasedDuringBuffer { get; set;}
-
     public float CoyoteTimer { get; set; }
 
     #endregion
 
-    public PlayerJumpState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
+    bool _isGrounded;
+    bool _isWall;
+
+
+    public PlayerJumpState(Player player, PlayerStateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
     {
+        AmountOfJumpsLeft = MoveData.NumberOfJumpsAllowed;
     }
 
 
@@ -25,42 +29,38 @@ public class PlayerJumpState : PlayerState
     {
         base.StateEnter();
 
-        Animator.SetBool("inAir", true);
-
-        _player.AirborneState.InitiateJump();
-
-        // if (CollisionSensors.IsWall)
-        //     ChangeState(_player.TouchingWallState);
-
+        player.SpawnParticles(player.JumpDustParticles);
         
-        ChangeState(_player.AirborneState);
+        InitiateJump();
+        ChangeState(player.AirborneState);
     }
 
     public override void StateExit()
     {
         base.StateExit();
+    }
 
-        Animator.SetBool("inAir", false);
+    public override void DoChecks()
+    {
+        base.DoChecks();
+
+        if (CollisionSensors)
+        {
+            _isGrounded = CollisionSensors.IsGrounded;
+            _isWall = CollisionSensors.IsWall;
+        }
     }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
 
-        // if (
-        //     InputManager.DashInput &&
-        //     (_player.DashState.CanDash() || _player.DashState.CanAirDash())
-        //     )
-        // {
-        //     ChangeState(_player.DashState);
-        // }
-
         if (
-            InputManager.AbilityOne &&
-            (_player.AbilityOneState.CanCheck() || _player.AbilityOneState.CanAirCheck())
+            InputManager.instance.AbilityUse[(int)AbilityInputs.First] &&
+            (player.AbilityOneState.CanCheck() || player.AbilityOneState.CanAirCheck())
             )
         {
-            ChangeState(_player.AbilityOneState);
+            ChangeState(player.AbilityOneState);
         }
     }
 
@@ -68,9 +68,23 @@ public class PlayerJumpState : PlayerState
     {
         base.StateFixedUpdate();
 
-        Movement.Move(InputManager.MoveInput, MoveStats.MaxRunSpeed);
-        
-        Body.velocity = new Vector2(Body.velocity.x, Movement.VerticalVelocity);
+        player.Move(MoveData.AirAcceleration, MoveData.AirDeceleration, InputManager.instance.MoveInput);
+    }
+
+    #endregion
+
+
+    #region Timers
+
+    public void JumpTimers()
+    {
+        JumpBufferTimer -= Time.deltaTime;
+
+        if (!CollisionSensors.IsGrounded)
+            CoyoteTimer -= Time.deltaTime;
+
+        else
+            CoyoteTimer = MoveData.JumpCoyoteTime;
     }
 
     #endregion
@@ -81,13 +95,17 @@ public class PlayerJumpState : PlayerState
     public bool CanJump()
     {
         if (
-            JumpBufferTimer > 0f &&
-            !_player.AirborneState.IsJumping &&
-            (CollisionSensors.IsGrounded || CoyoteTimer > 0f)
-        )
+            JumpBufferTimer > 0f
+            && !player.AirborneState.IsJumping
+            && (CollisionSensors.IsGrounded || CoyoteTimer > 0f)
+            )
         {
+            
+            if (player.AirborneState.IsDashFastFalling)
+            {
+                player.AirborneState.IsDashFastFalling = false;
+            }
             JumpBufferTimer = 0f;
-
             return true;
         }
         return false;
@@ -95,54 +113,69 @@ public class PlayerJumpState : PlayerState
 
     public bool CanAirJump()
     {
-        // double jump
         if (
-            JumpBufferTimer > 0f &&
-            _player.AirborneState.IsJumping &&
-            !CollisionSensors.IsWall &&
-            NumberOfJumpsUsed < MoveStats.NumberOfJumpsAllowed
+            JumpBufferTimer > 0f
+            && (
+                player.AirborneState.IsJumping
+                || player.AirborneState.IsWallJumping
+                || player.AirborneState.IsWallSlideFalling
+                || player.AirborneState.IsAirDashing
+                || player.AirborneState.IsDashFalling
+                )
+            && !_isWall
+            && AmountOfJumpsLeft > 0
             )
         {
+            if (player.AirborneState.IsDashFastFalling)
+            {
+                player.AirborneState.IsDashFastFalling = false;
+            }
             JumpBufferTimer = 0f;
-
-            _player.AirborneState.IsFastFalling = false;
-
+            player.AirborneState.IsFastFalling = false;
+            
             return true;
         }
-
-        // handle air jump AFTER coyote time has elapsed
+        
         else if (
-            JumpBufferTimer > 0f &&
-            _player.AirborneState.IsFalling &&
-            NumberOfJumpsUsed < MoveStats.NumberOfJumpsAllowed - 1
+            JumpBufferTimer > 0f
+            && player.AirborneState.IsFalling
+            && !player.AirborneState.IsWallSlideFalling
+            && AmountOfJumpsLeft > 1
             )
         {
-            NumberOfJumpsUsed++;
+            AmountOfJumpsLeft--;
             JumpBufferTimer = 0f;
-
-            _player.AirborneState.IsFastFalling = false;
+            player.AirborneState.IsFastFalling = false;
 
             return true;
         }
-
         return false;
     }
 
     public bool JumpBufferedOrCoyoteTimed()
     {
         if (
-            JumpBufferTimer > 0f &&
-            !_player.AirborneState.IsJumping &&
-            (CollisionSensors.IsGrounded || CoyoteTimer > 0f)
+            JumpBufferTimer > 0f
+            && !player.AirborneState.IsJumping
+            && (
+                _isGrounded
+                || CoyoteTimer > 0f
+                )
             )
         {
-            JumpBufferTimer = 0;
+            JumpBufferTimer = 0f;
 
             return true;
         }
-
+        
         return false;
     }
+
+    public bool CanJumpCut()
+    => player.AirborneState.IsJumping
+        && Movement.CurrentVelocity.y > 0;
+
+    //public bool CanWallJumpCut()
 
     #endregion
 
@@ -150,18 +183,22 @@ public class PlayerJumpState : PlayerState
     #region Functionality
 
     public void ResetJumps() 
-    => NumberOfJumpsUsed = 0;
+    => AmountOfJumpsLeft = MoveData.NumberOfJumpsAllowed;
 
-
-    public void JumpTimers()
+    void InitiateJump()
     {
-        JumpBufferTimer -= Time.deltaTime;
+        Movement.SetVelocityY(MoveData.InitialJumpVelocity);
 
-        //HANDLE COYOTE TIMER
-        if (!CollisionSensors.IsGrounded && !CollisionSensors.IsWall)
-            CoyoteTimer -= Time.deltaTime;
-        else 
-            CoyoteTimer = MoveStats.JumpCoyoteTime;
+        player.AirborneState.ResetWallJumpValues();
+        
+        player.AirborneState.IsJumping = true;
+        AmountOfJumpsLeft--;
+
+        if (IsJumpCut)
+        {
+            player.AirborneState.IsFastFalling = true;
+            player.AirborneState.FastFallReleaseSpeed = Movement.CurrentVelocity.y;
+        }
     }
 
     #endregion

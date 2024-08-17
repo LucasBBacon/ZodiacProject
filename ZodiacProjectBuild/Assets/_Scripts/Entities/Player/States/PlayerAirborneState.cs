@@ -5,38 +5,51 @@ public class PlayerAirborneState : PlayerState
 {
     #region Blackboard Variables
 
+    public float TimePastWallJumpApexThreshold { get; set; }
+    public float WallJumpFastFallReleaseSpeed { get; set; }
+    public float WallJumpFastFallTime { get; set; }
+    public float FastFallReleaseSpeed { get; set; }
+    public float WallJumpApexPoint { get; set; }
+    public float WallJumpTime { get; set; }
+
+    public bool IsPastWallJumpApexThreshold { get; set; }
+    public bool IsWallJumpFastFalling { get; set; }
+    public bool IsWallSlideFalling { get; set; }
+    public bool IsWallJumpFalling { get; set; }
+    public bool IsDashFastFalling { get; set; }
+    public bool IsDashFalling { get; set; }
+    public bool IsWallJumping { get; set; }
+    public bool IsAirDashing { get; set; }
     public bool IsJumping { get; set; }
     public bool IsFalling { get; set; }
-    public bool IsFastFalling { get; set; }
-    public bool IsPastApexThreshold { get; set;}
-    public float FastFallTime { get; set; }
-    public float FastFallReleaseSpeed { get; set; }
-    public float TimePastApexThreshold { get; set; }
+
+    public bool IsPastApexThreshold {
+        get => _isPastApexThreshold;
+        set => _isPastApexThreshold = value;
+    }
     
-    public bool IsWallSlideFalling { get; private set; }
-    
-    public float ApexPoint { get; set; }
-    public bool IsWallSliding { get; private set; }
-    public float WallJumpApexPoint { get; set; }
+    public bool IsFastFalling {
+        get => _isFastFalling;
+        set => _isFastFalling = value;
+    }
 
-    #region New WallJump
+    public float FastFallTime {
+        get => _fastFallTime;
+        set => _fastFallTime = value;
+    }
 
-    public bool IsWallJumping { get; private set; }
-    public bool IsPastWallJumpApexThreshold { get; private set; }
-    public float TimePastWallJumpApexThreshold { get; private set; }
-    public bool IsWallJumpFastFalling { get; private set; }
+    float _particleCounter;
 
-    public float WallJumpTime { get; private set; }
-    public float WallJumpFastFallTime { get; private set; }
-    public bool UseWallJumpMoveStats { get; set; }
-    public bool IsWallJumpFalling { get; private set; }
-    public float WallJumpFastFallReleaseSpeed { get; private set; }
+    float _apexPoint;
+    private bool _isPastApexThreshold;
+    private float _timePastApexThreshold;
+    private bool _isFastFalling;
+    private float _fastFallTime;
+
 
     #endregion
 
-    #endregion
-
-    public PlayerAirborneState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
+    public PlayerAirborneState(Player player, PlayerStateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
     {
     }
 
@@ -45,110 +58,96 @@ public class PlayerAirborneState : PlayerState
     public override void StateEnter()
     {
         base.StateEnter();
-
-        Animator.SetBool("inAir", true);
-
-        if (_player.LedgeClimbState.IsLedgeFalling)
-            _player.Invoke("NotLedgeFalling", 0.3f);
     }
 
     public override void StateExit()
     {
         base.StateExit();
 
-        Animator.SetBool("inAir", false);
+        player.JumpParticles.Stop();
+    }
+
+    public override void DoChecks()
+    {
+        base.DoChecks();
+
+        if (
+            CollisionSensors.IsWallLedge
+            && !CollisionSensors.IsLedgeHorizontal
+            )
+        {
+            player.LedgeClimbState.SetDetectedPosition(player.transform.position);
+        }
     }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
 
-        if (InputManager.AttackInput && _player.AttackState.CanAttack())
+        _particleCounter += Time.deltaTime;
+
+        if ((_particleCounter > player.DustFormationPeriod) && Body.velocity.y > 0)
         {
-            ChangeState(_player.AttackState);
+            player.JumpParticles.Play();
+
+            _particleCounter = 0f;
         }
 
-        if (
-            _player.WallSlideState.ShouldWallSlide()
-            )
+        if (InputManager.instance.JumpJustPressed)
         {
-            ChangeState(_player.WallSlideState);
-        }
-
-        if (
-            !CollisionSensors.IsGrounded &&
-            CollisionSensors.IsLedge &&
-            !_player.LedgeClimbState.IsLedgeFalling
-            )
-        {
-            ResetJumpValues();
-            ResetWallJumpValues();
-
-            _player.LedgeClimbState.SetDetectedPosition(_player.transform.position);
-
-            ChangeState(_player.LedgeClimbState);
-        }
-
-        if (
-            InputManager.JumpJustPressed
-            )
-        {
-            if (_player.JumpState.CanJump())
+            if (player.JumpState.CanJump())
             {
-                _player.SpawnParticles(_player.JumpParticles);
-
-                ChangeState(_player.JumpState);
+                ChangeState(player.JumpState);
             }
 
-            if (_player.JumpState.CanAirJump())
+            if (player.JumpState.CanAirJump())
             {
-                _player.SpawnParticles(_player.JumpParticles);
-
-                ChangeState(_player.JumpState);
+                ChangeState(player.JumpState);
             }
 
-            if (_player.WallJumpState.CanWallJumpDueToPostBufferTimer())
+            if (player.WallJumpState.CanWallJumpDueToPostBufferTimer() && player.WallJumpEnabled)
             {
-                // _player.WallJumpState.DetermineWallJumpDirection(CollisionSensors.IsWallFront);
-
-                ChangeState(_player.WallJumpState);
+                player.WallJumpState.UseWallJumpMoveStats = true;
+                ChangeState(player.WallJumpState);
             }
-
-            // Debug.Log(_player.JumpState.NumberOfJumpsUsed);
         }
 
-
-        else if (
-            _player.JumpState.JumpBufferedOrCoyoteTimed()
-            )
-        {    
-            _player.SpawnParticles(_player.JumpParticles);
-
-            ChangeState(_player.JumpState);
+        else if (player.JumpState.JumpBufferedOrCoyoteTimed())
+        {
+            ChangeState(player.JumpState);
         }
-
+        
         if (HasLanded())
         {
-            float landTime = Time.time;
-            _player.SpawnParticles(_player.LandParticles);
-            
-            ChangeState(_player.IdleState);
+            ChangeState(player.LandState);
         }
 
-        if (
-            InputManager.DashInput &&
-            _player.DashState.CanDash()
-            )
+        if (player.WallSlideState.ShouldWallSlide())
         {
-            ChangeState(_player.DashState);
+            ChangeState(player.WallSlideState);
         }
 
-        if (
-            InputManager.AbilityOne &&
-            (_player.AbilityOneState.CanCheck() || _player.AbilityOneState.CanAirCheck())
+        else if (
+            InputManager.instance.AttackInput
+            && player.AttackState.CanAttack()
             )
         {
-            ChangeState(_player.AbilityOneState);
+            ChangeState(player.AttackState);
+        }
+
+        else if (
+            CollisionSensors.IsWallLedge
+            && !CollisionSensors.IsLedgeHorizontal
+            && !CollisionSensors.IsGrounded
+            )
+        {
+            ChangeState(player.LedgeClimbState);
+        }
+
+        else
+        {
+            Animator.SetFloat("yVelocity", Movement.CurrentVelocity.y);
+            Animator.SetFloat("xVelocity", Mathf.Abs(Movement.CurrentVelocity.x));
         }
     }
 
@@ -156,23 +155,26 @@ public class PlayerAirborneState : PlayerState
     {
         base.StateFixedUpdate();
 
-        _player.DashState.DashPhysics();
-        _player.ChariotState.ChariotPhysics();     
         JumpPhysics();
         WallJumpPhysics();
 
-        Animator.SetFloat("yVelocity", Movement.VerticalVelocity);
-        Animator.SetFloat("xVelocity", Mathf.Abs(Movement.HorizontalVelocity));
-
-        if (IsWallJumping && !CollisionSensors.IsWall)
-            IsWallJumping = false;
-
-        if (CollisionSensors.IsLedge)
+        if (player.WallJumpState.UseWallJumpMoveStats)
         {
-            _player.LedgeClimbState.SetDetectedPosition(_player.transform.position);
+            player.Move(
+                MoveData.WallJumpMoveAcceleration,
+                MoveData.WallJumpMoveDeceleration,
+                InputManager.instance.MoveInput
+                );
         }
 
-        Movement.Move(InputManager.MoveInput, MoveStats.MaxRunSpeed);
+        else
+        {
+            player.Move(
+                MoveData.AirAcceleration,
+                MoveData.AirDeceleration,
+                InputManager.instance.MoveInput
+                );
+        }
     }
 
     #endregion
@@ -180,57 +182,101 @@ public class PlayerAirborneState : PlayerState
 
     #region Checks
 
+    public void CheckForFalling()
+    {
+        if (
+            !CollisionSensors.IsGrounded
+            && !IsJumping
+            && !IsFalling
+            && !player.WallSlideState.IsWallSliding
+            && !IsWallJumping
+            && !player.DashState.IsDashing
+            && !IsDashFastFalling
+            && !player.LedgeClimbState.IsLedgeClimbing
+            && !player.LedgeClimbState.IsLedgeHanging
+            )
+        {
+            if (!IsFalling)
+            {
+                IsFalling = true;
+            }
+
+            ChangeState(player.AirborneState);
+        }
+    }
+
     public bool HasLanded()
     {
         if (
             (
-                IsJumping || IsFalling ||
-                IsWallJumping ||  IsWallJumpFalling ||
-                IsWallSliding || IsWallSlideFalling || 
-                _player.DashState.IsDashFastFalling || 
-                _player.ChariotState.IsChariotFastFalling
-            ) &&
-            CollisionSensors.IsGrounded &&
-            Movement.VerticalVelocity <= 0f
+                IsJumping
+                || IsFalling
+                || IsWallJumping
+                || IsWallJumpFalling
+                || player.WallSlideState.IsWallSliding
+                || IsWallSlideFalling
+                || IsDashFastFalling
+            )
+            && CollisionSensors.IsGrounded
+            && Movement.CurrentVelocity.y <= 0f
             )
         {
             ResetJumpValues();
+            player.WallSlideState.StopWallSliding();
+
+            IsWallSlideFalling = false;
+
             ResetWallJumpValues();
-            _player.DashState.ResetDashes();
-            _player.ChariotState.ResetData();
+            player.DashState.ResetDashes();
 
-            Movement.SetVerticalVelocity(Physics2D.gravity.y);
+            Movement.SetVelocityY(Physics2D.gravity.y);
 
-            _player.JumpState.ResetJumps();
+            player.JumpState.ResetJumps();
 
-            // Debug.Log("Has Landed!");
-
-            _player.TrailRenderer.emitting = false;
-            
-            if (_player.DashState.IsDashFastFalling && CollisionSensors.IsGrounded)
-            {
-                _player.DashState.ResetDashValues();
-                return true;
-            }
-            if (_player.ChariotState.IsChariotFastFalling && CollisionSensors.IsGrounded)
-            {
-                _player.ChariotState.ResetValues();
-                return true;
-            }
-
-            _player.DashState.ResetDashValues();
-            _player.ChariotState.ResetValues();
-
-            Animator.SetTrigger(Player.LAND);            
+            // if (
+            //     IsDashFastFalling
+            //     && _isGrounded
+            //     )
+            // {
+            //     if 
+            // }
+        
+            player.DashState.ResetDashes();
 
             return true;
         }
-        
         return false;
     }
 
     #endregion
-    
+
+
+    #region Reset Values
+
+    public void ResetJumpValues()
+    {
+        IsJumping = false;
+        IsFalling = false;
+        IsFastFalling = false;
+        FastFallTime = 0f;
+        IsPastApexThreshold = false;   
+    }
+
+    public void ResetWallJumpValues()
+    {
+        IsWallSlideFalling = false;
+        player.WallJumpState.UseWallJumpMoveStats = false;
+        IsWallJumping = false;
+        IsWallJumpFastFalling = false;
+        IsWallJumpFalling = false;
+        IsPastWallJumpApexThreshold = false;
+        
+        WallJumpFastFallTime = 0f;
+        WallJumpTime = 0f;
+    }
+
+    #endregion
+
 
     #region Functionality
 
@@ -238,139 +284,116 @@ public class PlayerAirborneState : PlayerState
     {
         if (IsJumping)
         {
-            // hit head
-            if (CollisionSensors.BumpedHead)
+            if (CollisionSensors.IsCeiling)
             {
                 IsFastFalling = true;
             }
 
-            if (Movement.VerticalVelocity >= 0f)
+            if (Movement.CurrentVelocity.y >= 0f)
             {
-                // apex controls
-                ApexPoint = Mathf.InverseLerp
-                    (
-                        MoveStats.InitialJumpVelocity,
-                        0f,
-                        Movement.VerticalVelocity
+                _apexPoint = Mathf.InverseLerp(
+                    MoveData.InitialJumpVelocity,
+                    0f,
+                    Movement.CurrentVelocity.y
                     );
-
-                if (ApexPoint > MoveStats.ApexThreshold)
+                if (_apexPoint >= MoveData.ApexThreshold)
                 {
                     if (!IsPastApexThreshold)
                     {
                         IsPastApexThreshold = true;
-                        TimePastApexThreshold = 0f;
+                        _timePastApexThreshold = 0f;
                     }
 
                     if (IsPastApexThreshold)
                     {
-                        TimePastApexThreshold += Time.fixedDeltaTime;
-                        if (TimePastApexThreshold < MoveStats.ApexHangTime)
-                            Movement.SetVerticalVelocity(0f);
+                        _timePastApexThreshold += Time.fixedDeltaTime;
+                        if (_timePastApexThreshold < MoveData.ApexHangTime)
+                        {
+                            Movement.SetVelocityY(0f);
+                        }
                         else
-                            Movement.SetVerticalVelocity(-0.01f); // start moving downward
+                        {
+                            Movement.SetVelocityY(-0.01f);
+                        }
                     }
                 }
 
                 else if (!IsFastFalling)
                 {
-                    Movement.IncrementVerticalVelocity(MoveStats.Gravity * Time.fixedDeltaTime);
+                    Movement.SetVelocityY(Movement.CurrentVelocity.y + (MoveData.Gravity * Time.fixedDeltaTime));
 
                     if (IsPastApexThreshold)
                     {
                         IsPastApexThreshold = false;
                     }
-                } 
+                }
             }
 
-            else if (!IsFastFalling)
-                Movement.IncrementVerticalVelocity(MoveStats.Gravity * MoveStats.GravityOnReleaseMultiplier * Time.fixedDeltaTime);
+            else if  (!IsFastFalling)
+            {
+                Movement.SetVelocityY(Movement.CurrentVelocity.y + (MoveData.Gravity * MoveData.GravityOnReleaseMultiplier * Time.fixedDeltaTime));
+            }
 
-            else if (Movement.VerticalVelocity < 0f)
+            else if (Movement.CurrentVelocity.y < 0f)
+            {
                 if (!IsFalling)
                     IsFalling = true;
+            }
         }
 
-        // normal falling (no jumping)
         if (
-            IsFalling &&
-            !IsJumping &&
-            !CollisionSensors.IsGrounded
+            IsFalling
+            && !IsJumping
+            && !CollisionSensors.IsGrounded
             )
-            Movement.IncrementVerticalVelocity(MoveStats.Gravity * Time.fixedDeltaTime);
+        {
+           Movement.SetVelocityY(Movement.CurrentVelocity.y + (MoveData.Gravity * Time.fixedDeltaTime));
+        }
 
-        // handle released jump deceleartion
         if (IsFastFalling)
         {
-            if (FastFallTime > MoveStats.TimeForUpwardsCancel)
-                Movement.IncrementVerticalVelocity(MoveStats.Gravity * MoveStats.GravityOnReleaseMultiplier * Time.fixedDeltaTime);
-            else if (FastFallTime < MoveStats.TimeForUpwardsCancel)
-                Movement.SetVerticalVelocity
-                    (
-                        Mathf.Lerp
-                            (
-                                FastFallReleaseSpeed,
-                                0f,
-                                FastFallTime / MoveStats.TimeForUpwardsCancel
-                            )
+            if (FastFallTime >= MoveData.TimeForUpwardsCancel)
+            {
+                Movement.SetVelocityY(Movement.CurrentVelocity.y + (MoveData.Gravity * MoveData.GravityOnReleaseMultiplier * Time.fixedDeltaTime));
+            }
+            else if (FastFallTime < MoveData.TimeForUpwardsCancel)
+            {
+                Movement.SetVelocityY(
+                    Mathf.Lerp(
+                        FastFallReleaseSpeed,
+                        0f,
+                        FastFallTime / MoveData.TimeForUpwardsCancel
+                        )
                     );
-            
+            }
+
             FastFallTime += Time.fixedDeltaTime;
         }
     }
-
-    public void InitiateJump()
-    {
-        Movement.SetVerticalVelocity(MoveStats.InitialJumpVelocity);
-
-        ResetWallJumpValues();
-        IsJumping = true;
-        _player.JumpState.NumberOfJumpsUsed++;
-
-        if (!_player.TrailRenderer.emitting)
-        {
-            _player.TrailRenderer.emitting = true;
-        }
-
-        if (_player.JumpState.JumpReleasedDuringBuffer)
-        {
-            IsFastFalling = true;
-            FastFallReleaseSpeed = Movement.VerticalVelocity;
-        }
-    }
-
-    public void ResetJumpValues()
-    {
-        IsJumping = false;
-        IsFalling = false;
-        IsFastFalling = false;
-        IsPastApexThreshold = false;
-        
-        FastFallTime = 0f;
-    }
-
 
     public void WallJumpPhysics()
     {
         if (IsWallJumping)
         {
             WallJumpTime += Time.fixedDeltaTime;
-            if (WallJumpTime > MoveStats.TimeTillJumpApex)
+            if (WallJumpTime >= MoveData.TimeTillJumpApex)
             {
-                UseWallJumpMoveStats = false;
+                player.WallJumpState.UseWallJumpMoveStats = false;
             }
 
-            if (CollisionSensors.BumpedHead)
+            if (CollisionSensors.IsCeiling)
             {
                 IsWallJumpFastFalling = true;
-                UseWallJumpMoveStats = false;
+                player.WallJumpState.UseWallJumpMoveStats = false;
             }
 
-            if (Movement.VerticalVelocity >= 0f)
+            if (Movement.CurrentVelocity.y >= 0f)
             {
-                _player.AirborneState.WallJumpApexPoint = Mathf.InverseLerp(MoveStats.WallJumpDirection.y, 0f, Movement.VerticalVelocity);
-            
-                if (_player.AirborneState.WallJumpApexPoint > MoveStats.ApexThreshold)
+                WallJumpApexPoint = Mathf.InverseLerp(
+                    MoveData.WallJumpDirection.y,
+                    0f, Movement.CurrentVelocity.y
+                    );
+                if (WallJumpApexPoint > MoveData.ApexThreshold)
                 {
                     if (!IsPastWallJumpApexThreshold)
                     {
@@ -381,20 +404,20 @@ public class PlayerAirborneState : PlayerState
                     if (IsPastWallJumpApexThreshold)
                     {
                         TimePastWallJumpApexThreshold += Time.fixedDeltaTime;
-                        if (TimePastWallJumpApexThreshold < MoveStats.ApexHangTime)
+                        if (TimePastWallJumpApexThreshold > MoveData.ApexHangTime)
                         {
-                            Movement.SetVerticalVelocity(0f);
+                            Movement.SetVelocityY(0f);
                         }
                         else
                         {
-                            Movement.SetVerticalVelocity(-0.01f);
+                            Movement.SetVelocityY(-0.01f);
                         }
                     }
                 }
 
                 else if (!IsWallJumpFastFalling)
                 {
-                    Movement.IncrementVerticalVelocity(MoveStats.WallJumpGravity * Time.fixedDeltaTime);
+                    Movement.SetVelocityY(Movement.CurrentVelocity.y + (MoveData.WallJumpGravity * Time.fixedDeltaTime));
 
                     if (IsPastWallJumpApexThreshold)
                     {
@@ -405,10 +428,10 @@ public class PlayerAirborneState : PlayerState
 
             else if (!IsWallJumpFastFalling)
             {
-                Movement.IncrementVerticalVelocity(MoveStats.WallJumpGravity * Time.fixedDeltaTime);
+                Movement.SetVelocityY(Movement.CurrentVelocity.y + (MoveData.WallJumpGravity * Time.fixedDeltaTime));
             }
 
-            else if (Movement.VerticalVelocity < 0f)
+            else if (Movement.CurrentVelocity.y < 0f)
             {
                 if (!IsWallJumpFalling)
                 {
@@ -419,87 +442,24 @@ public class PlayerAirborneState : PlayerState
 
         if (IsWallJumpFastFalling)
         {
-            if (WallJumpFastFallTime >= MoveStats.TimeForUpwardsCancel)
+            if (WallJumpFastFallTime >= MoveData.TimeForUpwardsCancel)
             {
-                Movement.IncrementVerticalVelocity(MoveStats.WallJumpGravity * MoveStats.WallJumpGravityOnReleaseMultiplier * Time.fixedDeltaTime);
+                Movement.SetVelocityY(Movement.CurrentVelocity.y + (MoveData.WallJumpGravity * MoveData.WallJumpGravityOnReleaseMultiplier * Time.fixedDeltaTime));
             }
-            else if (WallJumpFastFallTime < MoveStats.TimeForUpwardsCancel)
+            else if (WallJumpFastFallTime < MoveData.TimeForUpwardsCancel)
             {
-                Movement.SetVerticalVelocity(Mathf.Lerp(WallJumpFastFallReleaseSpeed, 0f, WallJumpFastFallTime / MoveStats.TimeForUpwardsCancel));
+                Movement.SetVelocityY(
+                    Mathf.Lerp(
+                        WallJumpFastFallReleaseSpeed,
+                        0f,
+                        WallJumpFastFallTime / MoveData.TimeForUpwardsCancel
+                        )
+                    );
             }
 
             WallJumpFastFallTime += Time.fixedDeltaTime;
         }
     }
 
-    public void InitiateWallJump(GameObject particlesToSpawn = null)
-    {
-        if (!IsWallJumping)
-        {
-            IsWallJumping = true;
-            UseWallJumpMoveStats = true;
-        }
-
-        _player.WallSlideState.StopWallSliding();
-
-        _player.AirborneState.ResetJumpValues();
-        WallJumpTime = 0f;
-        Movement.SetVerticalVelocity(MoveStats.InitialJumpVelocity);
-
-        int dirMultiplier = 0;
-        Vector2 hitDir =  CollisionSensors.LastWallHit.collider.ClosestPoint(CollisionSensors.mainCollider.bounds.center);
-        
-        if (hitDir.x > _player.transform.position.x)
-        {
-            dirMultiplier = -1;
-        }
-        else
-        {
-            dirMultiplier = 1;
-        }
-
-        Movement.HorizontalVelocity = Mathf.Abs(MoveStats.WallJumpDirection.x) * dirMultiplier;
-
-        _player.TrailRenderer.emitting = true;
-    }
-
-    public void ResetWallJumpValues()
-    {
-        _player.WallSlideState.IsWallSlideFalling = false;
-        UseWallJumpMoveStats = false;
-        IsWallJumping = false;
-        IsWallJumpFalling = false;
-        IsWallJumpFastFalling = false;
-        IsPastWallJumpApexThreshold = false;
-
-        WallJumpFastFallTime = 0f;
-        WallJumpTime = 0f;
-    }
-
-    public void WallJumpWasReleased()
-    {
-        if (
-            !_player.WallSlideState.IsWallSliding
-            && CollisionSensors.IsWall
-            && IsWallJumping
-            )
-        {
-            if (IsPastWallJumpApexThreshold)
-            {
-                IsPastWallJumpApexThreshold = false;
-                IsWallJumpFastFalling = true;
-                WallJumpFastFallTime = MoveStats.TimeForUpwardsCancel;
-
-                Movement.SetVerticalVelocity(0f);
-            }
-            else
-            {
-                IsWallJumpFastFalling = true;
-                WallJumpFastFallTime = Movement.VerticalVelocity;
-            }
-        }
-    }
-
     #endregion
 }
-

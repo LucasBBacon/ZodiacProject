@@ -21,6 +21,6 @@ public class LedgeDetect : MonoBehaviour
     }
 
     private void OnDrawGizmos() {
-        Gizmos.DrawWireSphere(transform.position, collisionSensors.LedgeCheckRadius);
+        // Gizmos.DrawWireSphere(transform.position, collisionSensors.LedgeCheckRadius);
     }
 }

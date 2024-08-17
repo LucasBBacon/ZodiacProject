@@ -6,6 +6,19 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Movements.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
-  m_configObjects: {}
+    path: Assets/Scenes/UI/MainMenu.unity
+    guid: f8c03c6466c45ce4382de1adbde397e1
+  - enabled: 1
+    path: Assets/Scenes/LevelUno.unity
+    guid: 0fc43891ca8a7c64bbba3db64ab95995
+  - enabled: 1
+    path: Assets/Scenes/PersistentGameplay.unity
+    guid: 1e95d6de9dcfe054aa8c3ecda4f8ffaa
+  - enabled: 1
+    path: Assets/Scenes/Levels/MountainClimb.unity
+    guid: d0aa9b86131935a4aa2902b5ee745b3d
+  - enabled: 1
+    path: Assets/Scenes/Levels/TempleEntrance.unity
+    guid: e52b24d79e96b3d47be249080a1fec42
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: c23a5d0bf9d8c5040b06ebbb22059b49, type: 2}

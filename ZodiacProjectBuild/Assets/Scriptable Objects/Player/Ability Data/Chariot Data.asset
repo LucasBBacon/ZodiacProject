@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f1d18aa7510d05489ffb290a034820d, type: 3}
+  m_Name: Chariot Data
+  m_EditorClassIdentifier: 
+  AbilityCooldown: 0.5
+  ManaCost: 10
+  NumberOfChariots: 1
+  ChariotSpeed: 40
+  ChariotEndSpeed: 15
+  ChariotInputBufferTime: 0.125
+  ChariotSleepTime: 0.04
+  ChariotEndTime: 0.5
+  ChariotMinTime: 0.14
+  ChariotMaxExtraTime: 0.8
+  ChariotBurstTimers:
+  - 1.3333334
+  - 2.6666667
+  - 4
+  InputHoldMaxTime: 4
+  RumbleLowFreq: 0.1
+  RumbleHighFreq: 0.2
+  RumbleTime: 0.16

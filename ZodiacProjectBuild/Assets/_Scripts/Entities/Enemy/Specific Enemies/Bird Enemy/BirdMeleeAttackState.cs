@@ -6,7 +6,7 @@ public class BirdMeleeAttackState : MeleeAttackState
 {
     BirdEnemy birdEnemy;
 
-    WeaponData weaponData;
+    SOWeaponData weaponData;
 
     public float AttackTimer;
 
@@ -26,7 +26,7 @@ public class BirdMeleeAttackState : MeleeAttackState
     Vector2 direction;
     public Vector2 attackPos;
 
-    public BirdMeleeAttackState(EnemyEntity entity, EntityStateMachine stateMachine, Transform attackPosition, BirdEnemy enemy, WeaponData weaponData) : base(entity, stateMachine, attackPosition)
+    public BirdMeleeAttackState(EnemyEntity entity, EntityStateMachine stateMachine, string animBoolName, Transform attackPosition, BirdEnemy enemy, SOWeaponData weaponData) : base(entity, stateMachine, animBoolName, attackPosition)
     {
         this.birdEnemy = enemy;
         this.weaponData = weaponData;
@@ -37,10 +37,6 @@ public class BirdMeleeAttackState : MeleeAttackState
     public override void StateEnter()
     {
         base.StateEnter();
-        
-        Animator.SetBool(BirdEnemy.ATTACK, true);
-
-        birdEnemy.StartCoroutine(AttackDamage());
 
         isAbilityDone = false;
     }
@@ -48,8 +44,6 @@ public class BirdMeleeAttackState : MeleeAttackState
     public override void StateExit()
     {
         base.StateExit();
-
-        Animator.SetBool(BirdEnemy.ATTACK, false);
     }
 
     public override void StateChecks()
@@ -83,100 +77,13 @@ public class BirdMeleeAttackState : MeleeAttackState
 
     #endregion
 
-    public override void AnimationTrigger()
+    public override void TriggerAttack()
     {
-        base.AnimationTrigger();
-
-        isDamageActive = true;
+        base.TriggerAttack();
     }
 
-    public override void AnimationFinishedTrigger()
+    public override void FinishAttack()
     {
-        base.AnimationFinishedTrigger();
-
-        isDamageActive = false;
-    }
-
-    public IEnumerator AttackDamage()
-    {
-        isDamageActive = true;
-
-        while (isDamageActive)
-        {
-            hits = Physics2D.CircleCastAll
-                (
-                    attackPos,
-                    weaponData.AttackRange,
-                    Vector2.right,
-                    0f,
-                    weaponData.AttackLayer
-                );
-            
-            if (hits.Length > 0)
-            {
-                // Debug.Log("hit objects");
-                for (int i = 0; i < hits.Length; i++)
-                {
-                    IDamageable iDamageable = hits[i].collider.gameObject.GetComponent<IDamageable>();
-                    if (
-                        iDamageable != null &&
-                        !iDamageable.HasTakenDamage &&
-                        !iDamageable.IsInvincible
-                        )
-                    {
-                        iDamageable.Damage
-                            (
-                                new DamageData
-                                    (
-                                        weaponData.DamageAmount,
-                                        birdEnemy.gameObject
-                                    )
-                            );
-                        iDamaged.Add(iDamageable);
-
-                        // _player.ParticleManager.StartEffect(birdEnemy.HitEffect, hits[i].point, Quaternion.identity, 0.6f);
-                        
-                        collided = true;
-                    }
-
-                    IKnockbackable iKnockbackable = hits[i].collider.gameObject.GetComponent<IKnockbackable>();
-                    if (
-                        iKnockbackable != null &&
-                        !iKnockbackable.HasKnockbacked &&
-                        !iKnockbackable.IsNotKnockbackable
-                        )
-                    {
-                        iKnockbackable.Knockback
-                            (
-                                new KnockbackData
-                                    (
-                                        weaponData.KnockbackAngle,
-                                        weaponData.KnockbackStrength,
-                                        Movement.FacingDirection,
-                                        birdEnemy.gameObject
-                                    )
-                            );
-                        iKnockbacked.Add(iKnockbackable);
-                    }
-                }
-            }
-
-            yield return null;
-        }
-
-        ResetLists();
-    }
-
-    private void ResetLists()
-    {
-        foreach (IDamageable damaged in iDamaged)
-        {
-            damaged.HasTakenDamage = false;
-        }
-
-        collided = false;
-
-        iDamaged.Clear();
-        iKnockbacked.Clear();
+        base.FinishAttack();
     }
 }

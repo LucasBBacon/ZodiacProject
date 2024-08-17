@@ -1,0 +1,401 @@
+fileFormatVersion: 2
+guid: bf45a4003547b4148a1a4d8dee7d4e63
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Rubble_1
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 861
+        width: 418
+        height: 184
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c4a7c6ab4dc5da449bde396da2f98c7
+      internalID: -651192388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Rubble_4
+      rect:
+        serializedVersion: 2
+        x: 1145
+        y: 780
+        width: 316
+        height: 278
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6597a9f41393f02478390deebd7383cd
+      internalID: -1201088113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Rubble_2
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 859
+        width: 286
+        height: 137
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12a4687a494c43545b15ff5045f49014
+      internalID: -1545572028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Rubble_3
+      rect:
+        serializedVersion: 2
+        x: 890
+        y: 870
+        width: 150
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63729132fa541794b8ae6534f0cd16ea
+      internalID: 149417681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Platform_Middle_Left
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 719
+        width: 38
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a3ba95c244ba0d4a87f364f85bbdcef
+      internalID: 487391025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Platform_Middle
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 713
+        width: 265
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7214b439f6699c46aaa4a294228c2ba
+      internalID: 1039919601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Platform_Right
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 727
+        width: 29
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73ffbe577f774f64ab377c89486ba72b
+      internalID: 822805050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Window_Double
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 39
+        width: 232
+        height: 436
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 772a7d4f9f176304eabeb05d72233d01
+      internalID: -1455516365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Doorway
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 38
+        width: 338
+        height: 642
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3bfe0e85f6a7c4042a0e8e4e00c728f6
+      internalID: -1137199118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Window_Open
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 379
+        width: 156
+        height: 302
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58d8af49b6e0cf54bbae543624197f27
+      internalID: -1764026361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Window_Closed
+      rect:
+        serializedVersion: 2
+        x: 1037
+        y: 382
+        width: 122
+        height: 301
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: caa253a3d5eb5a44caa34c0b00358125
+      internalID: -2024774707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_InteriorAssets_12
+      rect:
+        serializedVersion: 2
+        x: 1222
+        y: 38
+        width: 436
+        height: 680
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51d05599e06b54740b25c2032df2ee52
+      internalID: -952788331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Window_Single
+      rect:
+        serializedVersion: 2
+        x: 821
+        y: 38
+        width: 122
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ab3a4097603b4f4897faad666e5ddcc
+      internalID: -1673978087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      SPRITESHEET_ENV_MIDGROUND_InteriorAssets_12: -952788331
+      SPRITESHEET_ENV_MIDGROUND_InteriorAssets_2: -223928474
+      SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Doorway: -1137199118
+      SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Platform_Middle: 1039919601
+      SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Platform_Middle_Left: 487391025
+      SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Platform_Right: 822805050
+      SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Rubble_1: -651192388
+      SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Rubble_2: -1545572028
+      SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Rubble_3: 149417681
+      SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Rubble_4: -1201088113
+      SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Window_Closed: -2024774707
+      SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Window_Double: -1455516365
+      SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Window_Open: -1764026361
+      SPRITESHEET_ENV_MIDGROUND_InteriorAssets_Window_Single: -1673978087
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

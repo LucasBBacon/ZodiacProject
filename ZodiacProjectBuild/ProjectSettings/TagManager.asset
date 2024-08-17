@@ -9,6 +9,7 @@ TagManager:
   - ParticleContainer
   - EnvironmentHazard
   - Slot
+  - CameraBoundary
   layers:
   - Default
   - TransparentFX
@@ -21,9 +22,9 @@ TagManager:
   - Ghost
   - Weapon
   - Hazard
-  - 
-  - 
-  - 
+  - Ledge
+  - HealBeam
+  - CameraTrigger
   - 
   - 
   - 
@@ -43,7 +44,16 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Environment
+  - name: Blockout
+    uniqueID: 3564336753
+    locked: 0
+  - name: Environment_Background
+    uniqueID: 583098759
+    locked: 0
+  - name: Floor
+    uniqueID: 3244423137
+    locked: 0
+  - name: Environment_Midground
     uniqueID: 3923171673
     locked: 0
   - name: Default
@@ -60,4 +70,10 @@ TagManager:
     locked: 0
   - name: Front Particles
     uniqueID: 560502599
+    locked: 0
+  - name: Environment_Foreground
+    uniqueID: 2390884031
+    locked: 0
+  - name: Environment_Foreforeground
+    uniqueID: 495552937
     locked: 0

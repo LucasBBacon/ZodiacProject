@@ -10,7 +10,7 @@ public class MoveState : State
 
     #endregion
 
-    public MoveState(EnemyEntity entity, EntityStateMachine stateMachine) : base(entity, stateMachine)
+    public MoveState(EnemyEntity entity, EntityStateMachine stateMachine, string animBoolName) : base(entity, stateMachine, animBoolName)
     {
     }
 
@@ -20,7 +20,7 @@ public class MoveState : State
     {
         base.StateEnter();
 
-        Movement?.SetHorizontalVelocity(EntityData.MovementSpeed * Movement.FacingDirection);
+        Movement?.SetVelocityX(EntityData.MovementSpeed * Movement.FacingDirection);
     }
 
     public override void StateExit()
@@ -33,7 +33,7 @@ public class MoveState : State
         base.StateChecks();
 
         IsDetectingLedge = CollisionSensors.IsLedgeVertical;
-        IsDetectingWall = CollisionSensors.IsWallFront;
+        IsDetectingWall = CollisionSensors.IsWallBird;
 
         IsPlayerInMinAgroRange = entity.CheckPlayerInMinAgroRange();
     }
@@ -42,12 +42,13 @@ public class MoveState : State
     {
         base.StateUpdate();
 
-        Movement?.SetHorizontalVelocity(EntityData.MovementSpeed * Movement.FacingDirection);
+        Movement?.SetVelocityX(EntityData.MovementSpeed * Movement.FacingDirection);
     }
 
     public override void StateFixedUpdate()
     {
         base.StateFixedUpdate();
+        CollisionSensors.CollisionChecks();
     }
 
     #endregion

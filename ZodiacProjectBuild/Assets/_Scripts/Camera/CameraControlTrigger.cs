@@ -19,6 +19,7 @@ public class CameraControlTrigger : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            //Debug.Log("Triggered!");
             if (customInspectorObjects.panCameraOnContact)
             {
                 CameraManager.instance.PanCameraOnContact
@@ -158,3 +159,4 @@ public class MyScriptEditor : Editor
         }
     }
 }
+

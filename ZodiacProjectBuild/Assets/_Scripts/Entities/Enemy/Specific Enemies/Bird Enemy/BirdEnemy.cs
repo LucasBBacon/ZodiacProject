@@ -6,7 +6,7 @@ public class BirdEnemy : EnemyEntity
 
     [SerializeField] Transform attackTransform;
     [SerializeField] GameObject forceField;
-    [SerializeField] WeaponData weaponData;
+    [SerializeField] SOWeaponData weaponData;
 
     #endregion
 
@@ -22,17 +22,11 @@ public class BirdEnemy : EnemyEntity
 
     public BirdMeleeAttackState MeleeAttackState { get; private set;}
     public BirdDamageState DamageState { get; private set;}
+    public BirdDeadState DeadState { get; private set;}
+    public BirdSpecialAttackState SpecialAttackState { get; private set; }
 
     #endregion
-
-    public const string IS_WALKING = "isWalking";
-    public const string IDLE = "idle";
-    public const string LOOK_FOR_PLAYER = "lookForPlayer";
-    public const string PLAYER_DETECTED = "playerDetected";
-    public const string ATTACK = "attack";
-    public const string LAND = "land";
-    public const string FALL = "fall";
-    public const string DAMAGE = "damage";
+    
 
     #region Callback Functions
 
@@ -40,15 +34,17 @@ public class BirdEnemy : EnemyEntity
     {
         base.Awake();
 
-        IdleState = new BirdIdleState(this, stateMachine, this);
-        MoveState = new BirdMoveState(this, stateMachine, this);
+        IdleState = new BirdIdleState(this, stateMachine, this, "idle");
+        MoveState = new BirdMoveState(this, stateMachine, this, "isWalking");
 
-        ChargeState = new BirdChargeState(this, stateMachine, this);
-        LookForPlayerState = new BirdLookForPlayerState(this, stateMachine, this);
-        PlayerDetectedState = new BirdPlayerDetectedState(this, stateMachine, this);
+        ChargeState = new BirdChargeState(this, stateMachine, this, "isWalking");
+        LookForPlayerState = new BirdLookForPlayerState(this, stateMachine, this, "idle");
+        PlayerDetectedState = new BirdPlayerDetectedState(this, stateMachine, this, "playerDetected");
 
-        MeleeAttackState = new BirdMeleeAttackState(this, stateMachine, attackTransform, this, weaponData);
-        DamageState = new BirdDamageState(this, stateMachine, this);
+        MeleeAttackState = new BirdMeleeAttackState(this, stateMachine, "attack", attackTransform, this, weaponData);
+        DamageState = new BirdDamageState(this, stateMachine, this, "damage");
+        DeadState = new BirdDeadState(this, stateMachine, "death");
+        SpecialAttackState = new BirdSpecialAttackState(this, stateMachine, "ability", attackTransform, this);
     }
 
     public override void Start()
@@ -68,13 +64,25 @@ public class BirdEnemy : EnemyEntity
         }    
     }
 
+    public void DestroyProjectile(GameObject obj, float timeToDestroy)
+    {
+        Destroy(obj, timeToDestroy);
+    }
+
     public override void OnDrawGizmos()
     {
         base.OnDrawGizmos();
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackTransform.position, weaponData.AttackRange);
+        Gizmos.DrawWireSphere(attackTransform.position, EntityData.AttackRadius);
     }
 
     #endregion
+
+    public override void Die()
+    {
+        base.Die();
+
+        ChangeState(DeadState);
+    }
 }

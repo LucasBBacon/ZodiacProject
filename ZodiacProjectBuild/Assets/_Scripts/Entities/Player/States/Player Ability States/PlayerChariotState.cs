@@ -1,93 +1,195 @@
+using System.Collections;
+using Cinemachine;
 using UnityEngine;
 
-public class PlayerChariotState : AbilityState
+public class PlayerChariotState : PlayerAbilityState
 {
     #region Blackboard Variables
 
     public bool IsChariot { get; private set; }
-    public float ChariotTimer { get; private set; }
-    public bool IsAirChariot { get; private set; }
-    
-    public int NumberOfChariotsUsed { get; private set; }
-    
-    public Vector2 ChariotDirection { get; private set; }
-    public float ChariotDirectionMult { get; private set; }
-
-    public bool IsChariotFalling { get; private set; }
+    public bool IsChariotAttacking { get; private set; }
     public bool IsChariotFastFalling { get; private set; }
-    public float ChariotFastFallReleaseSpeed { get; private set; }
-    public float ChariotFastFallTime { get; private set; }
-    
     public float ChariotOnGroundTimer { get; private set; }
-    public float WallJumpPostBufferTimer { get; private set; }
+    public float LastPressedChariotTime { get; private set; }
 
-    ChariotAbilityData AbilityData;
+    float _cameraLensSize;
+
+    int _chariotsLeft;
+    bool _chariotRefilling;
+    float _chariotTime;
+    bool[] _shouldBurst = new bool[3];
+
+    Vector2 _lastChariotDirection;
+
+    SOChariotAbilityData _abilityData;
 
     #endregion
 
-    public PlayerChariotState(Player player, PlayerStateMachine stateMachine, ChariotAbilityData abilityData) : base(player, stateMachine)
+    public PlayerChariotState(
+        Player player,
+        PlayerStateMachine stateMachine,
+        SOChariotAbilityData abilityData,
+        string animBoolName,
+        AbilityInputs input
+        ) : base(player, stateMachine, animBoolName, input)
     {
-        this.AbilityData = abilityData;
+        this._abilityData = abilityData;
     }
 
     #region Callback Functions
 
     public override void StateEnter()
     {
+        manaCost = _abilityData.ManaCost;
+        cooldownTimer = _abilityData.AbilityCooldown;
+
         base.StateEnter();
 
-        InitiateChariot();
+        _chariotTime = 0f;
 
-        Animator.SetBool("isChariot", true);
+        for (int i = 0; i < _shouldBurst.Length; i++)
+        {
+            _shouldBurst[i] = true;
+        }
+
+        _cameraLensSize = CameraManager.instance.CurrentCamera.m_Lens.OrthographicSize;
+
+        if (InputManager.instance.MoveInput != Vector2.zero)
+            _lastChariotDirection = InputManager.instance.MoveInput;
+        
+        else
+            _lastChariotDirection = Movement.IsFacingRight ? Vector2.right : Vector2.left;
+        
+
+        if (!isAbilityHeld)
+        {
+            player.Sleep(_abilityData.ChariotSleepTime);
+            
+            _chariotTime = _abilityData.ChariotMinTime;
+            IsChariot = true;
+            player.StartCoroutine(StartChariot(_lastChariotDirection));
+        }
     }
 
     public override void StateExit()
     {
         base.StateExit();
 
+        Animator.SetBool("chariotEnd", false);
+
         IsChariot = false;
-        Animator.SetBool("isChariot", false);
     }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
+            
 
-        if (_player.WallSlideState.ShouldWallSlide())
+        if (IsChariot && isWall)
         {
-            ChangeState(_player.AirborneState);
-        }
-
-        else if (!IsChariot && !CollisionSensors.IsGrounded && !IsExitingState)
-        {
-            ChangeState(_player.AirborneState);
-        }
-
-        else if (!IsChariot && CollisionSensors.IsGrounded && !IsExitingState)
-        {
-            ChangeState(_player.IdleState);
-        }
-
-        else if (InputManager.JumpJustPressed)
-        {
-            if (_player.JumpState.CanJump())
+            CameraShakeManager.instance.CameraShake(player.CollisionShake);
+            if (isGrounded)
             {
-                _player.SpawnParticles(_player.JumpParticles);
-                ChangeState(_player.JumpState);
+                ChangeState(player.AirborneState);
+            }
+            else
+            {
+                ChangeState(player.IdleState);
             }
         }
 
-        // if (!IsExitingState && Time.time >= startTime + AbilityData.ChariotTime)
-        // {
-        //     IsAbilityDone = true;
-        // }
+        else if (
+            !IsChariot
+            && !isGrounded 
+            && !IsExitingState
+            )
+        {
+            ChangeState(player.AirborneState);
+        }
+
+        else if (
+            !IsChariot 
+            && isGrounded 
+            && !IsExitingState 
+            && !isAbilityHeld)
+        {
+            ChangeState(player.IdleState);
+        }
+
+        else if (player.JumpState.LastPressedJumpTime > 0)
+        {
+            if (player.JumpState.CanJump())
+            {
+                ChangeState(player.JumpState);
+            }
+        }
     }
 
     public override void StateFixedUpdate()
     {
         base.StateFixedUpdate();
 
-        ChariotPhysics();
+        if (!IsChariotAttacking)
+        {
+            player.Move(MoveData.GroundAcceleration, MoveData.GroundDeceleration, Vector2.zero);
+        }
+    }
+
+    public override void HeldBehaviour()
+    {
+        base.HeldBehaviour();
+
+        // clamp hold time
+        if (inputHoldTime >= _abilityData.InputHoldMaxTime + 0.1f)
+            inputHoldTime = _abilityData.InputHoldMaxTime + 0.1f;
+
+        // effects
+        else
+        {
+            CameraManager.instance.CurrentCamera.m_Lens.OrthographicSize -= Time.deltaTime / 10;
+        }
+
+        CameraManager.instance.CurrentCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = Utilities.MappingUtil.Map(
+            inputHoldTime,
+            0f, _abilityData.InputHoldMaxTime + 0.1f,
+            0f, 1f,
+            true
+        );
+
+        for (int i = 0; i < _abilityData.ChariotBurstTimers.Length; i++)
+        {
+            if (inputHoldTime >= _abilityData.ChariotBurstTimers[i] && _shouldBurst[i])
+            {
+                RumbleManager.Instance.RumblePulse(
+                    _abilityData.RumbleLowFreq * (i + 1),
+                    _abilityData.RumbleHighFreq * (i + 1),
+                    _abilityData.RumbleTime
+                    );
+                _shouldBurst[i] = false;
+            }
+        }
+    }
+
+    public override void ReleaseBehaviour()
+    {
+        base.ReleaseBehaviour();
+
+        CameraManager.instance.CurrentCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0f;
+        CameraManager.instance.CurrentCamera.m_Lens.OrthographicSize = _cameraLensSize;
+
+        float extraTime = Utilities.MappingUtil.Map(
+            inputHoldTime,
+            0f, _abilityData.InputHoldMaxTime,
+            0f, _abilityData.ChariotMaxExtraTime,
+            true
+            );
+
+        //Debug.Log(extraTime);
+
+        _chariotTime = _abilityData.ChariotMinTime + extraTime;
+
+        IsChariot = true;
+        player.StartCoroutine(StartChariot(_lastChariotDirection));
     }
 
     #endregion
@@ -96,38 +198,20 @@ public class PlayerChariotState : AbilityState
     #region Checks
 
     public override bool CanCheck()
+    => base.CanCheck()
+        && player.Stats.Mana.CurrentValue >= manaCost
+        && !_chariotRefilling
+        && CollisionSensors.IsGrounded
+        && !IsChariot;
+
+    #endregion
+
+
+    #region Timers
+
+    public void ChariotTimers()
     {
-        Debug.Log("Check: " + CollisionSensors.IsGrounded + ", " + (ChariotOnGroundTimer < 0) + ", " + !IsChariot);
-        return CollisionSensors.IsGrounded && ChariotOnGroundTimer < 0 && !IsChariot;
-    } 
-        
-
-    public override bool CanAirCheck()
-    {
-        Debug.Log("Air Check: " + !CollisionSensors.IsGrounded + ", " + !IsChariot + ", " + (NumberOfChariotsUsed < AbilityData.NumberOfChariots));
-        
-        if (
-            !CollisionSensors.IsGrounded &&
-            !IsChariot &&
-            NumberOfChariotsUsed < AbilityData.NumberOfChariots
-            )
-        {
-            IsAirChariot = true;
-
-            if (WallJumpPostBufferTimer > 0f)
-            {
-                _player.JumpState.NumberOfJumpsUsed--;
-
-                if (_player.JumpState.NumberOfJumpsUsed < 0)
-                {
-                    _player.JumpState.NumberOfJumpsUsed = 0;
-                }
-            }
-
-            return true;
-        }
-
-        return false;
+        LastPressedChariotTime -= Time.deltaTime;
     }
 
     #endregion
@@ -136,7 +220,7 @@ public class PlayerChariotState : AbilityState
     #region Functionality
 
     public override void ResetData()
-    => NumberOfChariotsUsed = 0;
+    => _chariotsLeft = _abilityData.NumberOfChariots;
 
     public override void ResetValues()
     {
@@ -144,145 +228,51 @@ public class PlayerChariotState : AbilityState
         ChariotOnGroundTimer = -0.01f;
     }
 
-    public void ChariotTimers()
+    
+    IEnumerator RefillChariot(int amount)
     {
-        if (CollisionSensors.IsGrounded)
-        {
-            ChariotOnGroundTimer -= Time.deltaTime;
-        }
+        _chariotRefilling = true;
+
+        yield return new WaitForSeconds(MoveData.DashRefillTime);
+
+        _chariotRefilling = false;
+        _chariotsLeft = Mathf.Min(_abilityData.NumberOfChariots, _chariotsLeft + amount);
     }
 
-
-    public void InitiateChariot()
+    IEnumerator StartChariot(Vector2 dir)
     {
-        ChariotDirection = InputManager.MoveInput;
+        LastPressedChariotTime = 0;
 
-        Vector2 closestDirection = Vector2.zero;
-        float minDistance = Vector2.Distance(ChariotDirection, AbilityData.ChariotDirections[0]);
+        float startTime = Time.time;
 
-        for (int i = 0; i < AbilityData.ChariotDirections.Length; i++)
+        _chariotsLeft--;
+        IsChariotAttacking = true;
+
+        Movement.SetVelocityY(0f);
+
+        while (Time.time - startTime <= _chariotTime)
         {
-            if (ChariotDirection == AbilityData.ChariotDirections[i])
-            {
-                closestDirection = ChariotDirection;
-                break;
-            }
+            Movement.SetVelocityX(dir.normalized.x * _abilityData.ChariotSpeed);
 
-            float distance = Vector2.Distance(ChariotDirection, AbilityData.ChariotDirections[i]);
-
-            bool isDiagonal = 
-                Mathf.Abs(AbilityData.ChariotDirections[i].x) == 1 &&
-                Mathf.Abs(AbilityData.ChariotDirections[i].y) == 1;
-            if (isDiagonal)
-            {
-                distance -= AbilityData.ChariotDiagonallyBias;
-            }
-
-            else if (distance < minDistance)
-            {
-                minDistance = distance;
-                closestDirection = AbilityData.ChariotDirections[i];
-            }
+            yield return null;
         }
 
-        // handle direction with no input
-        if (closestDirection == Vector2.zero)
+        startTime = Time.time;
+
+        IsChariotAttacking = false;
+
+        Movement.SetVelocityX(dir.normalized.x * _abilityData.ChariotEndSpeed);
+        Movement.SetVelocityY(Mathf.Clamp(Movement.CurrentVelocity.y, -MoveData.MaxFallSpeed, 50f));
+        Animator.SetBool("chariotEnd", true);
+
+        while (Time.time - startTime <= _abilityData.ChariotEndTime)
         {
-            if (Movement.IsFacingRight)
-            {
-                closestDirection = Vector2.right;
-            }
-            else
-            {
-                closestDirection = Vector2.left;
-            }
+            yield return null;
         }
 
-        ChariotDirectionMult = 1;
-        ChariotDirection = new Vector2
-            (
-                closestDirection.x * ChariotDirectionMult,
-                closestDirection.y * ChariotDirectionMult
-            );
-        
-        NumberOfChariotsUsed++;
-        IsChariot = true;
-        ChariotTimer = 0f;
-        ChariotOnGroundTimer = AbilityData.TimeBetweenChariotGround;
+        player.StartCoroutine(RefillChariot(1));
 
-        Animator.SetBool("isChariot", true);
-        _player.GhostTrail.LeaveGhostTrail(AbilityData.ChariotTime * 1.75f);
-
-        _player.AirborneState.ResetJumpValues();
-        _player.AirborneState.ResetWallJumpValues();
-        _player.WallSlideState.StopWallSliding();
-    }
-
-    public void ChariotPhysics()
-    {
-        if (IsChariot)
-        {
-            //stop the dash after the timer
-            ChariotTimer += Time.fixedDeltaTime;
-            if (ChariotTimer >= AbilityData.ChariotTime)
-            {
-                if (CollisionSensors.IsGrounded)
-                {
-                    ResetData();
-                }
-                else
-                {
-                    Animator.SetBool(Player.IS_AIR_CHARIOT_FALLING, true);
-                }
-
-
-                IsAirChariot = false;
-                IsChariot = false;
-                // Debug.Log("shut down");
-
-                Animator.SetBool(Player.IS_CHARIOT, false);
-
-                //start the time for upwards cancel
-                if (!_player.AirborneState.IsJumping && !_player.AirborneState.IsWallJumping)
-                {
-                    ChariotFastFallTime = 0f;
-                    ChariotFastFallReleaseSpeed = Movement.VerticalVelocity;
-
-                    if (!CollisionSensors.IsGrounded)
-                        IsChariotFastFalling = true;
-                }
-
-                return;
-            }
-
-            Movement.HorizontalVelocity = AbilityData.ChariotSpeed * ChariotDirection.x;
-
-            if (ChariotDirection.y != 0f || IsAirChariot)
-                Movement?.SetVerticalVelocity(AbilityData.ChariotSpeed * ChariotDirection.y);
-        }
-
-        //HANDLE DASH CUT TIME
-        else if (IsChariotFastFalling)
-        {
-            //new
-            if (Movement?.VerticalVelocity > 0f)
-            {
-                if (ChariotFastFallTime < AbilityData.ChariotTimeForUpwardsCancel)
-                {
-                    Movement?.SetVerticalVelocity(Mathf.Lerp(ChariotFastFallReleaseSpeed, 0f, (ChariotFastFallTime / AbilityData.ChariotTimeForUpwardsCancel)));
-                }
-                else if (ChariotFastFallTime >= AbilityData.ChariotTimeForUpwardsCancel)
-                {
-                    Movement?.IncrementVerticalVelocity(MoveStats.Gravity * AbilityData.ChariotGravityOnReleaseMultiplier * Time.fixedDeltaTime);
-                }
-
-                ChariotFastFallTime += Time.fixedDeltaTime;
-            }
-            else
-            {
-                Movement?.IncrementVerticalVelocity(MoveStats.Gravity * AbilityData.ChariotGravityOnReleaseMultiplier * Time.fixedDeltaTime);
-            }
-        }
+        isAbilityDone = true;
     }
 
     #endregion

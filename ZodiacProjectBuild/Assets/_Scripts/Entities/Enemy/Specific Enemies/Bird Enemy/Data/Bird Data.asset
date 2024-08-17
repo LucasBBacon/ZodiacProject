@@ -15,28 +15,32 @@ MonoBehaviour:
   MaxHealth: 30
   DamageHopSpeed: 3
   InvincibilityTime: 2
-  maxKnockbackTime: 2
+  maxKnockbackTime: 5
   StunResistance: 3
   StunRecoveryTime: 2
   GroundCheckRadius: 0.3
   WallCheckDistance: 0.2
   LedgeCheckDistance: 0.4
-  MinAgroDistance: 6
   MaxAgroDistance: 8
+  MinAgroDistance: 6
   CloseRangeActionDistance: 2
   PlayerMask:
     serializedVersion: 2
     m_Bits: 128
   MinIdleTime: 1
   MaxIdleTime: 2
-  MovementSpeed: 3
-  ChargeSpeed: 5
+  MovementSpeed: 4.55
+  ChargeSpeed: 6.75
   ChargeTime: 2
   AmountOfTurns: 2
   TimeBetweenTurns: 0.75
   LongRangeActionTime: 1.5
-  AttackRadius: 0.5
+  AttackRadius: 0.77
   AttackDamage: 10
   KnockbackAngle: {x: 1, y: 1}
   KnockbackStrength: 10
   PoiseDamage: 3
+  Projectile: {fileID: 3707761231287791041, guid: 4605824afd651564db88e414c47708ca, type: 3}
+  ProjectileOffset: {x: 2.73, y: 0}
+  DeathEntity: {fileID: 4257937901365180738, guid: 4130b585b817a0843b1b2b8216b3e96b, type: 3}
+  DeathParticles: {fileID: 5714737689031967265, guid: 94c2e337c3d587149ac7c89d62f400ff, type: 3}

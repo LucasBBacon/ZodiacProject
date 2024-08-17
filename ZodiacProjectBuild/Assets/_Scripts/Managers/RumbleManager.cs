@@ -18,12 +18,12 @@ public class RumbleManager : MonoBehaviour
 
     private void Start()
     {
-        InputManager.PlayerInput.onControlsChanged += SwitchControls;
+        InputManager.instance.PlayerInputRumble.onControlsChanged += SwitchControls;
     }
 
     private void OnDisable()
     {
-        InputManager.PlayerInput.onControlsChanged -= SwitchControls;
+        InputManager.instance.PlayerInputRumble.onControlsChanged -= SwitchControls;
     }
 
     public void RumblePulse(float lowFrequency, float highFrequency, float duration)
@@ -60,6 +60,25 @@ public class RumbleManager : MonoBehaviour
 
         // once duration is over
         pad.SetMotorSpeeds(0f, 0f);
+    }
+
+    public void RumblePulse(float lowFrequency, float highFrequency)
+    {
+        if (currentControlScheme == "Gamepad")
+        {
+            pad = Gamepad.current;
+
+            if (pad != null)
+            {
+                pad.SetMotorSpeeds(lowFrequency, highFrequency);
+            }
+        }
+    }
+
+    public void StopRumblePulse()
+    {
+        if (currentControlScheme == "Gamepad" && pad != null)
+            pad.SetMotorSpeeds(0f, 0f);
     }
 
     void SwitchControls(PlayerInput input)

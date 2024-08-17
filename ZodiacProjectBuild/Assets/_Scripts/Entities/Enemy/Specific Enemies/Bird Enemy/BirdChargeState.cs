@@ -4,7 +4,7 @@ public class BirdChargeState : ChargeState
 {
     BirdEnemy birdEnemy;
 
-    public BirdChargeState(EnemyEntity entity, EntityStateMachine stateMachine, BirdEnemy birdEnemy) : base(entity, stateMachine)
+    public BirdChargeState(EnemyEntity entity, EntityStateMachine stateMachine, BirdEnemy birdEnemy, string animBoolName) : base(entity, stateMachine, animBoolName)
     {
         this.birdEnemy = birdEnemy;
         
@@ -13,17 +13,11 @@ public class BirdChargeState : ChargeState
     public override void StateEnter()
     {
         base.StateEnter();
-
-        Animator.SetBool(BirdEnemy.IS_WALKING, true);
-
-        
     }
 
     public override void StateExit()
     {
         base.StateExit();
-
-        Animator.SetBool(BirdEnemy.IS_WALKING, false);
     }
 
     public override void StateChecks()
@@ -48,9 +42,7 @@ public class BirdChargeState : ChargeState
             ChangeState(birdEnemy.LookForPlayerState);
         }
 
-        else if (
-            ChargeTimeOver
-            )
+        else if (ChargeTimeOver)
         {
             if (
                 IsPlayerInMinAgroRange
@@ -64,6 +56,4 @@ public class BirdChargeState : ChargeState
             }
         }
     }
-
-    
 }

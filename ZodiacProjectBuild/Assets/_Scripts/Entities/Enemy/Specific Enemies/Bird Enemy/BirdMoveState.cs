@@ -4,7 +4,7 @@ public class BirdMoveState : MoveState
 {
     BirdEnemy enemy;
 
-    public BirdMoveState(EnemyEntity entity, EntityStateMachine stateMachine, BirdEnemy enemy) : base(entity, stateMachine)
+    public BirdMoveState(EnemyEntity entity, EntityStateMachine stateMachine, BirdEnemy enemy, string animBoolName) : base(entity, stateMachine, animBoolName)
     {
         this.enemy = enemy;
     }
@@ -14,30 +14,27 @@ public class BirdMoveState : MoveState
     public override void StateEnter()
     {
         base.StateEnter();
-
-        Animator.SetBool(BirdEnemy.IS_WALKING, true);
     }
 
     public override void StateExit()
     {
         base.StateExit();
-
-        Animator.SetBool(BirdEnemy.IS_WALKING, false);
     }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
+
+        //Debug.Log(IsDetectingWall + ", " + !IsDetectingLedge);
     
-        if (
-            IsPlayerInMinAgroRange
-            )
+        if (IsPlayerInMinAgroRange)
         {
             ChangeState(enemy.PlayerDetectedState);
         }
 
         else if (
-            CollisionSensors.IsWallFront || !IsDetectingLedge
+            IsDetectingWall
+            || !IsDetectingLedge
             )
         {
             enemy.IdleState.SetFlipAfterIdle(true);
@@ -48,6 +45,7 @@ public class BirdMoveState : MoveState
     public override void StateFixedUpdate()
     {
         base.StateFixedUpdate();
+        
     }
 
     #endregion

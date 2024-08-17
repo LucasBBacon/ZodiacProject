@@ -17,7 +17,9 @@ public class Entity : MonoBehaviour
         Stats = GetComponentInChildren<Stats>();
         ParticleManager = GetComponent<ParticleManager>();
         DamageFlash = GetComponent<DamageFlash>();
-
-        Animator = GetComponentInChildren<Animator>();
+        Animator = GetComponent<Animator>();
+        Movement = GetComponentInChildren<Movement>();
     }
+
+    public virtual void Die() { }
 }

@@ -5014,7 +5014,7 @@ SpriteRenderer:
   m_Size: {x: 4.8, y: 7.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &1951333566273934330
@@ -10940,15 +10940,17 @@ MonoBehaviour:
   ParticleManager: {fileID: 2936813387331126949}
   DamageParticles: {fileID: 8812620822489839018, guid: d6422a52b2c3e674c80c5a50f25d5260, type: 3}
   ChangeToDamageState: 0
-  MoveStats: {fileID: 11400000, guid: 0fc07e864ff03034594e78953adb806a, type: 2}
-  SwipeAnimator: {fileID: 1665485154576744934}
+  MoveData: {fileID: 0}
+  Weapon: {fileID: 0}
   WeaponData: {fileID: 11400000, guid: 63e836a87ba8b2548bb387c0f6ae002b, type: 2}
   AttackTransform: {fileID: 6236332487084615837}
   AttackUpTransform: {fileID: 8747314276433711244}
   AttackDownTransform: {fileID: 3379669275786958508}
+  AttackShake: {fileID: 0}
   chariotAbilityData: {fileID: 11400000, guid: 78228a8bbb8af7d46bd42e30411e991f, type: 2}
   ParticleSpawnTransform: {fileID: 5538958714495787517}
-  JumpParticles: {fileID: 8317655595928556026, guid: 3f4db00ccbd69c441b3db6eaae0135b7, type: 3}
+  JumpParticles: {fileID: 7026092001466597368, guid: 3f4db00ccbd69c441b3db6eaae0135b7, type: 3}
+  DustFormationPeriod: 0.04
   LandParticles: {fileID: 8317655595928556026, guid: 5ce896fb7f40dc24693333a3891288c7, type: 3}
   StopParticles: {fileID: 5231481161657844100, guid: 4ec8ef2b7add3b84da1c6ff30d28fc31, type: 3}
   DashParticles: {fileID: 7481421995841156760}
@@ -10958,6 +10960,8 @@ MonoBehaviour:
   HitEffect: {fileID: 5855168637591177603, guid: bb01d5883057cbb42961f9cdffff4c25, type: 3}
   SwipeEffect: {fileID: 8450537013314224860}
   GhostTrail: {fileID: 0}
+  IsOnPlatform: 0
+  PlatformBody: {fileID: 0}
 --- !u!114 &1589819332687226456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10970,6 +10974,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eae2361f20f0d644f9ed3f8a36c71184, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsOnPlatform: 0
+  PlatformBody: {fileID: 0}
+  TurnEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7095330130347670620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11263,18 +11272,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48753d675196f44488b4eef7391e36fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveData: {fileID: 11400000, guid: 0fc07e864ff03034594e78953adb806a, type: 2}
-  mainCollider: {fileID: 206002508320957153}
-  wallCheckLeft: {fileID: 8608967337634567103}
-  wallCheckRight: {fileID: 133468203576932600}
-  FeetColl: {fileID: 3501159575446284767}
-  HeadColl: {fileID: 2814808329466151457}
-  LedgeCheck: {fileID: 6064255575243208593}
-  LedgeCheckRadius: 0.3
-  LedgeCheckVertical: {fileID: 0}
-  groundMask:
+  movement: {fileID: 0}
+  noFriction: {fileID: 0}
+  fullFriction: {fileID: 0}
+  _groundCheck: {fileID: 0}
+  _ceilingCheck: {fileID: 0}
+  _wallCheck: {fileID: 0}
+  _ledgeCheckHorizontal: {fileID: 0}
+  _ledgeCheckVertical: {fileID: 0}
+  _groundCheckRadius: 0
+  _wallCheckDistance: 0
+  _groundMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
+  _slopeCheckDistance: 0
+  _maxSlopeAngle: 0
 --- !u!1 &8345198076966481181
 GameObject:
   m_ObjectHideFlags: 0

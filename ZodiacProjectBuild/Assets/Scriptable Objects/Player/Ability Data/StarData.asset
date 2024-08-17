@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34bf136c556184348b87083a4c5de576, type: 3}
+  m_Name: StarData
+  m_EditorClassIdentifier: 
+  AbilityCooldown: 8.76
+  ManaCost: 25
+  LightPrefab: {fileID: 6481843296812361709, guid: 1bb37b819713a224b8161dcec4605367, type: 3}
+  InitialLightPrefab: {fileID: 6481843296812361709, guid: e3967b73d913d914899baffdba578722, type: 3}
+  FloorLightPrefab: {fileID: 7901103326587301189, guid: ca6c23663f5270e40b38682bca60f8e2, type: 3}
+  LightMaxInnerAngle: 17.607
+  LightMaxOuterAngle: 30.11
+  LightMaxOuterRadius: 11.82147
+  HealingBeamHealFactor: 3
+  HealingBeamActiveTime: 5.5
+  HealingBeamInterHealCooldown: 2
+  LightShaftFlashTimer: 5
+  MinHoldTime: 2
+  RumbleConstLowFreq: 0.2
+  RumbleConstHighFreq: 0.4
+  RumbleBurstLowFreq: 0.8
+  RumbleBurstHighFreq: 0.9
+  RumbleBurstTime: 0.08

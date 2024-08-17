@@ -2,7 +2,7 @@ public class BirdLookForPlayerState : LookForPlayerState
 {
     BirdEnemy birdEnemy;
 
-    public BirdLookForPlayerState(EnemyEntity entity, EntityStateMachine stateMachine, BirdEnemy birdEnemy) : base(entity, stateMachine)
+    public BirdLookForPlayerState(EnemyEntity entity, EntityStateMachine stateMachine, BirdEnemy birdEnemy, string animBoolName) : base(entity, stateMachine, animBoolName)
     {
         this.birdEnemy = birdEnemy;
     }
@@ -12,15 +12,11 @@ public class BirdLookForPlayerState : LookForPlayerState
     public override void StateEnter()
     {
         base.StateEnter();
-
-        Animator.SetBool(BirdEnemy.LOOK_FOR_PLAYER, true);
     }
 
     public override void StateExit()
     {
         base.StateExit();
-
-        Animator.SetBool(BirdEnemy.LOOK_FOR_PLAYER, false);
     }
 
     public override void StateChecks()
